@@ -17,15 +17,38 @@ router.post('/', (req, res, next) =>{
      sceneName: 'test',
      createdBy: 200,
      updatedAt: updateAt
-   }).then((scene)=>{
+   }).then((scene)=>{ 
      createObjectsAndRedirect(req.body,sceneId,res);
    })
 });
 
-function createObjectsAndRedirect(obj_json,sceneIdj,res){
-  
- /* Object.bulkCreate(obj_json).then(()=>{
-    res.redirect('/');
+router.get('/scene/:sceneId', (req, res, next) => {
+  /*Scene.findOne({
+    include:[]
   })*/
+  res.render('scene',{sceneId :req.params.sceneId});
+})
+function createObjectsAndRedirect(obj_json,sceneId,res){
+  
+  const obj_bulk = obj_json.data.map((c)=>{
+    return{
+      SceneId: sceneId,
+      ObjectType: c.type,
+      X: c.x ,
+      Y: c.y,
+      Width: c.width,
+      Height: c.height,
+      Rad: c.rad,
+      Color: c.color
+     }
+    }
+  );
+  //console.log(obj_bulk)
+  Object.bulkCreate(obj_bulk).then(()=>{
+    res.send(sceneId)
+  })
+  .catch(function(err){
+    console.log(err);
+  })
 }
 module.exports = router;

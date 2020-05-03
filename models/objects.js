@@ -2,9 +2,14 @@ const loader = require('./loader.js');
 const Sequelize = loader.Sequelize;
 
 const Object = loader.database.define('objects',{
+    ObjectId:{
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+    },
     SceneId:{
         type: Sequelize.UUID,
-        primaryKey: true,
         allowNull: false 
     },
     ObjectType:{
@@ -30,6 +35,10 @@ const Object = loader.database.define('objects',{
     Rad:{
         type:Sequelize.FLOAT,
         allowNull: true
+    },
+    Color:{
+        type:Sequelize.STRING,
+        allowNull: false
     }
     }
     ,{

@@ -1,4 +1,4 @@
-//console.log(data);
+
 var Engine = Matter.Engine;
 var World = Matter.World;
 var Bodies = Matter.Bodies;
@@ -19,7 +19,6 @@ var render = Render.create({
     wireframes: false
   }
 });
-
 
 var circleA = Bodies.circle(450, 50, 30, {
   render: {
@@ -90,33 +89,39 @@ $(document).on('click', '#save', function () {
     if (objects[i].type === "Rectangle Body") obj_type = 1;
     else if (objects[i].type === "Circle Body") obj_type = 2
     let tmp = {
-      type: obj_type,
-      x: objects[i].position.x,
-      y: objects[i].position.y,
-      rad: 0,
-      width: 80,
-      height: 80
+      "type": obj_type,
+      "x": objects[i].position.x,
+      "y": objects[i].position.y,
+      "rad": 0,
+      "width": 80,
+      "height": 80,
+      "color": objects[i].render.fillStyle
     }
     data.push(tmp);
   }
   
-  console.log(JSON.stringify(data))
+  
   var hostUrl = "http://localhost:8000/test/";
 
   $.ajax({
     url: hostUrl,
     type: "POST",
-    data: JSON.stringify(data),
-    dataType: "json",
+    data: {"data": data},
+    dataType: "text",
     scriptCharset: "utf-8",
     timeout: 3000
-  }).done(function (data) {
-    alert("ok");
-  }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
-    console.log(XMLHttpRequest);
-    console.log(errorThrown);
-    console.log(textStatus);
-  }
+    }
+  ).then(
+    (data)=>{
+      console.log("ok")
+      window.location.href = "http://localhost:8000/test/scene/"+ data ;
+    },
+    (XMLHttpRequest, textStatus, errorThrown)=>{
+      console.log("error");
+      console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+      console.log("textStatus     : " + textStatus);
+      console.log("errorThrown    : " + errorThrown.message);
+    }
   )
 });
 
