@@ -7,7 +7,7 @@ const Scene = loader.database.define('scenes',{
         primaryKey: true,
         allowNull: false 
     },
-    SceneName:{
+    sceneName:{
         type:Sequelize.STRING,
         allowNull: false 
     },
@@ -21,7 +21,12 @@ const Scene = loader.database.define('scenes',{
     }}
     ,{
         freezeTableName: true,
-        timestamps: false 
+        timestamps: false ,
+        indexes: [
+            {
+              fields: ['createdBy']
+            }
+          ]
     }
 );
 

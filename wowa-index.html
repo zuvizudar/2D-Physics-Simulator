@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang=ja>
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
+    <meta charset=utf-8>
+    <meta http-equiv=X-UA-Compatible content="IE=edge">
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=viewport content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name=description content=描いたイラストが音楽に合わせて踊ります。>
+    <meta name=twitter:card content=summary_large_image>
+    <meta name=twitter:image content=https://aidn.jp/wowa/img/og.png>
+    <meta property=og:locale content=ja_JP>
+    <meta property=og:title content="Wonder of Wonder Art">
+    <meta property=og:type content=article>
+    <meta property=og:url content="https://aidn.jp/wowa/">
+    <meta property=og:image content=https://aidn.jp/wowa/img/og.png>
+    <meta property=og:site_name content=AIDN>
+    <meta property=og:description content=描いたイラストが音楽に合わせて踊ります。>
+    <meta property=fb:app_id content=260132667518211>
+    <title>Wonder of Wonder Art</title>
+    <link rel=apple-touch-icon href=icon.png>
+    <link rel=manifest href=manifest.json>
+    <script>
+        window.addEventListener('load', function() {
+            if ('serviceWorker' in navigator)
+                navigator.serviceWorker.register('../service-worker.js', {
+                    scope: "./"
+                });
+        });
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&family=Ubuntu:wght@700&display=swap" rel=stylesheet>
+    <link href=https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.1.0/simplebar.min.css rel=stylesheet>
+    <link charset=utf-8 href=../shared/sp/css/common.css rel=stylesheet>
+    <link charset=utf-8 href=css/app.css?2 rel=stylesheet>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lf9-ewUAAAAAOnrieN0QmzvbXjXfdW_myYpTOpz"></script>
+    <script charset=utf-8 src=https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js type=text/javascript defer></script>
+    <script charset=utf-8 src=https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js type=text/javascript defer></script>
+    <script charset=utf-8 src=https://cdnjs.cloudflare.com/ajax/libs/three.js/106/three.min.js type=text/javascript defer></script>
+    <script charset=utf-8 src=https://cdnjs.cloudflare.com/ajax/libs/simplebar/4.1.0/simplebar.min.js type=text/javascript defer></script>
+    <script charset=utf-8 src=../shared/js/common.js type=text/javascript defer></script>
+    <script>
+        __s = 598..toString(30) + "/" + 12443..toString(34) + "." + 579..toString(29) + "?2";
+    </script>
+    <script charset=utf-8 src=js/lib.js type=text/javascript defer></script>
+
+    <body>
+        <div id=view></div>
+        <div id=loading class=scene></div>
+        <div id=top class=scene>
+            <h1><span>Wonder<br>of<br>Wonder<br>Art</span></h1>
+            <p class=pc>CLICK TO START</p>
+            <p class=sp>TAP TO START</p>
+        </div>
+        <div id=main class=scene>
+            <p id=bt_draw class=noselect>DRAW</p>
+            <p id=bt_share class=noselect>SHARE</p>
+        </div>
+        <div id=credit></div>
+        <div id=bt_about class=noselect>?</div>
+        <div id=bt_list>
+            <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                <path d="M4 22h-4v-4h4v4zm0-12h-4v4h4v-4zm0-8h-4v4h4v-4zm3 0v4h17v-4h-17zm0 12h17v-4h-17v4zm0 8h17v-4h-17v4z">
+            </svg>
+        </div>
+        <div id=cover></div>
+        <div id=bt_close>
+            <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                <path d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z">
+            </svg>
+        </div>
+        <svg xmlns=http://www.w3.org/2000/svg style="display: none">
+            <symbol id=sb_pen>
+                <path d="M1.439 16.873l-1.439 7.127 7.128-1.437 16.873-16.872-5.69-5.69-16.872 16.872zm4.702 3.848l-3.582.724.721-3.584 2.861 2.86zm15.031-15.032l-13.617 13.618-2.86-2.861 10.825-10.826 2.846 2.846 1.414-1.414-2.846-2.846 1.377-1.377 2.861 2.86z">
+            </symbol>
+            <symbol id=sb_eraser>
+                <path d="M5.662 23l-5.369-5.365c-.195-.195-.293-.45-.293-.707 0-.256.098-.512.293-.707l14.929-14.928c.195-.194.451-.293.707-.293.255 0 .512.099.707.293l7.071 7.073c.196.195.293.451.293.708 0 .256-.097.511-.293.707l-11.216 11.219h5.514v2h-12.343zm3.657-2l-5.486-5.486-1.419 1.414 4.076 4.072h2.829zm6.605-17.581l-10.677 10.68 5.658 5.659 10.676-10.682-5.657-5.657z">
+            </symbol>
+            <symbol id=sb_layer1>
+                <polygon fill=#B0B0B0 points="21.698,10.658 24,12 11.998,19 0,12 2.301,10.658 11.998,16.316 "></polygon>
+                <path d="M11.998,0L0,7l11.998,7L24,7L11.998,0z M3.969,7l8.029-4.685L20.029,7l-8.031,4.685L3.969,7z"></path>
+                <path d="M17.958,17.961c0.213-0.088,0.435-0.188,0.666-0.303c0.23-0.113,0.456-0.238,0.677-0.374 c0.22-0.136,0.431-0.278,0.632-0.429c0.202-0.15,0.384-0.31,0.545-0.479h1.144V24h-1.639v-5.489 c-0.22,0.147-0.466,0.28-0.737,0.401s-0.535,0.226-0.792,0.313L17.958,17.961z"></path>
+            </symbol>
+            <symbol id=sb_layer2>
+                <polygon points="21.698,10.658 24,12 11.998,19 0,12 2.301,10.658 11.998,16.316 "></polygon>
+                <path fill=#B0B0B0 d="M11.998,0L0,7l11.998,7L24,7L11.998,0z M3.969,7l8.029-4.685L20.029,7l-8.031,4.685L3.969,7z"></path>
+                <path d="M22.36,18.379c0,0.279-0.056,0.547-0.165,0.803c-0.109,0.257-0.253,0.505-0.43,0.743c-0.176,0.238-0.373,0.467-0.594,0.688 c-0.22,0.22-0.436,0.429-0.648,0.627c-0.11,0.103-0.229,0.218-0.357,0.347c-0.129,0.128-0.252,0.258-0.369,0.39 c-0.117,0.133-0.222,0.255-0.313,0.369c-0.092,0.113-0.148,0.207-0.171,0.28h3.278V24H17.51c-0.016-0.081-0.022-0.184-0.022-0.308 c0-0.125,0-0.213,0-0.265c0-0.352,0.057-0.675,0.171-0.968c0.113-0.293,0.262-0.566,0.445-0.819s0.391-0.489,0.621-0.71 c0.23-0.22,0.461-0.439,0.688-0.659c0.176-0.169,0.342-0.328,0.495-0.479c0.154-0.15,0.29-0.298,0.407-0.44 s0.209-0.286,0.275-0.429c0.065-0.144,0.099-0.288,0.099-0.435c0-0.323-0.092-0.55-0.275-0.683 c-0.183-0.132-0.411-0.197-0.682-0.197c-0.198,0-0.384,0.031-0.556,0.093c-0.172,0.063-0.33,0.136-0.473,0.221 c-0.144,0.084-0.266,0.168-0.369,0.253c-0.103,0.084-0.18,0.152-0.23,0.203l-0.814-1.144c0.322-0.301,0.699-0.549,1.128-0.743 s0.889-0.291,1.38-0.291c0.447,0,0.832,0.051,1.155,0.154c0.323,0.103,0.589,0.247,0.798,0.434 c0.209,0.188,0.363,0.415,0.462,0.683S22.36,18.042,22.36,18.379z"></path>
+            </symbol>
+            <symbol id=sb_undo>
+                <path d="M13.427 3.021h-7.427v-3.021l-6 5.39 6 5.61v-3h7.427c3.071 0 5.561 2.356 5.561 5.427 0 3.071-2.489 5.573-5.561 5.573h-7.427v5h7.427c5.84 0 10.573-4.734 10.573-10.573s-4.733-10.406-10.573-10.406z">
+            </symbol>
+            <symbol id=sb_redo>
+                <path d="M10.573 3.021h7.427v-3.021l6 5.39-6 5.61v-3h-7.427c-3.071 0-5.561 2.356-5.561 5.427 0 3.071 2.489 5.573 5.561 5.573h7.427v5h-7.427c-5.84 0-10.573-4.734-10.573-10.573s4.733-10.406 10.573-10.406z">
+            </symbol>
+        </svg>
+        <div id=draw><img src=img/guide.png id=draw_guide>
+            <canvas id=can_draw2 width=1024 height=1024></canvas>
+            <canvas id=can_draw1 width=1024 height=1024></canvas>
+            <div id=ui>
+                <div class=con>
+                    <svg id=ui_pen xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                        <use xlink:href=#sb_pen></use>
+                    </svg>
+                    <svg id=ui_eraser xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                        <use xlink:href=#sb_eraser></use>
+                    </svg>
+                    <svg id=ui_layer xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                        <g id=layer_1>
+                            <use xlink:href=#sb_layer1></use>
+                        </g>
+                        <g id=layer_2>
+                            <use xlink:href=#sb_layer2></use>
+                        </g>
+                    </svg>
+                    <svg id=ui_undo xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                        <use xlink:href=#sb_undo></use>
+                    </svg>
+                    <svg id=ui_redo xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                        <use xlink:href=#sb_redo></use>
+                    </svg>
+                </div>
+                <div class=sub id=s_pen>
+                    <div class=bar>
+                        <div class=nob></div>
+                    </div>
+                    <div class=color></div>
+                </div>
+                <div class=sub id=s_eraser>
+                    <div class=bar>
+                        <div class=nob></div>
+                    </div>
+                </div>
+            </div>
+            <div id=bt_howto><span class=ja>使い方</span><span class=en>HOW TO USE</span>
+            </div>
+            <div id=ui_bt>
+                <p class=bt id=bt_draw_ok>OK</p>
+            </div>
+        </div>
+        <div id=cover_howto></div>
+        <div id=howto>
+            <table>
+                <tr>
+                    <td>
+                        <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                            <use xlink:href=#sb_pen></use>
+                        </svg>
+                        <td><span class=ja>ペン</span><span class=en>PEN</span>
+                            <tr>
+                                <td>
+                                    <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                                        <use xlink:href=#sb_eraser></use>
+                                    </svg>
+                                    <td><span class=ja>消しゴム</span><span class=en>ERASER</span>
+                                        <tr>
+                                            <td>
+                                                <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                                                    <use xlink:href=#sb_layer1></use>
+                                                </svg>
+                                                <td><span class=ja>レイヤー切替</span><span class=en>LAYER</span>
+                                                    <tr>
+                                                        <td>
+                                                            <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                                                                <use xlink:href=#sb_undo></use>
+                                                            </svg>
+                                                            <td><span class=ja>取り消し</span><span class=en>UNDO</span>
+                                                                <tr>
+                                                                    <td>
+                                                                        <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                                                                            <use xlink:href=#sb_redo></use>
+                                                                        </svg>
+                                                                        <td><span class=ja>やり直し</span><span class=en>REDO</span>
+                                                                            <tr class=sepa>
+                                                                                <td>
+                                                                                    <svg class=sp xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                                                                                        <path d="M17.854,11.225l2.402,0.801l-1.512,9.609h-7.991L3.53,14.292l1.521-1.466l4.084,2.33V4.818h2.402v6.406h0.801V2.416h2.403 v8.809"></path>
+                                                                                        <path d=M2.365,6.689l1.286,1.117L2.985,8.594L0,6.022l2.984-2.562l0.666,0.788L2.365,5.366h5.002v1.323H2.365z></path>
+                                                                                        <path d=M16.635,6.689V5.366h5.001l-1.284-1.117l0.665-0.788L24,6.022l-2.983,2.571l-0.665-0.788l1.284-1.117H16.635z></path>
+                                                                                    </svg>
+                                                                                    <svg class=pc xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                                                                                        <path fill=#FF0000 d=M18,4v3h-5V2h3C17.1,2,18,2.9,18,4z></path>
+                                                                                        <path d="M11,7V2H8C6.9,2,6,2.9,6,4v3H11z M18,7V4c0-1.1-0.9-2-2-2h-3v5H18z M18,16V9H6v7c0,3.31,2.69,6,6,6 C15.31,22,18,19.31,18,16z M20,4v12c0,4.42-3.58,8-8,8s-8-3.58-8-8V4c0-2.21,1.79-4,4-4h8C18.21,0,20,1.79,20,4z"></path>
+                                                                                    </svg>
+                                                                                    <td><span class=ja>キャンバスの移動</span><span class=en>MOVE</span>
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <svg class=sp xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                                                                                                    <path d=M21.392,12.632l2.483,0.829l-1.563,9.934H14.05l-7.468-7.591l1.573-1.516l4.222,2.41L10.86,4.561h2.482l1.52,8.071h0.827></path>
+                                                                                                    <path d="M3.009,15.955l1.566-0.805l0.5,0.942l-3.616,1.875l-1.31-3.849l1.012-0.338l0.577,1.665l1.924-4.8l1.271,0.509 L3.009,15.955z"></path>
+                                                                                                    <path d=M6.314,7.712l-1.27-0.51l1.925-4.8L5.402,3.207l-0.5-0.943l3.607-1.877l1.318,3.853L8.815,4.575L8.239,2.911L6.314,7.712z></path>
+                                                                                                </svg>
+                                                                                                <svg class=pc xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24">
+                                                                                                    <path d="M16,0H8C5.791,0,4,1.791,4,4v12c0,4.418,3.582,8,8,8s8-3.582,8-8V4C20,1.791,18.209,0,16,0z M18,16c0,3.309-2.691,6-6,6 c-3.309,0-6-2.691-6-6V4c0-1.103,0.897-2,2-2h8c1.104,0,2,0.897,2,2V16z"></path>
+                                                                                                    <path fill=#FF0000 d=M13,5c0-0.552-0.447-1-1-1c-0.553,0-1,0.448-1,1v4c0,0.552,0.447,1,1,1c0.553,0,1-0.448,1-1V5z></path>
+                                                                                                </svg>
+                                                                                                <td><span class=ja>拡大・縮小</span><span class=en>ZOOM</span>
+            </table>
+        </div>
+        <div id=share>
+            <div id=sh_stop class=sh>
+                <p class="ja attention">申し訳ございません。
+                    <br>現在、アップロードの受付を停止しております。</p>
+                <p class="en attention">Currently, it can not be uploaded.</p>
+            </div>
+            <div id=sh_not class=sh>
+                <p class=ja>お使いのブラウザではご利用いただけません。</p>
+                <p class=en>Your browser is not supported.</p>
+            </div>
+            <div id=sh_start class=sh>
+                <p class=ja>描いたイラストをアップロードして
+                    <br>シェア用URLを生成します。</p>
+                <p class=en>Your illustration is uploaded
+                    <br>& the share URL is generated.</p>
+                <div>NAME
+                    <input id=input_name name=handle placeholder="Handle Name" maxlength=18>
+                </div>
+                <p class=bt id=bt_share_ok>OK</p>
+                <p class=policy>This site is protected by reCAPTCHA and the Google <a href=https://policies.google.com/privacy target=_blank>Privacy Policy</a> and <a href=https://policies.google.com/terms target=_blank>Terms of Service</a> apply.</p>
+            </div>
+            <div id=sh_wait class=sh>
+                <p class=ja>しばらくお待ちください...</p>
+                <p class=en>Please wait for a minute...</p>
+            </div>
+            <div id=sh_uploading class=sh></div>
+            <div id=sh_success class=sh>
+                <p id=share_url>http://aidn.jp/wowa/123456</p>
+                <p id=credit_s>illustration by</p>
+                <p class=bt id=bt_share_tweet>TWEET</p>
+            </div>
+            <div id=sh_error class=sh>
+                <p class="err ja">エラーが発生しました。</p>
+                <p class="err en">An error occurred.</p>
+                <p class=ja>しばらく時間を置いてから
+                    <br>再度お試しください。</p>
+                <p class=en>Please try again later.</p>
+            </div>
+        </div>
+        <div id=copy>
+            <p><span class=ja>コピーしました</span><span class=en>Copied</span>
+            </p>
+        </div>
+        <div id=about>
+            <p class="desc ja">描いたイラストが音楽に合わせて踊ります。</p>
+            <p class="desc en">Your illustration dances to the music.</p>
+            <hr>
+            <h2>Wonder of Wonder</h2>
+            <p>daniwell feat. <a class=ja href=https://piapro.net/pages/character>初音ミク</a><a class=en href=https://piapro.net/intl/en_character.html>Hatsune Miku</a>
+            </p>
+            <p class=video><a href="https://www.youtube.com/watch?v=ytWYjoqGdVE" target=_blank>YouTube</a><a href=https://www.nicovideo.jp/watch/sm36754965 target=_blank>Niconico</a>
+            </p>
+            <h3>MUSIC, DESIGN, MODELING & PROGRAMMING</h3>
+            <p><a href="../">daniwell</a> (<a href=https://twitter.com/daniwell_aidn target=_blank>twitter</a>)</p>
+            <h3>SHARE</h3>
+            <p><span id=tw class=btt><svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path fill=#000 d="M21.5,6.917c-0.662,0.294-1.374,0.492-2.121,0.582c0.765-0.458,1.348-1.181,1.625-2.042 c-0.714,0.422-1.505,0.73-2.346,0.895c-0.672-0.719-1.635-1.167-2.695-1.167c-2.385,0-4.137,2.225-3.598,4.535 C9.298,9.564,6.575,8.095,4.754,5.861c-0.968,1.659-0.501,3.831,1.144,4.93c-0.605-0.019-1.174-0.186-1.672-0.461 c-0.04,1.709,1.187,3.31,2.963,3.667c-0.52,0.141-1.089,0.173-1.668,0.063c0.47,1.466,1.836,2.532,3.45,2.563 c-1.556,1.217-3.51,1.762-5.471,1.53c1.635,1.049,3.574,1.66,5.659,1.66c6.859,0,10.732-5.791,10.498-10.986 C20.379,8.31,21.005,7.658,21.5,6.917z"></path></svg></span><span id=fb class=btt><svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path fill=#000 d=M9.25,9h-3v3h3v9h4.5v-9h2.73l0.27-3h-3V7.75c0-0.717,0.144-1,0.838-1h2.162V3h-3.606C10.447,3,9.25,4.188,9.25,6.462V9z></path></svg></span>
+            </p>
+        </div>
+        <div id=list>
+            <div id=scroll_area data-simplebar="" data-simplebar-auto-hide=false>
+                <div id=scroll_con style="width: 95%"></div>
+            </div>
+        </div>
+        <div id=color>
+            <div class=con>
+                <div id=color-picker-container></div>
+                <div><span class=btb id=bt_col_cancel>CANCEL</span><span class=btb id=bt_col_ok>OK</span>
+                </div>
+            </div>
+        </div>

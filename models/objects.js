@@ -8,21 +8,30 @@ const Object = loader.database.define('objects',{
         allowNull: false 
     },
     ObjectType:{
-        type:Sequelize.INTEGER,
+        type:Sequelize.INTEGER, //ball,rec
         allowNull: false 
-    },
-    Size:{
-        type:Sequelize.FLOAT,
-        allowNull: false
     },
     X:{
-        type:Sequelize.FLOAT,
-        allowNull: false 
+        type:Sequelize.FLOAT, 
+        allowNull: false
     },
     Y:{
+        type: Sequelize.FLOAT,
+        allowNull: true 
+    },
+    Width:{
+        type: Sequelize.FLOAT,
+        allowNull: true 
+    },
+    Height:{
+        type: Sequelize.FLOAT,
+        allowNull: true 
+    },
+    Rad:{
         type:Sequelize.FLOAT,
-        allowNull: false 
-    }}
+        allowNull: true
+    }
+    }
     ,{
         freezeTableName: true,
         timestamps: false 
