@@ -1,9 +1,26 @@
 extends layout
 
-block content
-  h1= title
-
-  p test
-  p Welcome to #{title}
-
-  a(href="/making") テスト
+block content 
+    // Navigation
+    
+    header.masthead.text-center.text-white
+      .masthead-content
+        .container
+          h1.masthead-heading.mb-0 2D-simulator
+          a.btn.btn-primary.btn-xl.rounded-pill.mt-5(href='/making') Let's simulation
+      .bg-circle-1.bg-circle
+      .bg-circle-2.bg-circle
+      .bg-circle-3.bg-circle
+      .bg-circle-4.bg-circle
+    section
+      .container
+        .row.align-items-center
+          .col-lg-6.order-lg-2
+            .p-5
+              img.img-fluid.rounded-circle(src='img/scene-example.png', alt='')
+          .col-lg-6.order-lg-1
+            .p-5
+              h2.display-4 For everyone
+              p
+                |you can enjoy simulation.
+    

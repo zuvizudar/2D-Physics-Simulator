@@ -8,10 +8,10 @@ var Events = Matter.Events;
 
 // Matter.js エンジン作成
 var engine = Engine.create();
-var width = 500,
+var width = 700,
     height = 500;
 var render = Render.create({
-  element: document.body,
+  element: document.getElementById("canvas"),
   engine: engine,
   options: {
     width: width,
@@ -29,11 +29,11 @@ var circleA = Bodies.circle(450, 50, 30, {
 
 // isStatic:静的(完全固定) 
 var ground = Bodies.rectangle(width/2, height, width, 60, { isStatic: true }); //x,y,w,h
-var kabe1 = Bodies.rectangle(0, 500, 60, 1000, { isStatic: true });
-var kabe2 = Bodies.rectangle(500, 500, 60, 1000, { isStatic: true });
+var kabeL = Bodies.rectangle(0, height/2, 60, height, { isStatic: true });
+var kabeR = Bodies.rectangle(width, height/2, 60, height, { isStatic: true });
 reduce_friction(circleA, 0)
 var objects =[]
-objects.push(circleA, ground, kabe1, kabe2)
+objects.push(circleA, ground, kabeL, kabeR)
 for(let i in objects){
   fillter_obj(objects[i])
 }
@@ -63,7 +63,7 @@ function start_simulation() {
 function reduce_friction(obj, rate) {
   obj.friction = rate;
   obj.frictionAir = rate;
-  obj.restitution = 1 - rate;
+  obj.restitution =  0.5;
 }
 
 var form = document.createElement('form');
@@ -78,8 +78,11 @@ var fps = 30;
 
 // ボタンを押したときに図形を増やす
 $(document).on('click', '#addRec', function () {
-  addRectangle(400, 200, 80, 80);
+  addRectangle(400, 200, 50, 50);
 });
+function addForm(){
+  console.log(document.body)
+};
 
 $(document).on('click', '#save', function () {
   

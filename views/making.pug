@@ -1,13 +1,61 @@
 extends layout
 
 block content 
-   
     script(src="javascripts/matter.min.js")
     script(src="https://code.jquery.com/jquery-3.4.1.min.js")
     script(src="javascripts/click-test.js")
+    .container
+        
+        h1.my-4
+            | Your Scene 
+            small #12345
+  
+        .row
+            .col-md-8
+                div(id="canvas")
+                script(src="javascripts/matter-test.js")
+            .col-md-4
+                .card
+                    article.card-body
+                        .form
+                        h4.card-title.mb-4.mt-1 Add Form 
+                            .form-group
+                                label(for='exampleFormControlSelect1') Object Type 
+                                select#exampleFormControlSelect1.form-control
+                                    option Circle
+                                    option 長方形
+                                    option 3
+                                    option 4
+                                    option 5
 
-    script(src="javascripts/matter-test.js")
 
-    button(id="addRec") 箱追加
-    button(id="save") 保存
-    button(id="start") 開始
+                            .form-group 
+                                label(for='formControlRange') Size
+                                input#formControlRange.form-control-range(type='range')
+
+                            .form-group
+                                label Color
+                                input.form-control()
+                            .form-group
+                                .form-check 
+                                    input#defaultCheck1.form-check-input(type='checkbox', value='')
+                                    label.form-check-label(for='defaultCheck1')
+                                        | Default checkbox
+
+                            .form-group
+                                button.btn.btn-primary.btn-block(type="submit", onclick="addForm()")  Add                  
+ 
+
+            h3.my-3 Control
+                .col-md
+                    button.btn.btn-outline-primary(id="addRec") 箱追加
+                    button.btn.btn-outline-danger
+                        a(href='/making') リセット
+                                      
+                    button.btn.btn-outline-success(id="save") 保存
+                    button.btn.btn-outline-info(id="start") 開始
+        h3.my-4 Other Scene
+        .row
+            .col-md-3.col-sm-6.mb-4
+                a(href='#')
+                    img.img-fluid(src='img/scene-example.png', alt='')
