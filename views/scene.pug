@@ -2,7 +2,37 @@ extends layout
 
 block content
   h1= title
+  
 
-  p Welcome to  sss 
+block content 
+    script(src="/javascripts/matter.min.js")
+    script(src="https://code.jquery.com/jquery-3.4.1.min.js")
+    script(src="/javascripts/click-test.js")
+    script(src='/dist/js/bootstrap-colorpicker.js')
+    script(src='/javascripts/jquery.minicolors.js')
+    link(rel='stylesheet', href='/css/jquery-minicolors.css')
+    sceneInfo#Info(
+                data-scene=scene,
+                data-objects=objects
+              )
 
-  a(href=`/test/scene/${sceneId}`) hey
+    .container
+        h1.my-4
+            |#{scene.sceneName}
+            small # 12345
+  
+        .row
+            .col-md-8
+                div(id="canvas")
+                script(src="/javascripts/init.js")
+                script(src="/javascripts/view_scene.js")
+
+            h3.my-3 Control
+                .col-md4
+                    button.btn.btn-outline-info(id="start") 開始
+        h3.my-4 Other Scene
+        .row
+            .col-md-3.col-sm-6.mb-4
+                a(href='#')
+                    img.img-fluid(src='/img/scene-example.png', alt='')
+

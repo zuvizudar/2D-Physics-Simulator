@@ -1,33 +1,10 @@
-
-var Engine = Matter.Engine;
-var World = Matter.World;
-var Bodies = Matter.Bodies;
-var Render = Matter.Render;
-var Mouse = Matter.Mouse;
-var Events = Matter.Events;
-
-// Matter.js エンジン作成
-var engine = Engine.create();
-var width = 700,
-    height = 500;
-var render = Render.create({
-  element: document.getElementById("canvas"),
-  engine: engine,
-  options: {
-    width: width,
-    height: height,
-    wireframes: false
-  }
-});
-
+//初期オブジェクト
 var circleA = Bodies.circle(450, 50, 30, {
   render: {
     fillStyle: 'red'
   },
   inertia:Infinity
 });
-
-// isStatic:静的(完全固定) 
 var ground = Bodies.rectangle(width/2, height, width, 60, { isStatic: true }); //x,y,w,h
 var kabeL = Bodies.rectangle(0, height/2, 60, height, { isStatic: true });
 var kabeR = Bodies.rectangle(width, height/2, 60, height, { isStatic: true });
@@ -38,73 +15,94 @@ for(let i in objects){
   fillter_obj(objects[i])
 }
 World.add(engine.world, objects);
-engine.world.gravity.y = 0;
-var mousedrag = Matter.MouseConstraint.create(engine, {
-  mouse: Mouse.create(render.canvas),
-  constraint: {
-    stiffness: 1,
-    render: {
-      visible: false
-    }
-  }
-});
-mousedrag.collisionFilter={
-  'group':1,
-  'category':1,
-  'mask':2,
-}
 
-World.add(engine.world, mousedrag);
-render.mouse = mousedrag
-function start_simulation() {
-  engine.world.grabity.y = 1;
-}
-//boxA.restitution=0.001;
+
+
+
+
+// ボタンを押したときに図形を増やす
+$(document).on('click', '#addRec', function () {
+  addRectangle(400, 200, 50, 50);
+  console.log(objects[4])
+
+});
+
+$(document).on('click', '#addPole', function () {
+  var obj = Composites.newtonsCradle(400,200,1,20,100);
+  World.add(engine.world,obj);
+  //objects.push(obj);
+});
+
+function addForm(){
+  console.log(document.forms)
+};
+
 function reduce_friction(obj, rate) {
   obj.friction = rate;
   obj.frictionAir = rate;
   obj.restitution =  0.5;
 }
+function addStack(numX,numY){
+  var stackA = Composites.stack(100, 100, numX, numY, 0, 0, function(x, y) {
+    return Bodies.rectangle(x, y, 15, 15); 
+  });
+  World.add(engine.world,stackA);
+  console.log(stackA)
+  stackA.bodies.map((c)=>{
+    objects.push(c);
+  })
+}
+function addBall(x, y, rad) {
+  var ball = Bodies.circle(x, y, rad);
+  World.add(engine.world, ball);
+  objects.push(ball);
+}
 
-var form = document.createElement('form');
-var request = document.createElement('input');
+function addRectangle(x, y, width, height) {
+  let rectangle = Bodies.rectangle(x, y, width, height);
+  rectangle.collisionFilter.group = 1;
+  if(engine.world.gravity.y ==0)
+    fillter_obj(rectangle);
+  World.add(engine.world, rectangle);
+  objects.push(rectangle);
+}
 
-Render.run(render);
-(function run() {
-  window.requestAnimationFrame(run);
-  Engine.update(engine, 1000 / 60);
-})();
-var fps = 30;
+function fillter_obj(obj){
+  obj.collisionFilter={
+    'group':0,
+    'category':2,
+    'mask':1,
+  }
+}
 
-// ボタンを押したときに図形を増やす
-$(document).on('click', '#addRec', function () {
-  addRectangle(400, 200, 50, 50);
-});
-function addForm(){
-  console.log(document.forms)
-};
 
 $(document).on('click', '#save', function () {
   
   var data = [];
   for (let i in objects) {
-    let obj_type = 0;
-    if (objects[i].type === "Rectangle Body") obj_type = 1;
-    else if (objects[i].type === "Circle Body") obj_type = 2
+    var obj_type=0,data1=0,data2=0,data3=0;
+    if (objects[i].label === "Circle Body") {
+      obj_type = 1;
+      data1 = objects[i].circleRadius;
+    }
+    else if (objects[i].label === "Rectangle Body") {
+      obj_type = 2;
+      data1 = objects[i].bounds.max.x - objects[i].bounds.min.x;
+      data2 = objects[i].bounds.max.y - objects[i].bounds.min.y;
+    }
     let tmp = {
       "type": obj_type,
       "x": objects[i].position.x,
       "y": objects[i].position.y,
-      "rad": 0,
-      "width": 80,
-      "height": 80,
-      "color": objects[i].render.fillStyle
+      "color": objects[i].render.fillStyle,
+      "isStatic": objects[i].isStatic,
+      "data1": data1,
+      "data2": data2
     }
     data.push(tmp);
   }
   
-  
-  var hostUrl = "http://localhost:8000/test/";
+  var hostUrl = "http://localhost:8000/making/save";
 
   $.ajax({
     url: hostUrl,
@@ -117,7 +115,7 @@ $(document).on('click', '#save', function () {
   ).then(
     (data)=>{
       console.log("ok")
-      window.location.href = "http://localhost:8000/test/scene/"+ data ;
+      window.location.href = "http://localhost:8000/scenes/"+ data ;
     },
     (XMLHttpRequest, textStatus, errorThrown)=>{
       console.log("error");
@@ -135,25 +133,3 @@ $(document).on('click', '#start', function () {
   }
   engine.world.gravity.y = 1
 });
-
-function addBall(x, y, rad) {
-  var ball = Bodies.circle(x, y, rad);
-  World.add(engine.world, ball);
-  objects.push(ball);
-}
-
-function addRectangle(x, y, width, height) {
-  let rectangle = Bodies.rectangle(x, y, width, height);
-  rectangle.collisionFilter.group = 1;
-  if(engine.world.gravity.y ==0)
-    fillter_obj(rectangle);
-  World.add(engine.world, rectangle);
-  objects.push(rectangle);
-}
-function fillter_obj(obj){
-  obj.collisionFilter={
-    'group':0,
-    'category':2,
-    'mask':1,
-  }
-}

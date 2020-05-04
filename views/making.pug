@@ -1,19 +1,22 @@
 extends layout
 
 block content 
-    script(src="javascripts/matter.min.js")
+    script(src="/javascripts/matter.min.js")
     script(src="https://code.jquery.com/jquery-3.4.1.min.js")
-    script(src="javascripts/click-test.js")
+    script(src="/javascripts/click-test.js")
+    script(src='/dist/js/bootstrap-colorpicker.js')
+    script(src='/javascripts/jquery.minicolors.js')
+    link(rel='stylesheet', href='/css/jquery-minicolors.css')
+    
     .container
-        
         h1.my-4
             | Your Scene 
             small #12345
-  
         .row
             .col-md-8
                 div(id="canvas")
-                script(src="javascripts/matter-test.js")
+                script(src="/javascripts/init.js")
+                script(src="/javascripts/matter-test.js")
             .col-md-4
                 .card
                     article.card-body
@@ -28,18 +31,25 @@ block content
                                     option 5
                             .form-group
                                 label Size 
-                                input#rangeForm.form-control-range(type='range')
+                                input#rangeForm.form-control-range.custom-range(type='range' min="0" max="100") 
+                            .form-group
+                                label.col-xs-4.control-label Color
+                                .col-xs-8
+                                    input.form-control.colorpicker(type='text', maxlength='7')
+
                             .form-check
                                 input#checkForm.form-check-input(type='checkbox')
                                 label.form-check-label(for='exampleCheck1') Static 
                             button.btn.btn-primary(type='submit') Add
 
             h3.my-3 Control
-                .col-md
-                    button.btn.btn-outline-primary(id="addRec") 箱追加
-                    button.btn.btn-outline-danger
-                        a(href='/making') リセット
-                                      
+                .col-md4
+                    button.btn.btn-outline-primary(id="addRec") 箱
+                    button.btn.btn-outline-primary(id="addPole") 板
+                    button.btn.btn-outline-primary(id="addPole") 振り子
+                    button.btn.btn-outline-danger(onclick="window.location.reload()")
+                        |リセット       
+                 
                     button.btn.btn-outline-success(id="save") 保存
                     button.btn.btn-outline-info(id="start") 開始
         h3.my-4 Other Scene
@@ -47,3 +57,12 @@ block content
             .col-md-3.col-sm-6.mb-4
                 a(href='#')
                     img.img-fluid(src='img/scene-example.png', alt='')
+        script.
+            $('.colorpicker').each( function() {
+                $(this).minicolors({
+                    format: $(this).attr('data-format') || 'hex',
+                    theme: 'bootstrap'
+                });
+            });
+
+

@@ -22,23 +22,27 @@ const Object = loader.database.define('objects',{
     },
     Y:{
         type: Sequelize.FLOAT,
-        allowNull: true 
-    },
-    Width:{
-        type: Sequelize.FLOAT,
-        allowNull: true 
-    },
-    Height:{
-        type: Sequelize.FLOAT,
-        allowNull: true 
-    },
-    Rad:{
-        type:Sequelize.FLOAT,
-        allowNull: true
+        allowNull: false  
     },
     Color:{
         type:Sequelize.STRING,
         allowNull: false
+    },
+    isStatic:{
+        type: Sequelize.BOOLEAN,
+        allowNull: true 
+    },
+    Data1:{
+        type: Sequelize.FLOAT,
+        allowNull: true 
+    },
+    Data2:{
+        type:Sequelize.FLOAT,
+        allowNull: true
+    },
+    Data3:{
+        type:Sequelize.FLOAT,
+        allowNull: true
     }
     }
     ,{

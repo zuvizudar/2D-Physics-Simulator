@@ -19,9 +19,8 @@ User.sync().then(()=>{
 })
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var makingRouter = require('./routes/making');
-var testRouter = require('./routes/test');
+var sceneRouter = require('./routes/scenes');
 var app = express();
 app.use(helmet());
 
@@ -37,9 +36,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/making',makingRouter);
-app.use('/test',testRouter);
+app.use('/scenes',sceneRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
