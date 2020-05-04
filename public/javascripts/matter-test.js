@@ -81,7 +81,7 @@ $(document).on('click', '#addRec', function () {
   addRectangle(400, 200, 50, 50);
 });
 function addForm(){
-  console.log(document.body)
+  console.log(document.forms)
 };
 
 $(document).on('click', '#save', function () {

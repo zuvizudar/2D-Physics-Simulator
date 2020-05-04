@@ -17,34 +17,22 @@ block content
             .col-md-4
                 .card
                     article.card-body
-                        .form
-                        h4.card-title.mb-4.mt-1 Add Form 
+                        form(onsubmit="addForm();return false;")
                             .form-group
-                                label(for='exampleFormControlSelect1') Object Type 
-                                select#exampleFormControlSelect1.form-control
-                                    option Circle
-                                    option 長方形
-                                    option 3
-                                    option 4
+                                label Object Type 
+                                select#selectForm.form-control
+                                    option Circle 
+                                    option Rec 
+                                    option 3 
+                                    option 4 
                                     option 5
-
-
-                            .form-group 
-                                label(for='formControlRange') Size
-                                input#formControlRange.form-control-range(type='range')
-
                             .form-group
-                                label Color
-                                input.form-control()
-                            .form-group
-                                .form-check 
-                                    input#defaultCheck1.form-check-input(type='checkbox', value='')
-                                    label.form-check-label(for='defaultCheck1')
-                                        | Default checkbox
-
-                            .form-group
-                                button.btn.btn-primary.btn-block(type="submit", onclick="addForm()")  Add                  
- 
+                                label Size 
+                                input#rangeForm.form-control-range(type='range')
+                            .form-check
+                                input#checkForm.form-check-input(type='checkbox')
+                                label.form-check-label(for='exampleCheck1') Static 
+                            button.btn.btn-primary(type='submit') Add
 
             h3.my-3 Control
                 .col-md
