@@ -7,6 +7,9 @@ var Mouse = Matter.Mouse;
 var Events = Matter.Events;
 var Composites = Matter.Composites;
 
+// 全てのオブジェクトの配列
+var objects =[];
+
 // Matter.js エンジン作成
 var engine = Engine.create();
 var width = 700,
@@ -36,7 +39,7 @@ var mousedrag = Matter.MouseConstraint.create(engine, {
     'category':1,
     'mask':2,
   }
-  
+  objects.push(mousedrag);
   World.add(engine.world, mousedrag);
   render.mouse = mousedrag
 

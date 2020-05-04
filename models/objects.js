@@ -13,7 +13,7 @@ const Object = loader.database.define('objects',{
         allowNull: false 
     },
     ObjectType:{
-        type:Sequelize.INTEGER, //ball,rec
+        type:Sequelize.STRING, 
         allowNull: false 
     },
     X:{

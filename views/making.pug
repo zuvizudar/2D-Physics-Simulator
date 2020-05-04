@@ -15,22 +15,29 @@ block content
         .row
             .col-md-8
                 div(id="canvas")
+                script(src="/javascripts/lib.js")
                 script(src="/javascripts/init.js")
-                script(src="/javascripts/matter-test.js")
+                script(src="/javascripts/sceneMaking.js")
             .col-md-4
                 .card
                     article.card-body
-                        form(onsubmit="addForm();return false;")
+                        form(onsubmit="clickForm();return false;" , name="myform")
                             .form-group
                                 label Object Type 
                                 select#selectForm.form-control
-                                    option Circle 
-                                    option Rec 
-                                    option 3 
-                                    option 4 
+                                    option ● 
+                                    option ■
+                                    option ▲ 
+                                    option ー 
                                     option 5
                             .form-group
                                 label Size 
+                                input#rangeForm.form-control-range.custom-range(type='range' min="0" max="100") 
+                            .form-group
+                                label  密度
+                                input#rangeForm.form-control-range.custom-range(type='range' min="0" max="100") 
+                            .form-group
+                                label  反発
                                 input#rangeForm.form-control-range.custom-range(type='range' min="0" max="100") 
                             .form-group
                                 label.col-xs-4.control-label Color
@@ -38,20 +45,25 @@ block content
                                     input.form-control.colorpicker(type='text', maxlength='7')
 
                             .form-check
-                                input#checkForm.form-check-input(type='checkbox')
-                                label.form-check-label(for='exampleCheck1') Static 
-                            button.btn.btn-primary(type='submit') Add
-
-            h3.my-3 Control
-                .col-md4
-                    button.btn.btn-outline-primary(id="addRec") 箱
-                    button.btn.btn-outline-primary(id="addPole") 板
-                    button.btn.btn-outline-primary(id="addPole") 振り子
-                    button.btn.btn-outline-danger(onclick="window.location.reload()")
-                        |リセット       
-                 
-                    button.btn.btn-outline-success(id="save") 保存
-                    button.btn.btn-outline-info(id="start") 開始
+                                input.form-check-input(type='checkbox')
+                                label Static 
+                            .col-md
+                                button.btn.btn-primary(type='submit' onclick="myform.key='add'") Add
+                                button.btn.btn-secondary(type='submit' onclick="myform.key='update'" ) Update
+        
+        h3.mx-3 Control
+        .row 
+            .col-md-4
+                button.btn.btn-outline-primary(id="addRec") ■
+                button.btn.btn-outline-primary(id="addBall") ●
+                button.btn.btn-outline-primary(id="addTri") ▲
+                button.btn.btn-outline-primary(id="addBar") ー
+            .col-md-4                    
+                button.btn.btn-outline-danger(onclick="window.location.reload()")
+                    |リセット                        
+                button.btn.btn-outline-info(id="start") 開始
+            .col-md-4 
+                button.btn.btn-outline-success(id="save") 保存                    
         h3.my-4 Other Scene
         .row
             .col-md-3.col-sm-6.mb-4
