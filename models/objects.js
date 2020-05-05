@@ -32,6 +32,18 @@ const Object = loader.database.define('objects',{
         type: Sequelize.BOOLEAN,
         allowNull: true 
     },
+    Angle:{
+        type: Sequelize.FLOAT,
+        allowNull: false  
+    },
+    Density:{
+        type: Sequelize.FLOAT,
+        allowNull: false 
+    },
+    Restitution:{
+        type: Sequelize.FLOAT,
+        allowNull: false
+    },
     Data1:{
         type: Sequelize.FLOAT,
         allowNull: true 

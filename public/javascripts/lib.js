@@ -10,6 +10,7 @@ function addStack(numX,numY){
   }
 
 function addCircle(x, y, color,rad) {
+    
     var ball = Bodies.circle(x, y, rad,{
         render:{
             fillStyle: color 
@@ -21,6 +22,7 @@ function addCircle(x, y, color,rad) {
     }
     World.add(engine.world, ball);
     objects.push(ball);
+    
     return ball;
   }
   
@@ -37,6 +39,11 @@ function addRectangle(x, y,color,width, height) {
     objects.push(rectangle);
     return rectangle;
   }
+function addBar(x,y,color,length){
+    var bar = addRectangle(x,y,color,length,10);
+    bar.label = "Bar Body"
+    return bar;
+}
 function addPolygon(x,y,color,sides,rad){
     var polygon = Bodies.polygon(x,y,sides,rad,{
             render:{
@@ -48,18 +55,33 @@ function addPolygon(x,y,color,sides,rad){
         attachFilter(polygon);
     World.add(engine.world,polygon);
     objects.push(polygon);
+    polygon.rad = rad;
     return polygon;
-}  
-function createObjct(type,x,y,color,isStatic,data1,data2){
+}
+function addTriangle(x,y,color,rad){
+    var triangle = addPolygon(x,y,color,3,rad);
+    triangle.label = "Triangle Body";
+    return triangle;
+}
+
+function createObjct(type,x,y,color,isStatic,angle,density,restitution,data1,data2){
     var obj;
     if(type === "Circle Body"){
         obj = addCircle(x,y,color,data1);
     }
-    if(type === "Rectangle Body"){
+    else if(type === "Rectangle Body"){
         obj = addRectangle(x,y,color,data1,data2);
     }
-    console.log(obj)
-    obj.isStatic = isStatic;
+    else if(type === "Triangle Body"){
+        obj = addTriangle(x,y,color,data1);
+    }
+    else if(type === "Bar Body"){
+        obj = addBar(x,y,color,data1);
+    }
+    Matter.Body.setDensity(obj,density);
+    Matter.Body.setStatic(obj,isStatic);
+    Matter.Body.setAngle(obj,angle);
+    obj.restitution = restitution;
     return obj;
 }
 
@@ -69,7 +91,7 @@ function attachFilter(obj){ //マウスのみ接触するフィルター
       'category':2,
       'mask':1,
     }
-    obj.frictionAir = 1;
+    obj.frictionAir = 1; //動かないように
 }
 function reduce_friction(obj, rate) {
     obj.restitution =  1-1*rate;
@@ -83,3 +105,16 @@ $(document).on('click', '#start', function () {
     }
     engine.world.gravity.y = 1
 });
+
+$(document).on('click', '#stop', function () {
+  
+    for(let i = 1;i<objects.length;i++){
+      attachFilter(objects[i]);
+    }
+    engine.world.gravity.y = 0;
+});
+
+function roundFloat( number, n ) {
+    var _pow = Math.pow( 10 , n );
+    return Math.round( number * _pow ) / _pow;
+  }

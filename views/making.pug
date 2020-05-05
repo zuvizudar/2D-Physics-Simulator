@@ -3,14 +3,13 @@ extends layout
 block content 
     script(src="/javascripts/matter.min.js")
     script(src="https://code.jquery.com/jquery-3.4.1.min.js")
-    script(src="/javascripts/click-test.js")
     script(src='/dist/js/bootstrap-colorpicker.js')
     script(src='/javascripts/jquery.minicolors.js')
     link(rel='stylesheet', href='/css/jquery-minicolors.css')
     
     .container
         h1.my-4
-            | Your Scene 
+            | New Scene 
             small #12345
         .row
             .col-md-8
@@ -25,11 +24,17 @@ block content
                             .form-group
                                 label Object Type 
                                 select#selectForm.form-control
-                                    option ● 
-                                    option ■
-                                    option ▲ 
-                                    option ー 
+                                    option(value='Circle Body') ● 
+                                    option(value='Rectangle Body') ■
+                                    option(value='Triangle Body') ▲ 
+                                    option(value='Bar Body') ー 
                                     option 5
+                            .form-group 
+                                .col
+                                    label X 
+                                        input(type='text')
+                                    label Y 
+                                        input(type='text')
                             .form-group
                                 label Size 
                                 input#rangeForm.form-control-range.custom-range(type='range' min="0" max="100") 
@@ -48,20 +53,22 @@ block content
                                 input.form-check-input(type='checkbox')
                                 label Static 
                             .col-md
-                                button.btn.btn-primary(type='submit' onclick="myform.key='add'") Add
-                                button.btn.btn-secondary(type='submit' onclick="myform.key='update'" ) Update
+                                button.btn.btn-primary(type='submit' accesskey="a" onclick="myform.key='add'") Add(a)
+                                button.btn.btn-secondary(type='submit' accesskey="q" onclick="myform.key='update'" ) Update
         
         h3.mx-3 Control
         .row 
             .col-md-4
                 button.btn.btn-outline-primary(id="addRec") ■
-                button.btn.btn-outline-primary(id="addBall") ●
+                button.btn.btn-outline-primary(id="addCircle") ●
                 button.btn.btn-outline-primary(id="addTri") ▲
                 button.btn.btn-outline-primary(id="addBar") ー
+                button.btn.btn-outline-dark(id="addConstraint") 結合
             .col-md-4                    
+                button.btn.btn-outline-info(id="start") 開始
+                button.btn.btn-outline-warning(id="stop") 停止
                 button.btn.btn-outline-danger(onclick="window.location.reload()")
                     |リセット                        
-                button.btn.btn-outline-info(id="start") 開始
             .col-md-4 
                 button.btn.btn-outline-success(id="save") 保存                    
         h3.my-4 Other Scene

@@ -34,6 +34,9 @@ router.post('/save', (req, res, next) =>{
        Y: c.y,
        Color: c.color,
        isStatic: c.isStatic,
+       Angle:c.angle,
+       Density:c.density,
+       Restitution:c.restitution,
        Data1: c.data1,
        Data2: c.data2,
       }

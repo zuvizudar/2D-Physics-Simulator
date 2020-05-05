@@ -4,6 +4,7 @@ var World = Matter.World;
 var Bodies = Matter.Bodies;
 var Render = Matter.Render;
 var Mouse = Matter.Mouse;
+var MouseConstraint = Matter.MouseConstraint;
 var Events = Matter.Events;
 var Composites = Matter.Composites;
 
@@ -14,6 +15,8 @@ var objects =[];
 var engine = Engine.create();
 var width = 700,
     height = 500;
+var standardRad = width/20,
+    standardSide = width/10;
 var render = Render.create({
   element: document.getElementById("canvas"),
   engine: engine,
@@ -25,7 +28,7 @@ var render = Render.create({
 });
 
 //マウス
-var mousedrag = Matter.MouseConstraint.create(engine, {
+var mousedrag = MouseConstraint.create(engine, {
     mouse: Mouse.create(render.canvas),
     constraint: {
       stiffness: 1,
