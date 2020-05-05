@@ -1,26 +1,28 @@
 extends layout
 
 block content
-  h1= title
-  
+    h1= title
+
 
 block content 
+    link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+
     script(src="/javascripts/matter.min.js")
     script(src="https://code.jquery.com/jquery-3.4.1.min.js")
     script(src="/javascripts/click-test.js")
     script(src='/dist/js/bootstrap-colorpicker.js')
     script(src='/javascripts/jquery.minicolors.js')
-    link(rel='stylesheet', href='/css/jquery-minicolors.css')
+    link(rel='stylesheet' href='/css/jquery-minicolors.css')
     sceneInfo#Info(
-                data-scene=scene,
-                data-objects=objects
-              )
+        data-scene=scene,
+        data-objects=objects
+)
 
     .container
         h1.my-4
             |#{scene.sceneName}
             small # 12345
-  
+
         .row
             .col-md-8
                 div(id="canvas")
@@ -29,11 +31,30 @@ block content
                 script(src="/javascripts/view_scene.js")
 
             h3.my-3 Control
-                .col-md4
+                .col-md-4.my-4
                     button.btn.btn-outline-info(id="start") 開始
+                .card.my-4.h-75
+                    article.card-body 
+                        .h1 Hello
+                        .body 
+                            small This scene is made by me
+                            
+        .row 
+            .col-md-8 
+            .col-md-4 
+                h3 Share 
+        .row 
+            .col-md-8 
+            .col-md-4 
+                .social
+                    a.link.twitter(href=`https://twitter.com/share?url=http://localhost:8000/scenes/${scene.sceneId}&text=hey %23aaa%0abbbb %0a` target="_blank")
+                        span.fa.fa-twitter
+                    a.link.facebook(href='https://facebook.com/ondrej.p.barta', target='_parent')
+                        span.fa.fa-facebook-square
+                    
+
         h3.my-4 Other Scene
         .row
             .col-md-3.col-sm-6.mb-4
                 a(href='#')
-                    img.img-fluid(src='/img/scene-example.png', alt='')
-
+                    img.img-fluid(src='/img/scene-example.png' alt='')

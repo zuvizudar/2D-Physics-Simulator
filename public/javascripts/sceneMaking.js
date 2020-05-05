@@ -82,7 +82,7 @@ function clickForm(){
 $(document).on('click', '#save', function () {
   
   var data = [];
-  for (let i in objects) {
+  for (let i = 1; i<objects.length;i++) {
     var obj_type=0,data1=0,data2=0,data3=0;
     if (objects[i].label === "Circle Body") {
       data1 = objects[i].circleRadius;

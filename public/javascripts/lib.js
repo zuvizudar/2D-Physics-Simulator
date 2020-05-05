@@ -59,7 +59,7 @@ function createObjct(type,x,y,color,isStatic,data1,data2){
         obj = addRectangle(x,y,color,data1,data2);
     }
     console.log(obj)
-    //obj.isStatic = isStatic;
+    obj.isStatic = isStatic;
     return obj;
 }
 
