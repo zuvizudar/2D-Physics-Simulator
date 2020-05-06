@@ -8,9 +8,14 @@ block content
     link(rel='stylesheet', href='/css/jquery-minicolors.css')
     
     .container
-        h1.my-4
-            | New Scene 
-            small #12345
+        .row
+            .col-md-8
+                h1.my-4
+                    | New Scene 
+                    small #12345 
+            .col-md-4 
+                h3.mt-5
+                    | Control
         .row
             .col-md-8
                 div(id="canvas")
@@ -25,44 +30,44 @@ block content
                                 label Object Type 
                                 select#selectForm.form-control
                                     option(value='Circle Body') ● 
-                                    option(value='Rectangle Body') ■
+                                    option(value='Square Body') ■
                                     option(value='Triangle Body') ▲ 
                                     option(value='Bar Body') ー 
                                     option 5
-                            .form-group 
-                                .col
-                                    label X 
-                                        input(type='text')
-                                    label Y 
-                                        input(type='text')
-                            .form-group
-                                label Size 
-                                input#rangeForm.form-control-range.custom-range(type='range' min="0" max="100") 
-                            .form-group
-                                label  密度
-                                input#rangeForm.form-control-range.custom-range(type='range' min="0" max="100") 
-                            .form-group
-                                label  反発
-                                input#rangeForm.form-control-range.custom-range(type='range' min="0" max="100") 
+                            .form-inline
+                                .form-group
+                                    label.col-sm-3 X 
+                                        input.col-sm-8(type='text' value = "300")
+                                    label.col-sm-3 Y 
+                                        input.col-sm-8(type='text' value = "300")
+                            .form-group.row
+                                label.col-sm-3 Angle
+                                input#rangeForm.form-control-range.custom-range.col-sm-8(type='range' min="-157" max="157" onchange ="changeControl_Angle()")             
+                            .form-group.row
+                                label.col-sm-3 Size
+                                input#rangeForm.form-control-range.custom-range.col-sm-8(type='range' min="50" max="200" value="100" onchange ="changeControl_Size()") 
+                            .form-group.row
+                                label.col-sm-3  密度
+                                input#rangeForm.form-control-range.custom-range.col-sm-8(type='range' min="1" max="100" onchange ="changeControl_Density()") 
+                            .form-group.row
+                                label.col-sm-3  反発
+                                input#rangeForm.form-control-range.custom-range.col-sm-8(type='range' min="0" max="100" onchange ="changeControl_Restitution()") 
                             .form-group
                                 label.col-xs-4.control-label Color
                                 .col-xs-8
-                                    input.form-control.colorpicker(type='text', maxlength='7')
+                                    input.form-control.colorpicker(type='text', maxlength='7' onchange ="changeControl_Color()")
 
                             .form-check
-                                input.form-check-input(type='checkbox')
+                                input.form-check-input(type='checkbox' onchange ="changeControl_Static()" accesskey="c")
                                 label Static 
-                            .col-md
-                                button.btn.btn-primary(type='submit' accesskey="a" onclick="myform.key='add'") Add(a)
-                                button.btn.btn-secondary(type='submit' accesskey="q" onclick="myform.key='update'" ) Update
         
-        h3.mx-3 Control
+        h3.mx-3.my-2 Add
         .row 
             .col-md-4
-                button.btn.btn-outline-primary(id="addRec") ■
-                button.btn.btn-outline-primary(id="addCircle") ●
-                button.btn.btn-outline-primary(id="addTri") ▲
-                button.btn.btn-outline-primary(id="addBar") ー
+                button.btn.btn-outline-primary(id="addSquare" accesskey="q") ■
+                button.btn.btn-outline-primary(id="addCircle" accesskey="w") ●
+                button.btn.btn-outline-primary(id="addTri" accesskey="a") ▲
+                button.btn.btn-outline-primary(id="addBar" accesskey="s") ー
                 button.btn.btn-outline-dark(id="addConstraint") 結合
             .col-md-4                    
                 button.btn.btn-outline-info(id="start") 開始

@@ -49,8 +49,9 @@ var mousedrag = MouseConstraint.create(engine, {
   Render.run(render);
 
   engine.world.gravity.y = 0;
+  var fps = 30;
   (function run() {
     window.requestAnimationFrame(run);
-    Engine.update(engine, 1000 / 60);
+    Engine.update(engine);
   })();
-  var fps = 30;
+  

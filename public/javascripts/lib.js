@@ -37,8 +37,15 @@ function addRectangle(x, y,color,width, height) {
       attachFilter(rectangle);
     World.add(engine.world, rectangle);
     objects.push(rectangle);
+    rectangle.width = width;
+    rectangle.height = height;
     return rectangle;
   }
+function addSquare(x,y,color,length){
+    var square = addRectangle(x,y,color,length,length);
+    square.label = "Square Body"
+    return square;
+}
 function addBar(x,y,color,length){
     var bar = addRectangle(x,y,color,length,10);
     bar.label = "Bar Body"
@@ -64,13 +71,17 @@ function addTriangle(x,y,color,rad){
     return triangle;
 }
 
-function createObjct(type,x,y,color,isStatic,angle,density,restitution,data1,data2){
+function createObjct(type,x,y,color,isStatic,angle,density,restitution,data1,data2,scale){
+    //scaleでの実装ならdata1,data2要らないかも、、
     var obj;
     if(type === "Circle Body"){
         obj = addCircle(x,y,color,data1);
     }
-    else if(type === "Rectangle Body"){
+    else if(type === "Rectangle Body" ){
         obj = addRectangle(x,y,color,data1,data2);
+    }
+    else if(type ==="Square Body"){
+        obj = addSquare(x,y,color,data1);
     }
     else if(type === "Triangle Body"){
         obj = addTriangle(x,y,color,data1);
@@ -82,6 +93,8 @@ function createObjct(type,x,y,color,isStatic,angle,density,restitution,data1,dat
     Matter.Body.setStatic(obj,isStatic);
     Matter.Body.setAngle(obj,angle);
     obj.restitution = restitution;
+    obj.scale = scale; //init
+    prevClickObj = obj.id -1;
     return obj;
 }
 
