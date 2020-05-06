@@ -17,6 +17,9 @@ var width = 700,
     height = 500;
 var standardRad = width/20,
     standardSide = width/10;
+
+var prevClickObj = 3,prevClickObj2 = 3;//error出る
+var adjustCnt = 2;// id とobjにズレが生じる。(1-index,mouse,constraint,delete)
 var render = Render.create({
   element: document.getElementById("canvas"),
   engine: engine,
@@ -42,7 +45,6 @@ var mousedrag = MouseConstraint.create(engine, {
     'category':1,
     'mask':2,
   }
-  objects.push(mousedrag);
   World.add(engine.world, mousedrag);
   render.mouse = mousedrag
 

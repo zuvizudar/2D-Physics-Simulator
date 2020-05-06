@@ -11,20 +11,15 @@ function fieldInit() {
   var ground = addRectangle(width / 2, height, '#2e2b44', width, 60);
   var kabeL = addRectangle(0, height / 2, '#2e2b44', 60, height);
   var kabeR = addRectangle(width, height / 2, '#2e2b44', 60, height);
-  for (let i = 1; i < objects.length; i++) {
+  for (let i = 0; i < objects.length; i++) {
     Matter.Body.setStatic(objects[i], true);
   }
 }
-
-
-//reduce_friction(circleA, 0)
-var prevClickObj = 0;
 Events.on(mousedrag, "mousedown", function (e) { //touchした座標をcontrolに反映
   document.forms.myform.elements[1].value = Math.floor(e.mouse.position.x);
   document.forms.myform.elements[2].value = Math.floor(e.mouse.position.y);
 })
 Events.on(mousedrag, "startdrag", function (e) {   // dragしたobjをcontrolに反映
-  console.log(mousedrag.body)
   document.forms.myform.elements[0].value = mousedrag.body.label;
   document.forms.myform.elements[3].value = mousedrag.body.angle * 100; 
   document.forms.myform.elements[4].value = mousedrag.body.scale*100; 
@@ -32,7 +27,8 @@ Events.on(mousedrag, "startdrag", function (e) {   // dragしたobjをcontrolに
   document.forms.myform.elements[6].value = mousedrag.body.restitution * 100; // 反発
   document.forms.myform.elements[7].value = mousedrag.body.render.fillStyle;
   document.forms.myform.elements[8].checked = mousedrag.body.isStatic;
-  prevClickObj = mousedrag.body.id - 1; //id は1-based index
+  prevClickObj2 = prevClickObj;
+  prevClickObj = mousedrag.body.id - adjustCnt; 
   if (e.body.label == "ne") {
     console.log(e);
   }
@@ -47,20 +43,17 @@ function changeControl_Size() {
   var nextScale = document.forms.myform.elements[4].value / 100;
   Matter.Body.scale(obj,1/obj.scale,1/obj.scale); //一回scale=1に戻す
   Matter.Body.scale(obj, nextScale,nextScale);
-  console.log(nextScale);
   switch (obj.label) {
     case 'Circle Body':
       //obj.circleRadius*=nextScale; //scaleでやってくれる
       break;
     case 'Square Body':
+    case 'Bar Body':
       obj.width*=nextScale;
       obj.height*=nextScale;
       break;
     case 'Triangle Body':
       obj.rad*=nextScale;
-      break;
-    case 'Bar Body':
-      obj.width*=nextScale;
       break;
   }
   obj.scale=nextScale;
@@ -90,11 +83,13 @@ $(document).on('click', '#addCircle', function () {
   control2obj();
 });
 $(document).on('click', '#addConstraint', function () {
+  console.log(prevClickObj,prevClickObj2)
+  adjustCnt++;
   World.add(engine.world,
     Matter.Constraint.create({
-      bodyA: objects[4],
-      bodyB: objects[5],
-      isStatic: true,
+      bodyA: objects[prevClickObj],
+      bodyB: objects[prevClickObj2],
+      stiffness:1,
     })
   )
 });
@@ -107,6 +102,15 @@ $(document).on('click', '#addSquare', function () {
 $(document).on('click', '#addBar', function () {
   document.forms.myform.elements[0].value = "Bar Body";
   control2obj();
+});
+$(document).on('click', '#Delete', function () {
+  Matter.World.remove(engine.world,objects[prevClickObj]);
+  for(let i = prevClickObj;i<objects.length-1;i++){
+    objects[i]=objects[i+1];
+  }
+  prevClickObj--;
+  adjustCnt++;
+  objects.pop();
 });
 
 function Control_Size2data(type,rangeValue){ //[50,200] TODO: 調整
@@ -164,7 +168,7 @@ function control2obj() {
 $(document).on('click', '#save', function () {
 
   var data = [];
-  for (let i = 1; i < objects.length; i++) { //mouseがobjects[0]
+  for (let i = 0; i < objects.length; i++) { //mouseがobjects[0]
     var {data1,data2} = obj2data(objects[i]);
 
     let tmp = {

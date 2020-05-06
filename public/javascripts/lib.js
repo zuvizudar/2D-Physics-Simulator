@@ -47,7 +47,7 @@ function addSquare(x,y,color,length){
     return square;
 }
 function addBar(x,y,color,length){
-    var bar = addRectangle(x,y,color,length,10);
+    var bar = addRectangle(x,y,color,length,length/20);
     bar.label = "Bar Body"
     return bar;
 }
@@ -94,7 +94,9 @@ function createObjct(type,x,y,color,isStatic,angle,density,restitution,data1,dat
     Matter.Body.setAngle(obj,angle);
     obj.restitution = restitution;
     obj.scale = scale; //init
-    prevClickObj = obj.id -1;
+    obj.friction = 0;
+    prevClickObj2 = prevClickObj;
+    prevClickObj = obj.id - adjustCnt;
     return obj;
 }
 
@@ -121,7 +123,7 @@ $(document).on('click', '#start', function () {
 
 $(document).on('click', '#stop', function () {
   
-    for(let i = 1;i<objects.length;i++){
+    for(let i = 0;i<objects.length;i++){
       attachFilter(objects[i]);
     }
     engine.world.gravity.y = 0;
