@@ -8,39 +8,53 @@
 
 fieldInit();
 function fieldInit() {
-  var ground = addRectangle(width / 2, height, '#2e2b44', width, 60);
-  var kabeL = addRectangle(0, height / 2, '#2e2b44', 60, height);
-  var kabeR = addRectangle(width, height / 2, '#2e2b44', 60, height);
-  for (let i = 0; i < objects.length; i++) {
-    Matter.Body.setStatic(objects[i], true);
-  }
+  createObjct("Rectangle Body",width / 2, height, '#2e2b44',true,0,0.005,0, width, 60,1)
+  createObjct("Rectangle Body",0, height/2, '#2e2b44',true,0,0.005,0, 60,height,1)
+  createObjct("Rectangle Body",width , height/2, '#2e2b44',true,0,0.005,0, 60,height,1)
+
+  objects[0] = addCircle(10,10,0,10);  //error対策で、実際描画しない.選択を外す時に使う
 }
+var click_screenOnly_flag=1;
 Events.on(mousedrag, "mousedown", function (e) { //touchした座標をcontrolに反映
   document.forms.myform.elements[1].value = Math.floor(e.mouse.position.x);
   document.forms.myform.elements[2].value = Math.floor(e.mouse.position.y);
+  if(click_screenOnly_flag){
+    prev1.id = 0;
+  }
+  click_screenOnly_flag =1;
 })
+
 Events.on(mousedrag, "startdrag", function (e) {   // dragしたobjをcontrolに反映
-  document.forms.myform.elements[0].value = mousedrag.body.label;
-  document.forms.myform.elements[3].value = mousedrag.body.angle * 100; 
-  document.forms.myform.elements[4].value = mousedrag.body.scale*100; 
-  document.forms.myform.elements[5].value = mousedrag.body.density * 10000; // 密度
-  document.forms.myform.elements[6].value = mousedrag.body.restitution * 100; // 反発
-  document.forms.myform.elements[7].value = mousedrag.body.render.fillStyle;
-  document.forms.myform.elements[8].checked = mousedrag.body.isStatic;
-  prevClickObj2 = prevClickObj;
-  prevClickObj = mousedrag.body.id - adjustCnt; 
+  var Elements = document.forms.myform.elements;
+  Elements[0].value = mousedrag.body.label;
+  Elements[3].value = mousedrag.body.angle * 100; 
+  Elements[4].value = mousedrag.body.scale*100; 
+  Elements[5].value = mousedrag.body.density * 10000; // 密度
+  Elements[6].value = mousedrag.body.restitution * 100; // 反発
+  Elements[7].value = mousedrag.body.render.fillStyle;
+  Elements[8].checked = mousedrag.body.isStatic;
+
+  prev2.id = prev1.id;
+  prev1.id = mousedrag.body.id ; 
+  prev2.offset.x = prev1.offset.x;
+  prev2.offset.y = prev1.offset.y;
+  prev1.offset.x=e.mouse.mousedownPosition.x - e.body.position.x;
+  prev1.offset.y=e.mouse.mousedownPosition.y - e.body.position.y;
+  
+  click_screenOnly_flag = 0;
   if (e.body.label == "ne") {
     console.log(e);
   }
 });
 
 function changeControl_Angle() {
-  Matter.Body.setAngle(objects[prevClickObj], 
+  Matter.Body.setAngle(objects[prev1.id], 
                   document.forms.myform.elements[3].value / 100);
 }
 function changeControl_Size() {
-  var obj = objects[prevClickObj];
+  var obj = objects[prev1.id];
   var nextScale = document.forms.myform.elements[4].value / 100;
+
   Matter.Body.scale(obj,1/obj.scale,1/obj.scale); //一回scale=1に戻す
   Matter.Body.scale(obj, nextScale,nextScale);
   switch (obj.label) {
@@ -59,39 +73,40 @@ function changeControl_Size() {
   obj.scale=nextScale;
 }
 function changeControl_Density() {
-  Matter.Body.setDensity(objects[prevClickObj], 
+  Matter.Body.setDensity(objects[prev1.id], 
                   document.forms.myform.elements[5].value / 10000);
 }
 function changeControl_Restitution() {
-  objects[prevClickObj].restitution = document.forms.myform.elements[6].value/100
+  objects[prev1.id].restitution = document.forms.myform.elements[6].value/100
 }
 function changeControl_Color() {
-  objects[prevClickObj].render.fillStyle = document.forms.myform.elements[7].value;
+  objects[prev1.id].render.fillStyle = document.forms.myform.elements[7].value;
 }
 function changeControl_Static() {
-  Matter.Body.setStatic(objects[prevClickObj], 
+  Matter.Body.setStatic(objects[prev1.id], 
                   document.forms.myform.elements[8].checked);
 }
 
 $(document).on('click', '#addTri', function () {
   document.forms.myform.elements[0].value = "Triangle Body";
   control2obj();
-
 });
 $(document).on('click', '#addCircle', function () {
   document.forms.myform.elements[0].value = "Circle Body";
   control2obj();
 });
 $(document).on('click', '#addConstraint', function () {
-  console.log(prevClickObj,prevClickObj2)
-  adjustCnt++;
-  World.add(engine.world,
-    Matter.Constraint.create({
-      bodyA: objects[prevClickObj],
-      bodyB: objects[prevClickObj2],
-      stiffness:1,
-    })
-  )
+
+  var constraint =Matter.Constraint.create({
+    bodyA: objects[prev1.id],
+    pointA:{x:prev1.offset.x,y:prev1.offset.y},
+    bodyB: objects[prev2.id],
+    pointB:{x:prev2.offset.x,y:prev2.offset.y},
+    stiffness:1,
+    angularStiffness:1    
+  })
+  console.log(constraint);
+  World.add(engine.world,constraint);
 });
 // 
 $(document).on('click', '#addSquare', function () {
@@ -104,13 +119,8 @@ $(document).on('click', '#addBar', function () {
   control2obj();
 });
 $(document).on('click', '#Delete', function () {
-  Matter.World.remove(engine.world,objects[prevClickObj]);
-  for(let i = prevClickObj;i<objects.length-1;i++){
-    objects[i]=objects[i+1];
-  }
-  prevClickObj--;
-  adjustCnt++;
-  objects.pop();
+  Matter.World.remove(engine.world,objects[prev1.id]);
+  objects[prev1.id] = "undefined"
 });
 
 function Control_Size2data(type,rangeValue){ //[50,200] TODO: 調整
@@ -126,7 +136,7 @@ function Control_Size2data(type,rangeValue){ //[50,200] TODO: 調整
       data1 = rangeValue / 100 * standardRad;
       break;
     case 'Bar Body':
-      data1 = rangeValue / 100 * standardSide * 4;
+      data1 = rangeValue / 100 * standardSide*2 ;
       break;
   }
   return {data1,data2};
@@ -162,15 +172,15 @@ function control2obj() {
 };
 
 
-//開始はlib.js
-
 //保存
 $(document).on('click', '#save', function () {
 
   var data = [];
-  for (let i = 0; i < objects.length; i++) { //mouseがobjects[0]
+  for (let i = 1 ; i<objects.length;i++) {
+    if(objects[i] === undefined ) {
+      continue;
+    }
     var {data1,data2} = obj2data(objects[i]);
-
     let tmp = {
       "type": objects[i].label,
       "x": roundFloat(objects[i].position.x, 4),

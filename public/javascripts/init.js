@@ -18,8 +18,8 @@ var width = 700,
 var standardRad = width/20,
     standardSide = width/10;
 
-var prevClickObj = 3,prevClickObj2 = 3;//error出る
-var adjustCnt = 2;// id とobjにズレが生じる。(1-index,mouse,constraint,delete)
+prev1 ={id:0,offset:{x:0,y:0}}; //TODO id初期値
+prev2 ={id:0,offset:{x:0,y:0}};
 var render = Render.create({
   element: document.getElementById("canvas"),
   engine: engine,
