@@ -12,8 +12,12 @@ const Scene = loader.database.define('scenes',{
         allowNull: false 
     },
     createdBy:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false 
+    },
+    description:{
+        type: Sequelize.TEXT,
+        allowNull: true
     },
     updatedAt:{
         type: Sequelize.DATE,

@@ -1,18 +1,19 @@
 extends layout
 
-block content 
+block header
     script(src="/javascripts/matter.min.js")
     script(src="https://code.jquery.com/jquery-3.4.1.min.js")
     script(src='/dist/js/bootstrap-colorpicker.js')
     script(src='/javascripts/jquery.minicolors.js')
-    link(rel='stylesheet', href='/css/jquery-minicolors.css')
-    
+    script(src="/javascripts/bootstrap-maxlength.js")
+    link(rel='stylesheet' href='/css/jquery-minicolors.css')
+
+block content 
     .container
         .row
             .col-md-8
                 h1.my-4
                     | New Scene 
-                    small #12345 
             .col-md-4 
                 h3.mt-5
                     | Control
@@ -25,7 +26,7 @@ block content
             .col-md-4
                 .card
                     article.card-body
-                        form(onsubmit="clickForm();return false;" , name="myform")
+                        form(onsubmit="clickForm();return false;" , name="controlForm")
                             .form-group
                                 label Object Type 
                                 select#selectForm.form-control
@@ -42,25 +43,23 @@ block content
                                         input.col-sm-8(type='text' value = "300")
                             .form-group.row
                                 label.col-sm-3 Angle
-                                input#rangeForm.form-control-range.custom-range.col-sm-8(type='range' min="-157" max="157" onchange ="changeControl_Angle()")             
+                                input#rangeForm1.form-control-range.custom-range.col-sm-8(type='range' min="-157" max="157" onchange ="changeControl_Angle()")             
                             .form-group.row
                                 label.col-sm-3 Size
-                                input#rangeForm.form-control-range.custom-range.col-sm-8(type='range' min="50" max="200" value="100" onchange ="changeControl_Size()") 
+                                input#rangeForm2.form-control-range.custom-range.col-sm-8(type='range' min="50" max="200" value="100" onchange ="changeControl_Size()") 
                             .form-group.row
                                 label.col-sm-3  密度
-                                input#rangeForm.form-control-range.custom-range.col-sm-8(type='range' min="1" max="100" onchange ="changeControl_Density()") 
+                                input#rangeForm3.form-control-range.custom-range.col-sm-8(type='range' min="1" max="100" onchange ="changeControl_Density()") 
                             .form-group.row
                                 label.col-sm-3  反発
-                                input#rangeForm.form-control-range.custom-range.col-sm-8(type='range' min="0" max="100" onchange ="changeControl_Restitution()") 
+                                input#rangeForm4.form-control-range.custom-range.col-sm-8(type='range' min="0" max="100" onchange ="changeControl_Restitution()") 
                             .form-group
                                 label.col-xs-4.control-label Color
                                 .col-xs-8
-                                    input.form-control.colorpicker(type='text', maxlength='7' onchange ="changeControl_Color()")
-
+                                    input.form-control.colorpicker(type='text' maxlength='7' onchange ="changeControl_Color()")
                             .form-check
                                 input.form-check-input(type='checkbox' onchange ="changeControl_Static()" accesskey="c")
                                 label Static 
-        
         h3.mx-3.my-2 Add
         .row 
             .col-md-4
@@ -68,20 +67,46 @@ block content
                 button.btn.btn-outline-primary(id="addCircle" accesskey="w") ●
                 button.btn.btn-outline-primary(id="addTri" accesskey="a") ▲
                 button.btn.btn-outline-primary(id="addBar" accesskey="s") ー
-                button.btn.btn-outline-dark(id="addConstraint") 結合
-                button.btn.btn-outline-danger(id="Delete") 削除
+                button.btn.btn-outline-dark(id="addConstraint" accesskey="z") 結合
+                button.btn.btn-outline-danger(id="Delete" accesskey="x") 削除
+
             .col-md-4                    
                 button.btn.btn-outline-info(id="start") 開始
                 button.btn.btn-outline-warning(id="stop") 停止
                 button.btn.btn-outline-danger(onclick="window.location.reload()")
                     |リセット                        
-            .col-md-4 
-                button.btn.btn-outline-success(id="save") 保存                    
-        h3.my-4 Other Scene
-        .row
-            .col-md-3.col-sm-6.mb-4
-                a(href='#')
-                    img.img-fluid(src='img/scene-example.png', alt='')
+            .col-md-4         
+                button.btn.btn-primary(type='button', data-toggle='modal', data-target="#Modal")
+                     | 保存
+                #Modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ModalLabel')
+                    .modal-dialog.modal-dialog-centered(role='document')
+                        .modal-content
+                            .modal-header
+                                h5#ModalLabel.modal-title シーンの情報を記入して下さい
+                                button.close(type='button', data-dismiss='modal', aria-label='閉じる')
+                                    span(aria-hidden='true') &times;
+                            .modal-body
+                                form(name="saveForm")
+                                    .form-group
+                                        label タイトル
+                                        input#text1.form-control(type='text' maxlength="15")
+                                    .form-group
+                                        label 製作者
+                                        input#text2.form-control(type='text' maxlength="10")
+                                    .form-group
+                                        label 説明
+                                        input#text3.form-control(type='text' maxlength="30")
+                                script. 
+
+                            .modal-footer
+                                button.btn.btn-secondary(type='button', data-dismiss='modal') 閉じる
+                                button.btn.btn-primary(type='submit' id="save") 保存
+
+        h3.my-4 Library(未実装)
+            .row
+                .col-md-3.col-sm-6.mb-4
+                    a(href='#')
+                        img.img-fluid(src='img/scene-example.png' alt='')
         script.
             $('.colorpicker').each( function() {
                 $(this).minicolors({
@@ -89,5 +114,12 @@ block content
                     theme: 'bootstrap'
                 });
             });
-
-
+            $('#text1').maxlength({
+                alwaysShow: true
+            });
+            $('#text2').maxlength({
+                alwaysShow: true
+            });
+            $('#text3').maxlength({
+                alwaysShow: true
+            });

@@ -17,14 +17,17 @@ router.get('/:sceneId', (req, res, next) => {
     order: [['"updatedAt','DESC']]
   }).then((scene)=>{
     if(scene){
+      var updatedAt =  scene.updatedAt;
+      var date = updatedAt.getFullYear()+"-"+updatedAt.getMonth()+"-"+updatedAt.getDate()
       Object.findAll({
         where:{SceneId:scene.sceneId},
-        order:[['"ObjectId','DESC']]
+        order:[['"ObjectId','ASC']]
       })
       .then((objects)=>{
         res.render('scene',{
           scene: scene,
-          objects:objects
+          objects:objects,
+          updatedAt:date
         });
       })
     }

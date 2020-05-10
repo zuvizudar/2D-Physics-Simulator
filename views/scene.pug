@@ -17,11 +17,14 @@ block content
         data-objects=objects
 )
 
-    .container
-        h1.my-4
-            |#{scene.sceneName}
-            small # 12345
-
+    .container.mb-5.pb-5
+        .row
+            .col-md-8 
+                h1.my-4
+                    if(scene.sceneName)
+                        |#{scene.sceneName} 
+                    else 
+                        |NAMELESS 
         .row
             .col-md-8
                 div(id="canvas")
@@ -32,12 +35,19 @@ block content
             h3.my-3 Control
                 .col-md-4.my-4
                     button.btn.btn-outline-info(id="start") 開始
-                .card.my-4.h-75
-                    article.card-body 
-                        .h1 Hello
-                        .body 
-                            small This scene is made by me
-                            
+                .card(style='width: 20rem;').h-75
+                    .card-body
+                        h3.card-title Infomation
+                        h5.card-text Description 
+                        .pl-3.small #{scene.description}
+                    h5.ul.list-group.list-group-flush
+                        li.list-group-item 作成者 
+                            if(scene.createdBy)
+                                .pl-4|#{scene.createdBy}
+                            else 
+                                .pl-4|Unknown
+                        li.list-group-item 作成日時:
+                            .pl-4|#{updatedAt}
         .row 
             .col-md-8 
             .col-md-4 
@@ -50,10 +60,3 @@ block content
                         span.fa.fa-twitter
                     a.link.facebook(href='https://facebook.com/ondrej.p.barta', target='_parent')
                         span.fa.fa-facebook-square
-                    
-
-        h3.my-4 Other Scene
-        .row
-            .col-md-3.col-sm-6.mb-4
-                a(href='#')
-                    img.img-fluid(src='/img/scene-example.png' alt='')

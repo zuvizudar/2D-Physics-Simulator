@@ -96,7 +96,19 @@ function createObjct(type, x, y, color, isStatic, angle, density, restitution, d
     objects[obj.id]=obj;
     return obj;
 }
+function addConstraint(id1,id2,x1,y1,x2,y2){
+    var constraint =Matter.Constraint.create({
+        bodyA: objects[id1],
+        pointA:{x:x1,y:y1},
+        bodyB: objects[id2],
+        pointB:{x:x2,y:y2},
+        stiffness:1,
+        angularStiffness:1    
+      })
 
+      World.add(engine.world,constraint);
+      objects[constraint.id] = constraint;
+}
 function attachFilter(obj) { //マウスのみ接触するフィルター
     obj.collisionFilter = {
         'group': 0,
@@ -105,13 +117,14 @@ function attachFilter(obj) { //マウスのみ接触するフィルター
     }
     obj.frictionAir = 1; //動かないように
 }
+
 function reduce_friction(obj, rate) {
     obj.restitution = 1 - 1 * rate;
 }
 
 $(document).on('click', '#start', function () {
     for (let i in objects) {
-        if (objects[i] === "undefined") continue;
+        if (objects[i] === undefined||objects[i].label==="Constraint") continue;
         objects[i].collisionFilter.group = 1;
         objects[i].frictionAir = 0.01;
     }
@@ -121,7 +134,7 @@ $(document).on('click', '#start', function () {
 $(document).on('click', '#stop', function () {
 
     for (let i in objects) {
-        if (objects[i] === "undefined") continue;
+        if (objects[i] === undefined) continue;
         attachFilter(objects[i]);
     }
     engine.world.gravity.y = 0;

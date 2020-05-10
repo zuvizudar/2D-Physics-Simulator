@@ -16,8 +16,8 @@ function fieldInit() {
 }
 var click_screenOnly_flag=1;
 Events.on(mousedrag, "mousedown", function (e) { //touchした座標をcontrolに反映
-  document.forms.myform.elements[1].value = Math.floor(e.mouse.position.x);
-  document.forms.myform.elements[2].value = Math.floor(e.mouse.position.y);
+  document.forms.controlForm.elements[1].value = Math.floor(e.mouse.position.x);
+  document.forms.controlForm.elements[2].value = Math.floor(e.mouse.position.y);
   if(click_screenOnly_flag){
     prev1.id = 0;
   }
@@ -25,7 +25,7 @@ Events.on(mousedrag, "mousedown", function (e) { //touchした座標をcontrol�
 })
 
 Events.on(mousedrag, "startdrag", function (e) {   // dragしたobjをcontrolに反映
-  var Elements = document.forms.myform.elements;
+  var Elements = document.forms.controlForm.elements;
   Elements[0].value = mousedrag.body.label;
   Elements[3].value = mousedrag.body.angle * 100; 
   Elements[4].value = mousedrag.body.scale*100; 
@@ -49,11 +49,11 @@ Events.on(mousedrag, "startdrag", function (e) {   // dragしたobjをcontrolに
 
 function changeControl_Angle() {
   Matter.Body.setAngle(objects[prev1.id], 
-                  document.forms.myform.elements[3].value / 100);
+                  document.forms.controlForm.elements[3].value / 100);
 }
 function changeControl_Size() {
   var obj = objects[prev1.id];
-  var nextScale = document.forms.myform.elements[4].value / 100;
+  var nextScale = document.forms.controlForm.elements[4].value / 100;
 
   Matter.Body.scale(obj,1/obj.scale,1/obj.scale); //一回scale=1に戻す
   Matter.Body.scale(obj, nextScale,nextScale);
@@ -74,53 +74,45 @@ function changeControl_Size() {
 }
 function changeControl_Density() {
   Matter.Body.setDensity(objects[prev1.id], 
-                  document.forms.myform.elements[5].value / 10000);
+                  document.forms.controlForm.elements[5].value / 10000);
 }
 function changeControl_Restitution() {
-  objects[prev1.id].restitution = document.forms.myform.elements[6].value/100
+  objects[prev1.id].restitution = document.forms.controlForm.elements[6].value/100
 }
 function changeControl_Color() {
-  objects[prev1.id].render.fillStyle = document.forms.myform.elements[7].value;
+  objects[prev1.id].render.fillStyle = document.forms.controlForm.elements[7].value;
 }
 function changeControl_Static() {
   Matter.Body.setStatic(objects[prev1.id], 
-                  document.forms.myform.elements[8].checked);
+                  document.forms.controlForm.elements[8].checked);
 }
 
 $(document).on('click', '#addTri', function () {
-  document.forms.myform.elements[0].value = "Triangle Body";
+  document.forms.controlForm.elements[0].value = "Triangle Body";
   control2obj();
 });
 $(document).on('click', '#addCircle', function () {
-  document.forms.myform.elements[0].value = "Circle Body";
+  document.forms.controlForm.elements[0].value = "Circle Body";
   control2obj();
 });
 $(document).on('click', '#addConstraint', function () {
-
-  var constraint =Matter.Constraint.create({
-    bodyA: objects[prev1.id],
-    pointA:{x:prev1.offset.x,y:prev1.offset.y},
-    bodyB: objects[prev2.id],
-    pointB:{x:prev2.offset.x,y:prev2.offset.y},
-    stiffness:1,
-    angularStiffness:1    
-  })
-  console.log(constraint);
-  World.add(engine.world,constraint);
+  
+  addConstraint(prev1.id,prev2.id,
+      prev1.offset.x,prev1.offset.y,prev2.offset.x,prev2.offset.y);
 });
 // 
 $(document).on('click', '#addSquare', function () {
-  document.forms.myform.elements[0].value = "Square Body";
+  document.forms.controlForm.elements[0].value = "Square Body";
   control2obj();
 });
 // 棒
 $(document).on('click', '#addBar', function () {
-  document.forms.myform.elements[0].value = "Bar Body";
+  document.forms.controlForm.elements[0].value = "Bar Body";
   control2obj();
 });
 $(document).on('click', '#Delete', function () {
   Matter.World.remove(engine.world,objects[prev1.id]);
-  objects[prev1.id] = "undefined"
+  objects[prev1.id] = undefined
 });
 
 function Control_Size2data(type,rangeValue){ //[50,200] TODO: 調整
@@ -162,7 +154,7 @@ function obj2data(obj){//dataは(width,height) or (rad,null)とか
 }
 
 function control2obj() {
-  var Elements = document.forms.myform.elements;
+  var Elements = document.forms.controlForm.elements;
   var {data1, data2} = Control_Size2data(Elements[0].value,Elements[4].value);
   var obj = createObjct(Elements[0].value, Number(Elements[1].value), Number(Elements[2].value),
     Elements[7].value, Elements[8].checked,
@@ -174,34 +166,55 @@ function control2obj() {
 
 //保存
 $(document).on('click', '#save', function () {
-
-  var data = [];
+  
+  var sceneInfo=[],data = [],nextIdMap=[],nextIdCnt=2;
+  console.log(document.forms.saveForm.elements)
+  for(var i = 0;i<3;i++){
+    var c=document.forms.saveForm.elements[i];
+    sceneInfo.push(c.value);
+  }
   for (let i = 1 ; i<objects.length;i++) {
     if(objects[i] === undefined ) {
       continue;
     }
-    var {data1,data2} = obj2data(objects[i]);
-    let tmp = {
-      "type": objects[i].label,
-      "x": roundFloat(objects[i].position.x, 4),
-      "y": roundFloat(objects[i].position.y, 4),
-      "color": objects[i].render.fillStyle,
-      "isStatic": objects[i].isStatic,
-      "angle": roundFloat(objects[i].angle, 3),
-      "density": roundFloat(objects[i].density, 3),
-      "restitution": roundFloat(objects[i].restitution, 4),
-      "data1": roundFloat(data1, 2),
-      "data2": roundFloat(data2, 2)
+    if(objects[i].label === "Constraint"){
+      var tmp = {
+        "type": objects[i].label,
+        "x": nextIdMap[objects[i].bodyA.id],
+        "y": nextIdMap[objects[i].bodyB.id],
+        "color": "white",
+        "isStatic": true,
+        "angle": roundFloat(objects[i].pointA.x,4),
+        "density": roundFloat(objects[i].pointA.y, 4),
+        "restitution": roundFloat(objects[i].pointB.x, 4),
+        "data1": roundFloat(objects[i].pointB.y,4),
+        "data2":0
+      }
+    }else{
+      var {data1,data2} = obj2data(objects[i]);
+      var tmp = {
+        "type": objects[i].label,
+        "x": roundFloat(objects[i].position.x, 4),
+        "y": roundFloat(objects[i].position.y, 4),
+        "color": objects[i].render.fillStyle,
+        "isStatic": objects[i].isStatic,
+        "angle": roundFloat(objects[i].angle, 3),
+        "density": roundFloat(objects[i].density, 3),
+        "restitution": roundFloat(objects[i].restitution, 4),
+        "data1": roundFloat(data1, 2),
+        "data2": roundFloat(data2, 2)
+      }
+      nextIdMap[objects[i].id]=nextIdCnt;
     }
     data.push(tmp);
+    nextIdCnt++;
   }
-
   var hostUrl = "http://localhost:8000/making/save";
 
   $.ajax({
     url: hostUrl,
     type: "POST",
-    data: { "data": data },
+    data: { "data": data ,"sceneInfo":sceneInfo},
     dataType: "text",
     scriptCharset: "utf-8",
     timeout: 3000

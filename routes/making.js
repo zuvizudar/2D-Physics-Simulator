@@ -13,12 +13,13 @@ module.exports = router;
 
 router.post('/save', (req, res, next) =>{
     const sceneId = uuid.v4();
-    const updateAt = new Date();
+    var updatedAt = new Date();
     Scene.create({
       sceneId: sceneId,
-      sceneName: 'test',
-      createdBy: 200,
-      updatedAt: updateAt
+      sceneName: req.body.sceneInfo[0],
+      createdBy: req.body.sceneInfo[1],
+      description: req.body.sceneInfo[2],
+      updatedAt: updatedAt
     }).then((scene)=>{ 
         createObjectsAndRedirect(req.body,sceneId,res);
     })

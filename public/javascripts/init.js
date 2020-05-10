@@ -15,7 +15,7 @@ var objects =[];
 var engine = Engine.create();
 var width = 700,
     height = 500;
-var standardRad = width/20,
+var standardRad = width/30,
     standardSide = width/10;
 
 prev1 ={id:0,offset:{x:0,y:0}}; //TODO id初期値
