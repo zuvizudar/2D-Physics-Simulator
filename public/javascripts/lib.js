@@ -28,8 +28,6 @@ function addRectangle(x, y, color, width, height) {
         }
     });
 
-    rectangle.width = width;
-    rectangle.height = height;
     return rectangle;
 }
 function addSquare(x, y, color, length) {

@@ -9,14 +9,18 @@ const Scene = loader.database.define('scenes',{
     },
     sceneName:{
         type:Sequelize.STRING,
-        allowNull: false 
+        allowNull: true 
     },
     createdBy:{
         type: Sequelize.STRING,
-        allowNull: false 
+        allowNull: true 
     },
     description:{
         type: Sequelize.TEXT,
+        allowNull: true
+    },
+    data1:{
+        type: Sequelize.INTEGER,
         allowNull: true
     },
     updatedAt:{

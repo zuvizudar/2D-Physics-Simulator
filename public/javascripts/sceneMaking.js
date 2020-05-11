@@ -16,6 +16,7 @@ function fieldInit() {
 }
 var click_screenOnly_flag=1;
 Events.on(mousedrag, "mousedown", function (e) { //touchした座標をcontrolに反映
+  console.log(e)
   document.forms.controlForm.elements[1].value = Math.floor(e.mouse.position.x);
   document.forms.controlForm.elements[2].value = Math.floor(e.mouse.position.y);
   if(click_screenOnly_flag){
@@ -63,8 +64,8 @@ function changeControl_Size() {
       break;
     case 'Square Body':
     case 'Bar Body':
-      obj.width*=nextScale;
-      obj.height*=nextScale;
+      //obj.width*=nextScale;
+      //obj.height*=nextScale;
       break;
     case 'Triangle Body':
       obj.rad*=nextScale;
@@ -96,9 +97,10 @@ $(document).on('click', '#addCircle', function () {
   control2obj();
 });
 $(document).on('click', '#addConstraint', function () {
-  
-  addConstraint(prev1.id,prev2.id,
-      prev1.offset.x,prev1.offset.y,prev2.offset.x,prev2.offset.y);
+  if(prev1.id > 0 && prev2.id >0 && prev1.id!=prev2.id){
+    addConstraint(prev1.id,prev2.id,
+        prev1.offset.x,prev1.offset.y,prev2.offset.x,prev2.offset.y);
+  }
 });
 // 
 $(document).on('click', '#addSquare', function () {
@@ -143,8 +145,10 @@ function obj2data(obj){//dataは(width,height) or (rad,null)とか
     case 'Rectangle Body':
     case 'Square Body':
     case 'Bar Body':
-      data1 = obj.width;
-      data2 = obj.height;
+      //data1 = obj.width;
+      //data2 = obj.height;
+      data1 = getDis(obj.vertices[0],obj.vertices[1]);
+      data2 = getDis(obj.vertices[0],obj.vertices[3]);
       break;
     case 'Triangle Body':
       data1 = obj.rad;
@@ -152,7 +156,9 @@ function obj2data(obj){//dataは(width,height) or (rad,null)とか
   }
   return {data1,data2};
 }
-
+function getDis(obj1,obj2){
+  return Math.sqrt( Math.pow( obj2.x-obj1.x, 2 ) + Math.pow( obj2.y-obj1.y, 2 ) ) ;
+}
 function control2obj() {
   var Elements = document.forms.controlForm.elements;
   var {data1, data2} = Control_Size2data(Elements[0].value,Elements[4].value);
@@ -160,7 +166,7 @@ function control2obj() {
     Elements[7].value, Elements[8].checked,
     Elements[3].value / 100, Elements[5].value / 10000, Elements[6].value / 100, 
       data1, data2,Elements[4].value/100);
-  //type,x,y,color,isStatic,angle,density,restitution,data1,data2
+  //type,x,y,color,isStatic,angle,density,restitution,data1,data2,scale
 };
 
 
@@ -232,3 +238,7 @@ $(document).on('click', '#save', function () {
     }
   )
 });
+
+function addLib(){
+  console.log("HH")
+}
