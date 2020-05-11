@@ -21,6 +21,7 @@ User.sync().then(()=>{
 var indexRouter = require('./routes/index');
 var makingRouter = require('./routes/making');
 var sceneRouter = require('./routes/scenes');
+var addLibraryRouter = require('./routes/addLibrary');
 var app = express();
 app.use(helmet());
 
@@ -38,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/making',makingRouter);
 app.use('/scenes',sceneRouter);
-
+app.use('/addLibrary',addLibraryRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

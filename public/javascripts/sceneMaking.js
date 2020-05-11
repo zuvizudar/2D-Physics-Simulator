@@ -216,7 +216,7 @@ $(document).on('click', '#save', function () {
     nextIdCnt++;
   }
   var hostUrl = "http://localhost:8000/making/save";
-
+  console.log(data);
   $.ajax({
     url: hostUrl,
     type: "POST",
@@ -239,6 +239,34 @@ $(document).on('click', '#save', function () {
   )
 });
 
-function addLib(){
-  console.log("HH")
+function addLib(sceneId){
+  console.log(sceneId)
+  var hostUrl = "http://localhost:8000/addLibrary/"+ sceneId;
+
+  $.ajax({
+    url: hostUrl,
+    type: "POST",
+    data:{sceneId:sceneId},
+    dataType: "json",
+    scriptCharset: "utf-8",
+    timeout: 3000
+  }
+  ).then(
+    (data) => {
+      data.objects.map((c)=>{
+        if ( c.ObjectType === "Constraint"){
+          addConstraint(c.X,c.Y,c.Angle,c.Density,c.Restitution,c.Data1);
+        }else{
+          createObjct(c.ObjectType,c.X,c.Y,c.Color,
+              c.isStatic,c.Angle,c.Density,c.Restitution,c.Data1,c.Data2,1);
+        }
+      })
+    },
+    (XMLHttpRequest, textStatus, errorThrown) => {
+      console.log("error");
+      console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+      console.log("textStatus     : " + textStatus);
+      console.log("errorThrown    : " + errorThrown.message);
+    }
+  )
 }

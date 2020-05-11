@@ -19,6 +19,7 @@ router.post('/save', (req, res, next) =>{
       sceneName: req.body.sceneInfo[0],
       createdBy: req.body.sceneInfo[1],
       description: req.body.sceneInfo[2],
+      data1:false,
       updatedAt: updatedAt
     }).then((scene)=>{ 
         createObjectsAndRedirect(req.body,sceneId,res);

@@ -20,6 +20,10 @@ const Scene = loader.database.define('scenes',{
         allowNull: true
     },
     data1:{
+        type:Sequelize.BOOLEAN,
+        allowNull:false
+    },
+    data2:{
         type: Sequelize.INTEGER,
         allowNull: true
     },
