@@ -1,4 +1,3 @@
-
 var Engine = Matter.Engine;
 var World = Matter.World;
 var Bodies = Matter.Bodies;
@@ -20,6 +19,7 @@ var standardRad = width/30,
 
 prev1 ={id:0,offset:{x:0,y:0}}; //TODO id初期値
 prev2 ={id:0,offset:{x:0,y:0}};
+var idCnt = 1;
 var render = Render.create({
   element: document.getElementById("canvas"),
   engine: engine,

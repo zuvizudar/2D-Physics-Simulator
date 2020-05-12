@@ -6,17 +6,9 @@
   inertia:Infinity
 });*/
 
-fieldInit();
-function fieldInit() {
-  createObjct("Rectangle Body",width / 2, height, '#2e2b44',true,0,0.005,0, width, 60,1)
-  createObjct("Rectangle Body",0, height/2, '#2e2b44',true,0,0.005,0, 60,height,1)
-  createObjct("Rectangle Body",width , height/2, '#2e2b44',true,0,0.005,0, 60,height,1)
 
-  objects[0] = addCircle(10,10,0,10);  //error対策で、実際描画しない.選択を外す時に使う
-}
 var click_screenOnly_flag=1;
 Events.on(mousedrag, "mousedown", function (e) { //touchした座標をcontrolに反映
-  console.log(e)
   document.forms.controlForm.elements[1].value = Math.floor(e.mouse.position.x);
   document.forms.controlForm.elements[2].value = Math.floor(e.mouse.position.y);
   if(click_screenOnly_flag){
@@ -26,6 +18,7 @@ Events.on(mousedrag, "mousedown", function (e) { //touchした座標をcontrol�
 })
 
 Events.on(mousedrag, "startdrag", function (e) {   // dragしたobjをcontrolに反映
+  console.log(e)
   var Elements = document.forms.controlForm.elements;
   Elements[0].value = mousedrag.body.label;
   Elements[3].value = mousedrag.body.angle * 100; 
@@ -84,8 +77,9 @@ function changeControl_Color() {
   objects[prev1.id].render.fillStyle = document.forms.controlForm.elements[7].value;
 }
 function changeControl_Static() {
-  Matter.Body.setStatic(objects[prev1.id], 
-                  document.forms.controlForm.elements[8].checked);
+ // Matter.Body.setStatic(objects[prev1.id], 
+   //               document.forms.controlForm.elements[8].checked);
+    objects[prev1.id].isStatic = document.forms.controlForm.elements[8].checked;
 }
 
 $(document).on('click', '#addTri', function () {
@@ -109,8 +103,9 @@ $(document).on('click', '#addSquare', function () {
 });
 // 棒
 $(document).on('click', '#addBar', function () {
-  document.forms.controlForm.elements[0].value = "Bar Body";
-  control2obj();
+  //document.forms.controlForm.elements[0].value = "Bar Body";
+  //control2obj();
+  fieldInit();
 });
 $(document).on('click', '#Delete', function () {
   Matter.World.remove(engine.world,objects[prev1.id]);
@@ -153,6 +148,8 @@ function obj2data(obj){//dataは(width,height) or (rad,null)とか
     case 'Triangle Body':
       data1 = obj.rad;
       break;
+    default :
+      data1 = -1;
   }
   return {data1,data2};
 }
@@ -174,10 +171,12 @@ function control2obj() {
 $(document).on('click', '#save', function () {
   
   var sceneInfo=[],data = [],nextIdMap=[],nextIdCnt=2;
-  console.log(document.forms.saveForm.elements)
-  for(var i = 0;i<3;i++){
+  for(var i = 0;i<4;i++){
     var c=document.forms.saveForm.elements[i];
-    sceneInfo.push(c.value);
+    if(i===3)
+      sceneInfo.push(c.checked);
+    else 
+      sceneInfo.push(c.value);
   }
   for (let i = 1 ; i<objects.length;i++) {
     if(objects[i] === undefined ) {
@@ -196,8 +195,10 @@ $(document).on('click', '#save', function () {
         "data1": roundFloat(objects[i].pointB.y,4),
         "data2":0
       }
-    }else{
+    }
+    else{
       var {data1,data2} = obj2data(objects[i]);
+      if(data1 === -1) continue;
       var tmp = {
         "type": objects[i].label,
         "x": roundFloat(objects[i].position.x, 4),
@@ -216,7 +217,7 @@ $(document).on('click', '#save', function () {
     nextIdCnt++;
   }
   var hostUrl = "http://localhost:8000/making/save";
-  console.log(data);
+
   $.ajax({
     url: hostUrl,
     type: "POST",
@@ -240,7 +241,6 @@ $(document).on('click', '#save', function () {
 });
 
 function addLib(sceneId){
-  console.log(sceneId)
   var hostUrl = "http://localhost:8000/addLibrary/"+ sceneId;
 
   $.ajax({
@@ -253,9 +253,10 @@ function addLib(sceneId){
   }
   ).then(
     (data) => {
+      var tmp = idCnt -1;
       data.objects.map((c)=>{
-        if ( c.ObjectType === "Constraint"){
-          addConstraint(c.X,c.Y,c.Angle,c.Density,c.Restitution,c.Data1);
+        if ( c.ObjectType === "Constraint"){    
+          addConstraint(c.X + tmp,c.Y + tmp,c.Angle,c.Density,c.Restitution,c.Data1);
         }else{
           createObjct(c.ObjectType,c.X,c.Y,c.Color,
               c.isStatic,c.Angle,c.Density,c.Restitution,c.Data1,c.Data2,1);

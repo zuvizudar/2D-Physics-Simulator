@@ -8,12 +8,41 @@ function addStack(numX, numY) {
         objects[c.id]=c;
     })
 }
+function addFuriko(){
+    var rec = createObjct("Rectangle Body",width/2,50,null,true,0,0.001,0,20,20,1);
+    var cir = createObjct("Circle Body",width/2,300,null,false,0,0.001,1,50,20,1);
+    var constraint = Matter.Constraint.create({
+      bodyA:rec,
+      bodyB:cir,
+      stiffness:1
+    })
+    World.add(engine.world,constraint);
+    objects[constraint.id] = constraint;
+}
+
+function fieldInit() {
+    objects[0] = addCircle(10,10,0,10);  //error対策で、実際描画しない.選択を外す時に使う
+  
+    createObjct("Rectangle Body",width / 2, height, '#2e2b44',true,0,0.005,0, width, 60,1)
+    createObjct("Rectangle Body",0, height/2, '#2e2b44',true,0,0.005,0, 60,height,1)
+    createObjct("Rectangle Body",width , height/2, '#2e2b44',true,0,0.005,0, 60,height,1)
+}
+
+function addBallPyramid(){
+    for(var i = 0 ; i < 9; i++){
+        for(var j = 0; j <= i; j++){
+          var x = (width/2 - i*35) + j*70;
+          var y = 50+i*50;
+          createObjct("Circle Body", x, y, 'white', true, 0, 0.001, 0, 10, 0, 1);
+        }
+      }
+}
 
 function addCircle(x, y, color, rad) {
 
     var ball = Bodies.circle(x, y, rad, {
         render: {
-            fillStyle: color
+            fillStyle: color,
         }
     });
     ball.friction = 0;
@@ -79,19 +108,21 @@ function createObjct(type, x, y, color, isStatic, angle, density, restitution, d
         attachFilter(obj);
     }else{
         obj.collisionFilter.group = 1;
-        obj.frictionAir = 0.01;
+        obj.frictionAir = 0;
     }
     Matter.Body.setDensity(obj, density);
-    Matter.Body.setStatic(obj, isStatic);
+    //Matter.Body.setStatic(obj, isStatic);
+    obj.isStatic = isStatic;
     Matter.Body.setAngle(obj, angle);
     obj.restitution = restitution;
     obj.scale = scale; 
 
     prev2.id = prev1.id;
     prev1.id = obj.id;
-    
+
     World.add(engine.world, obj);
     objects[obj.id]=obj;
+    idCnt = obj.id;
     return obj;
 }
 function addConstraint(id1,id2,x1,y1,x2,y2){
@@ -106,6 +137,7 @@ function addConstraint(id1,id2,x1,y1,x2,y2){
 
       World.add(engine.world,constraint);
       objects[constraint.id] = constraint;
+      idCnt = constraint.id;
 }
 function attachFilter(obj) { //マウスのみ接触するフィルター
     obj.collisionFilter = {
@@ -124,7 +156,7 @@ $(document).on('click', '#start', function () {
     for (let i in objects) {
         if (objects[i] === undefined||objects[i].label==="Constraint") continue;
         objects[i].collisionFilter.group = 1;
-        objects[i].frictionAir = 0.01;
+        objects[i].frictionAir = 0;
     }
     engine.world.gravity.y = 1
 });

@@ -96,6 +96,10 @@ block content
                                     .form-group
                                         label 説明
                                         input#text3.form-control(type='text' maxlength="30")
+                                    .form-check 
+                                        input.form-check-input(type='checkbox')
+                                        label ライブラリとしての利用を認める 
+                                        
                                 script. 
 
                             .modal-footer
@@ -104,9 +108,17 @@ block content
 
         h3.my-4 Library
             .row
-                .col-md-3.col-sm-6.mb-4
+                .col-md-2.col-sm-6.mb-4
                     a(href='#')
-                        img.img-fluid(src='img/scene-example.png' id ="daf9b1d2-5854-4623-8109-8711051e74aa" onclick="addLib(this.id)")
+                        img.img-fluid(src='img/a81dbf97-676a-46bd-84f1-4566514100bd.png' id ="a81dbf97-676a-46bd-84f1-4566514100bd" onclick="addLib(this.id)")
+                .col-md-2.col-sm-6.mb-4
+                    a(href='#')
+                        img.img-fluid(src='img/17c33073-2e8d-47e2-9b2e-91a2e6d651ba.png' id ="17c33073-2e8d-47e2-9b2e-91a2e6d651ba" onclick="addLib(this.id)")
+                .col-md-2.col-sm-6.mb-4
+                    a(href='#')
+                        img.img-fluid(src='img/ea782472-7807-47f4-a02e-ca6a8b85ef90.png' id ="ea782472-7807-47f4-a02e-ca6a8b85ef90" onclick="addLib(this.id)")
+                        
+                
         script.
             $('.colorpicker').each( function() {
                 $(this).minicolors({
