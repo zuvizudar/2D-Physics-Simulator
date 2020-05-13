@@ -1,17 +1,32 @@
 var express = require('express');
 var router = express.Router();
+
 const uuid = require('uuid');
 const Scene = require('../models/scenes');
 const Object = require('../models/objects');
+
+const {check,validationResult} = require('express-validator');
+
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next)=> {
     var test = 100;
     res.render('making',{test});
 });
 
 module.exports = router;
 
-router.post('/save', (req, res, next) =>{
+router.post('/save',[
+    //check('data').isEmpty()
+    //check('data').isEmpty()
+  ],
+  (req, res, next) =>{
+    const errors = validationResult(req);
+    console.log(err)
+    if(!errors.isEmpty()) { // バリデーション失敗
+  
+      return res.status(422).json({ errors: errors.array() });
+  
+    }
     const sceneId = uuid.v4();
     var updatedAt = new Date();
     Scene.create({

@@ -1,0 +1,7 @@
+{
+  "name": "2D-simulator",
+  "description": "2dでの物理演算で遊べます",
+  "logo": "",
+  "keywords": ["node"],
+  "image": "heroku/nodejs"
+}
