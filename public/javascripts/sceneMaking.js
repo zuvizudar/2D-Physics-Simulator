@@ -168,6 +168,7 @@ function control2obj() {
 
 
 //保存
+var hostURL = "https://two-sim.herokuapp.com";
 $(document).on('click', '#save', function () {
   
   var sceneInfo=[],data = [],nextIdMap=[],nextIdCnt=2;
@@ -216,7 +217,7 @@ $(document).on('click', '#save', function () {
     data.push(tmp);
     nextIdCnt++;
   }
-  var hostUrl = "http://localhost:8000/making/save";
+  var hostUrl = hostURL+ "/save";
 
   $.ajax({
     url: hostUrl,
@@ -229,7 +230,7 @@ $(document).on('click', '#save', function () {
   ).then(
     (data) => {
       console.log("ok")
-      window.location.href = "http://localhost:8000/scenes/" + data;
+      window.location.href = hostURL+"/scenes/" + data;
     },
     (XMLHttpRequest, textStatus, errorThrown) => {
       console.log("error");
@@ -241,7 +242,7 @@ $(document).on('click', '#save', function () {
 });
 
 function addLib(sceneId){
-  var hostUrl = "http://localhost:8000/addLibrary/"+ sceneId;
+  var hostUrl = hostURL+"/addLibrary/"+ sceneId;
 
   $.ajax({
     url: hostUrl,
