@@ -33,7 +33,7 @@ function addBallPyramid(){
         for(var j = 0; j <= i; j++){
           var x = (width/2 - i*35) + j*70;
           var y = 50+i*50;
-          createObjct("Circle Body", x, y, 'white', true, 0, 0.001, 0, 10, 0, 1);
+          createObjct("Circle Body", x, y, 'gray', true, 0, 0.001, 0, 10, 0, 1);
         }
       }
 }
@@ -107,7 +107,6 @@ function createObjct(type, x, y, color, isStatic, angle, density, restitution, d
     if (engine.world.gravity.y == 0) {//開始前、マウスのみ接触
         attachFilter(obj);
     }else{
-        obj.collisionFilter.group = 1;
         obj.frictionAir = 0;
     }
     Matter.Body.setDensity(obj, density);
@@ -125,6 +124,7 @@ function createObjct(type, x, y, color, isStatic, angle, density, restitution, d
     idCnt = obj.id;
     return obj;
 }
+
 function addConstraint(id1,id2,x1,y1,x2,y2){
     var constraint =Matter.Constraint.create({
         bodyA: objects[id1],
@@ -132,19 +132,23 @@ function addConstraint(id1,id2,x1,y1,x2,y2){
         bodyB: objects[id2],
         pointB:{x:x2,y:y2},
         stiffness:1,
-        angularStiffness:1    
+
       })
+      var group = Math.min(objects[id1].collisionFilter.group,objects[id2].collisionFilter.group);
+      if(group >= 0)
+        var group = Matter.Body.nextGroup(true);
+
+      objects[id1].collisionFilter.group=group;
+      objects[id2].collisionFilter.group=group;
 
       World.add(engine.world,constraint);
       objects[constraint.id] = constraint;
       idCnt = constraint.id;
 }
 function attachFilter(obj) { //マウスのみ接触するフィルター
-    obj.collisionFilter = {
-        'group': 0,
-        'category': 2,
-        'mask': 1,
-    }
+    obj.collisionFilter.category=2;
+    obj.collisionFilter.mask=1;
+
     obj.frictionAir = 1; //動かないように
 }
 
@@ -155,7 +159,8 @@ function reduce_friction(obj, rate) {
 $(document).on('click', '#start', function () {
     for (let i in objects) {
         if (objects[i] === undefined||objects[i].label==="Constraint") continue;
-        objects[i].collisionFilter.group = 1;
+        objects[i].collisionFilter.category=4294967295;
+        objects[i].collisionFilter.mask=4294967295;
         objects[i].frictionAir = 0;
     }
     engine.world.gravity.y = 1
@@ -164,7 +169,7 @@ $(document).on('click', '#start', function () {
 $(document).on('click', '#stop', function () {
 
     for (let i in objects) {
-        if (objects[i] === undefined) continue;
+        if (objects[i] === undefined||objects[i].label==="Constraint") continue;
         attachFilter(objects[i]);
     }
     engine.world.gravity.y = 0;

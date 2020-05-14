@@ -15,18 +15,7 @@ router.get('/', (req, res, next)=> {
 
 module.exports = router;
 
-router.post('/save',[
-    //check('data').isEmpty()
-    //check('data').isEmpty()
-  ],
-  (req, res, next) =>{
-    const errors = validationResult(req);
-    console.log(err)
-    if(!errors.isEmpty()) { // バリデーション失敗
-  
-      return res.status(422).json({ errors: errors.array() });
-  
-    }
+router.post('/save',(req, res, next) =>{
     const sceneId = uuid.v4();
     var updatedAt = new Date();
     Scene.create({
