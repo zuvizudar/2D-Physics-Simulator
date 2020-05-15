@@ -105,8 +105,9 @@ function createObjct(type, x, y, color, isStatic, angle, density, restitution, d
     }
 
     if (engine.world.gravity.y == 0) {//開始前、マウスのみ接触
-        attachFilter(obj);
+        attachFilter_Mouse(obj);
     }else{
+        attachFilter_All(obj);
         obj.frictionAir = 0;
     }
     Matter.Body.setDensity(obj, density);
@@ -145,13 +146,17 @@ function addConstraint(id1,id2,x1,y1,x2,y2){
       objects[constraint.id] = constraint;
       idCnt = constraint.id;
 }
-function attachFilter(obj) { //マウスのみ接触するフィルター
+function attachFilter_Mouse(obj) { //マウスのみ接触するフィルター
     obj.collisionFilter.category=2;
     obj.collisionFilter.mask=1;
 
     obj.frictionAir = 1; //動かないように
 }
 
+function attachFilter_All(obj){
+    obj.collisionFilter.category=4294967295;
+    obj.collisionFilter.mask=4294967295;
+}
 function reduce_friction(obj, rate) {
     obj.restitution = 1 - 1 * rate;
 }
@@ -159,8 +164,7 @@ function reduce_friction(obj, rate) {
 $(document).on('click', '#start', function () {
     for (let i in objects) {
         if (objects[i] === undefined||objects[i].label==="Constraint") continue;
-        objects[i].collisionFilter.category=4294967295;
-        objects[i].collisionFilter.mask=4294967295;
+        attachFilter_All(objects[i])
         objects[i].frictionAir = 0;
     }
     engine.world.gravity.y = 1
@@ -170,7 +174,7 @@ $(document).on('click', '#stop', function () {
 
     for (let i in objects) {
         if (objects[i] === undefined||objects[i].label==="Constraint") continue;
-        attachFilter(objects[i]);
+        attachFilter_Mouse(objects[i]);
     }
     engine.world.gravity.y = 0;
 });

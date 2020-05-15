@@ -2,6 +2,7 @@ var Engine = Matter.Engine;
 var World = Matter.World;
 var Bodies = Matter.Bodies;
 var Render = Matter.Render;
+var Bounds = Matter.Bounds;
 var Mouse = Matter.Mouse;
 var MouseConstraint = Matter.MouseConstraint;
 var Events = Matter.Events;
@@ -21,12 +22,13 @@ prev1 ={id:0,offset:{x:0,y:0}}; //TODO id初期値
 prev2 ={id:0,offset:{x:0,y:0}};
 var idCnt = 1;
 var render = Render.create({
-  element: document.getElementById("canvas"),
+  canvas: document.getElementById("world"),
   engine: engine,
   options: {
     width: width,
     height: height,
-    wireframes: false
+    wireframes: false,
+    hasBounds:true
   }
 });
 
@@ -46,14 +48,15 @@ var mousedrag = MouseConstraint.create(engine, {
     'mask':2,
   }
   World.add(engine.world, mousedrag);
-  render.mouse = mousedrag
 
   Render.run(render);
-
+  //render.mouse=mousedrag
   engine.world.gravity.y = 0;
   var fps = 30;
   (function run() {
     window.requestAnimationFrame(run);
     Engine.update(engine);
+    Mouse.setOffset(mousedrag.mouse, render.bounds.min);
+    myloop();
   })();
   

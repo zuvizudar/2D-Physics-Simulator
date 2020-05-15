@@ -100,11 +100,69 @@ $(document).on('click', '#addSquare', function () {
   control2obj();
 });
 // 棒
+var myHero;
 $(document).on('click', '#addBar', function () {
-  document.forms.controlForm.elements[0].value = "Bar Body";
-  control2obj();
+  document.forms.controlForm.elements[0].value = "Circle Body";
+  myHero =new Hero(control2obj());
+  funcArray.push(myHero.cameraMove)
   //addIntervalObject();
   //addCar();
+});
+class Hero{
+  constructor(obj){
+    this.obj = obj;
+    this.obj.type = "Hero"
+  }
+  cameraMove(){
+    render.bounds.min.x= this.obj.position.x- width/2;
+    render.bounds.max.x= this.obj.position.x+ width/2;
+    render.bounds.min.y= this.obj.position.y-height/2;
+    render.bounds.max.y= this.obj.position.y+height/2;
+  }
+  objMove(){
+    var speed = 7;
+    if(keys[65]){
+      //Matter.Body.setVelocity(this.obj, {x: -speed, y: this.obj.velocity.y})
+      Matter.Body.applyForce(this.obj,this.obj.position,{x: -0.01, y: 0})
+    }
+    if(keys[68]){
+      //Matter.Body.setVelocity(this.obj, {x: speed, y: this.obj.velocity.y})
+      Matter.Body.applyForce(this.obj,this.obj.position,{x: 0.01, y: 0})
+    }
+    if(keys[87]){
+      if(heroCanJump){
+        Matter.Body.setVelocity(this.obj, {x: this.obj.velocity.x, y: -speed})
+        heroCanJump=false;
+      }
+      keys[87] = false;
+      //Matter.Body.applyForce(this.obj,this.obj.position,{x: 0, y: 0.01})
+    }
+  }
+}
+var keys=[]
+var funcArray =[];
+var heroCanJump = true;
+function myloop(){
+  if(myHero){
+    myHero.cameraMove();
+    myHero.objMove();
+  }
+}
+document.body.addEventListener("keydown", function(e){ 
+  keys[e.keyCode]=true;
+})
+document.body.addEventListener("keyup", function(e){ 
+  keys[e.keyCode]=false;
+})
+
+
+Events.on(engine, 'collisionStart', function(event) {
+  var pairs = event.pairs;
+  for(let i in pairs){
+    if(pairs[i].bodyA.type == "Hero" ||pairs[i].bodyB.type == "Hero" ){
+      heroCanJump = true;
+    }
+  }
 });
 function addIntervalObject() {
   let total = 100;
@@ -183,6 +241,7 @@ function control2obj() {
     Elements[3].value / 100, Elements[5].value / 10000, Elements[6].value / 100,
     data1, data2, Elements[4].value / 100);
   //type,x,y,color,isStatic,angle,density,restitution,data1,data2,scale
+  return obj;
 };
 
 

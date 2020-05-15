@@ -1,7 +1,7 @@
 extends layout
 
 block header
-    script(src="/javascripts/matter.min.js")
+    script(src="/javascripts/matter.js")
     script(src="https://code.jquery.com/jquery-3.4.1.min.js")
     script(src='/dist/js/bootstrap-colorpicker.js')
     script(src='/javascripts/jquery.minicolors.js')
@@ -19,7 +19,7 @@ block content
                     | Control
         .row
             .col-md-8
-                div(id="canvas")
+                canvas(id="world")
                 script(src="/javascripts/lib.js")
                 script(src="/javascripts/init.js")
                 script(src="/javascripts/sceneMaking.js")
@@ -37,9 +37,9 @@ block content
                             .form-inline
                                 .form-group
                                     label.col-sm-3 X 
-                                        input.col-sm-8(type='text' value = "300")
+                                        input.col-sm-8(type='text' value = "350")
                                     label.col-sm-3 Y 
-                                        input.col-sm-8(type='text' value = "300")
+                                        input.col-sm-8(type='text' value = "250")
                             .form-group.row
                                 label.col-sm-3 Angle
                                 input#rangeForm1.form-control-range.custom-range.col-sm-8(type='range' min="-157" max="157" onchange ="changeControl_Angle()")             
