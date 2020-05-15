@@ -162,6 +162,7 @@ function reduce_friction(obj, rate) {
 }
 
 $(document).on('click', '#start', function () {
+    isRunning=true;
     for (let i in objects) {
         if (objects[i] === undefined||objects[i].label==="Constraint") continue;
         attachFilter_All(objects[i])
@@ -171,7 +172,7 @@ $(document).on('click', '#start', function () {
 });
 
 $(document).on('click', '#stop', function () {
-
+    isRunning=false;
     for (let i in objects) {
         if (objects[i] === undefined||objects[i].label==="Constraint") continue;
         attachFilter_Mouse(objects[i]);

@@ -96,8 +96,9 @@ $(document).on('click', '#addConstraint', function () {
 });
 // 
 $(document).on('click', '#addSquare', function () {
-  document.forms.controlForm.elements[0].value = "Square Body";
-  control2obj();
+  //document.forms.controlForm.elements[0].value = "Square Body";
+  //control2obj();
+  zoom*=0.9;
 });
 // 棒
 var myHero;
@@ -114,28 +115,41 @@ class Hero{
     this.obj.type = "Hero"
   }
   cameraMove(){
-    render.bounds.min.x= this.obj.position.x- width/2;
-    render.bounds.max.x= this.obj.position.x+ width/2;
-    render.bounds.min.y= this.obj.position.y-height/2;
-    render.bounds.max.y= this.obj.position.y+height/2;
+
+    render.bounds.min.x= this.obj.position.x- width/2*scale;
+    render.bounds.max.x= this.obj.position.x+ width/2*scale;
+    render.bounds.min.y= this.obj.position.y-height/2*scale;
+    render.bounds.max.y= this.obj.position.y+height/2*scale;
   }
   objMove(){
     var speed = 7;
     if(keys[65]){
-      //Matter.Body.setVelocity(this.obj, {x: -speed, y: this.obj.velocity.y})
-      Matter.Body.applyForce(this.obj,this.obj.position,{x: -0.01, y: 0})
+      if(isRunning){
+        //Matter.Body.setVelocity(this.obj, {x: -speed, y: this.obj.velocity.y})
+        Matter.Body.applyForce(this.obj,this.obj.position,{x: -0.01, y: 0})
+      }
     }
     if(keys[68]){
-      //Matter.Body.setVelocity(this.obj, {x: speed, y: this.obj.velocity.y})
-      Matter.Body.applyForce(this.obj,this.obj.position,{x: 0.01, y: 0})
+      if(isRunning){
+        //Matter.Body.setVelocity(this.obj, {x: speed, y: this.obj.velocity.y})
+        Matter.Body.applyForce(this.obj,this.obj.position,{x: 0.01, y: 0})
+      }
     }
     if(keys[87]){
-      if(heroCanJump){
-        Matter.Body.setVelocity(this.obj, {x: this.obj.velocity.x, y: -speed})
-        heroCanJump=false;
+      if(isRunning){
+        if(heroCanJump){
+          Matter.Body.setVelocity(this.obj, {x: this.obj.velocity.x, y: -speed})
+          //Matter.Body.applyForce(this.obj,this.obj.position,{x: 0, y: -0.3})
+          heroCanJump=false;
+        }
+        keys[87] = false;
       }
-      keys[87] = false;
-      //Matter.Body.applyForce(this.obj,this.obj.position,{x: 0, y: 0.01})
+    }
+    if(keys[82]){
+      scale*=1.01;
+    }
+    if(keys[84]){
+      scale/=1.01;
     }
   }
 }

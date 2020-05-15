@@ -52,11 +52,12 @@ var mousedrag = MouseConstraint.create(engine, {
   Render.run(render);
   //render.mouse=mousedrag
   engine.world.gravity.y = 0;
-  var fps = 30;
+  var fps = 30,scale = 1,isRunning=false;
   (function run() {
     window.requestAnimationFrame(run);
     Engine.update(engine);
-    Mouse.setOffset(mousedrag.mouse, render.bounds.min);
+    Mouse.setScale(mousedrag.mouse,{x:scale,y:scale});
+    Mouse.setOffset(mousedrag.mouse,render.bounds.min);
     myloop();
   })();
   
