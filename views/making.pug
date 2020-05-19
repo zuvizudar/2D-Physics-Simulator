@@ -1,14 +1,9 @@
 extends layout
 
 block header
-    script(src="/javascripts/matter.js")
-    script(src="https://code.jquery.com/jquery-3.4.1.min.js")
-    script(src='/dist/js/bootstrap-colorpicker.js')
-    script(src='/javascripts/jquery.minicolors.js')
-    script(src="/javascripts/bootstrap-maxlength.js")
-    link(rel='stylesheet' href='/css/jquery-minicolors.css')
 
 block content 
+
     .container
         .row
             .col-md-8
@@ -19,10 +14,12 @@ block content
                     | Control
         .row
             .col-md-8
-                canvas(id="world")
-                script(src="/javascripts/lib.js")
-                script(src="/javascripts/init.js")
-                script(src="/javascripts/sceneMaking.js")
+                canvas(id="scene")
+                script(src="/javascripts/app1.bundle.js")    
+                script(src='/dist/js/bootstrap-colorpicker.js')
+                script(src='/javascripts/jquery.minicolors.js')
+                script(src="/javascripts/bootstrap-maxlength.js")
+                link(rel='stylesheet' href='/css/jquery-minicolors.css')
             .col-md-4
                 .card
                     article.card-body
@@ -42,32 +39,32 @@ block content
                                         input.col-sm-8(type='text' value = "250")
                             .form-group.row
                                 label.col-sm-3 Angle
-                                input#rangeForm1.form-control-range.custom-range.col-sm-8(type='range' min="-157" max="157" onchange ="changeControl_Angle()")             
+                                input#changeAngle.form-control-range.custom-range.col-sm-8(type='range' min="-157" max="157" )             
                             .form-group.row
                                 label.col-sm-3 Scale
-                                input#rangeForm2.form-control-range.custom-range.col-sm-8(type='range' min="50" max="200" value="100" onchange ="changeControl_Size()") 
+                                input#changeScale.form-control-range.custom-range.col-sm-8(type='range' min="50" max="200" value="100") 
                             .form-group.row
                                 label.col-sm-3  密度
-                                input#rangeForm3.form-control-range.custom-range.col-sm-8(type='range' min="1" max="100" onchange ="changeControl_Density()") 
+                                input#changeDensity.form-control-range.custom-range.col-sm-8(type='range' min="1" max="100") 
                             .form-group.row
                                 label.col-sm-3  反発
-                                input#rangeForm4.form-control-range.custom-range.col-sm-8(type='range' min="0" max="100" onchange ="changeControl_Restitution()") 
+                                input#changeRestitution.form-control-range.custom-range.col-sm-8(type='range' min="0" max="100") 
                             .form-group
                                 label.col-xs-4.control-label Color
                                 .col-xs-8
-                                    input.form-control.colorpicker(type='text' maxlength='7' onchange ="changeControl_Color()")
+                                    input#changeColor.form-control.colorpicker(type='text' maxlength='7')
                             .form-check
-                                input.form-check-input(type='checkbox' onchange ="changeControl_Static()" accesskey="c")
+                                input#changeStatic.form-check-input(type='checkbox' accesskey="q")
                                 label Static 
         h3.mx-3.my-2 Add
         .row 
             .col-md-4
-                button.btn.btn-outline-primary(id="addSquare" accesskey="q") ■
-                button.btn.btn-outline-primary(id="addCircle" accesskey="w") ●
-                button.btn.btn-outline-primary(id="addTri" accesskey="a") ▲
-                button.btn.btn-outline-primary(id="addBar" accesskey="s") ー
-                button.btn.btn-outline-dark(id="addConstraint" accesskey="z") 結合
-                button.btn.btn-outline-danger(id="Delete" accesskey="x") 削除
+                button.btn.btn-outline-primary(id="addSquare" accesskey="z") ■
+                button.btn.btn-outline-primary(id="addCircle" accesskey="x") ●
+                button.btn.btn-outline-primary(id="addTri" accesskey="c") ▲
+                button.btn.btn-outline-primary(id="addBar" accesskey="v") ー
+                button.btn.btn-outline-dark(id="addConstraint" ) 結合
+                button.btn.btn-outline-danger(id="Delete" ) 削除
 
             .col-md-4                    
                 button.btn.btn-outline-info(id="start") 開始
@@ -108,26 +105,25 @@ block content
         h3.my-4 Library
             .row
                 .col-md-2.col-sm-6.mb-4
-                    img.img-fluid(src='img/a81dbf97-676a-46bd-84f1-4566514100bd.png' id ="a81dbf97-676a-46bd-84f1-4566514100bd" onclick="addLib(this.id)")
+                    img.img-fluid(src='img/a81dbf97-676a-46bd-84f1-4566514100bd.png' id ="addLib")
                 .col-md-2.col-sm-6.mb-4
-                    img.img-fluid(src='img/17c33073-2e8d-47e2-9b2e-91a2e6d651ba.png' id ="17c33073-2e8d-47e2-9b2e-91a2e6d651ba" onclick="addLib(this.id)")
+                    img.img-fluid(src='img/17c33073-2e8d-47e2-9b2e-91a2e6d651ba.png' id ="addPlayer")
                 .col-md-2.col-sm-6.mb-4
-                    img.img-fluid(src='img/ea782472-7807-47f4-a02e-ca6a8b85ef90.png' id ="ea782472-7807-47f4-a02e-ca6a8b85ef90" onclick="addLib(this.id)")
-                        
-                
-        script.
-            $('.colorpicker').each( function() {
-                $(this).minicolors({
-                    format: $(this).attr('data-format') || 'hex',
-                    theme: 'bootstrap'
-                });
+                    img.img-fluid(src='img/ea782472-7807-47f4-a02e-ca6a8b85ef90.png' id ="addLib")
+    script.
+        $('.colorpicker').each( function() {
+            $(this).minicolors({
+                format: $(this).attr('data-format') || 'hex',
+                theme: 'bootstrap'
             });
-            $('#text1').maxlength({
-                alwaysShow: true
-            });
-            $('#text2').maxlength({
-                alwaysShow: true
-            });
-            $('#text3').maxlength({
-                alwaysShow: true
-            });
+        });
+        $('#text1').maxlength({
+            threshold: 20,
+            alwaysShow: true
+        });
+        $('#text2').maxlength({
+            alwaysShow: true
+        });
+        $('#text3').maxlength({
+            alwaysShow: true
+        });

@@ -1,0 +1,120 @@
+'use strict';
+
+import $ from 'jquery';
+const global = Function('return this;')();
+global.jQuery = $;
+window.$ = window.jQuery = $;
+import bootstrap from 'bootstrap';
+//import "bootstrap/dist/css/bootstrap.min.css"
+import Matter from "matter-js"
+
+import { Main } from './modules/class/Main';
+
+import { start, stop } from "./modules/function/controlScene";
+import { addSquare, addTri, addCircle,addBar, addConstraint, addPlayer, deleteObj, addLib } from "./modules/function/addObject";
+import { changeAngle, changeScale, changeDensity, changeRestitution, changeColor, changeStatic } from "./modules/function/changeObject"
+import { save } from "./modules/function/save";
+
+export var main = new Main();
+
+main.init();
+main.run();
+
+Matter.Events.on(main.mouse.mousedrag, "mousedown", function (e) { //touchした座標をcontrolに反映
+    document.forms.controlForm.elements[1].value = Math.floor(e.mouse.position.x);
+    document.forms.controlForm.elements[2].value = Math.floor(e.mouse.position.y);
+    if (main.mouse.clicked_screenOnly) {
+        main.mouse.prev1.id = 0;
+    }
+    main.mouse.clicked_screenOnly = 1;
+})
+
+Matter.Events.on(main.mouse.mousedrag, "startdrag", function (e) {   // dragしたobjをcontrolに反映
+    let Elements = document.forms.controlForm.elements;
+    let prev1 = main.mouse.prev1;
+    let prev2 = main.mouse.prev2;
+
+    Elements[0].value = e.body.label;
+    Elements[3].value = e.body.angle * 100;
+    Elements[4].value = e.body.scale * 100;
+    Elements[5].value = e.body.density * 10000; // 密度
+    Elements[6].value = e.body.restitution * 100; // 反発
+    Elements[7].value = e.body.render.fillStyle;
+    Elements[8].checked = e.body.isStatic;
+
+    prev2.id = prev1.id;
+    prev1.id = e.body.id;
+    prev2.offset.x = prev1.offset.x;
+    prev2.offset.y = prev1.offset.y;
+    prev1.offset.x = e.mouse.mousedownPosition.x - e.body.position.x;
+    prev1.offset.y = e.mouse.mousedownPosition.y - e.body.position.y;
+
+    main.mouse.clicked_screenOnly = 0;
+    if (e.body.label == "ne") {
+        console.log(e);
+    }
+});
+Matter.Events.on(main.scene.engine, 'collisionStart', function (event) {
+    var pairs = event.pairs;
+    for (let i in pairs) {
+        if (pairs[i].bodyA.type == "Player" || pairs[i].bodyB.type == "Player") {
+            main.player.canJump = true;
+        }
+    }
+});
+
+document.body.addEventListener("keydown", function (e) {
+    main.scene.keys[e.keyCode] = true;
+    //main.scene.hasChanged = true;
+})
+document.body.addEventListener("keyup", function (e) {
+    main.scene.keys[e.keyCode] = false;
+})
+
+$(document).on('change', '#changeAngle', function () {
+    changeAngle(main.mouse.prev1.id)
+});
+$(document).on('change', '#changeScale', function () {
+    changeScale(main.mouse.prev1.id)
+});
+$(document).on('change', '#changeDensity', function () {
+    changeDensity(main.mouse.prev1.id)
+});
+$(document).on('change', '#changeRestitution', function () {
+    changeRestitution(main.mouse.prev1.id)
+});
+$(document).on('change', '#changeColor', function () {
+    changeColor(main.mouse.prev1.id)
+});
+$(document).on('change', '#changeStatic', function () {
+    changeStatic(main.mouse.prev1.id)
+});
+
+$(document).on('click', '#addSquare', addSquare);
+$(document).on('click', '#addCircle', addCircle);
+$(document).on('click', '#addTri', addTri);
+$(document).on('click', '#addBar',addBar);
+$(document).on('click', '#addConstraint', addConstraint);
+$(document).on('click', '#Delete', deleteObj);
+
+$(document).on('click', '#start', function () {
+    start(main)
+});
+$(document).on('click', '#stop', () => {
+    stop(main)
+});
+
+$(document).on('click', '#save', function () {
+    save(main, main.objects);
+});
+
+$(document).on('click', '#addPlayer', function () {
+    if (!main.player.exist) {
+        addPlayer();
+    }
+});
+
+$(document).on('click', '#addLib', function () {
+    console.log(this);
+    addLib("a81dbf97-676a-46bd-84f1-4566514100bd")
+});

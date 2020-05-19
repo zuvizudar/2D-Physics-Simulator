@@ -24,7 +24,7 @@ router.get('/:sceneId', (req, res, next) => {
         order:[['"ObjectId','ASC']]
       })
       .then((objects)=>{
-        res.render('scene',{
+        res.render('view',{
           scene: scene,
           objects:objects,
           updatedAt:date

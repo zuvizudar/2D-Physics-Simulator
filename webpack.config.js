@@ -1,10 +1,19 @@
 module.exports = {
   context: __dirname + '/app',
   mode: 'none',
-  entry: './entry',
+  entry: {
+    app1:'./app1',
+    app2:'./app2'
+  },
   output: {
     path: __dirname + '/public/javascripts',
-    filename: 'bundle.js'
+    filename: '[name].bundle.js'
+  },
+  optimization: {
+    splitChunks: {
+      name: 'vendor',
+      chunks: 'initial',
+    }
   },
   module: {
     rules: [
