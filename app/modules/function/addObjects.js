@@ -1,21 +1,24 @@
-import Matter from"matter-js"
-
-import {createConstraint} from "./createConstraint"
-import {update_after_adding} from "./addObject"
+import {Constraint} from "../class/Constraint"
 import {createObjct} from "./createObject"
 
 export function addObjects(main,Objects) {
     const tmp = main.scene.idCnt-1;
     Objects.map((c) => {
         if (c.ObjectType === "Constraint") {
-            const constraint = createConstraint(main.objects,c.X + tmp, c.Y + tmp, c.Angle, c.Density, c.Restitution, c.Data1);
-            Matter.World.add(main.scene.engine.world, constraint);
-            main.objects[constraint.id] = constraint;
-            main.scene.idCnt = constraint.id;
+            let constraint = new Constraint(main.objects,c.X + tmp, c.Y + tmp, c.Angle, c.Density, c.Restitution, c.Data1);
+            constraint.addToWorld(main);
         } else {
-            let obj = createObjct(c.ObjectType, c.X, c.Y, c.Color, c.isStatic, c.Angle, c.Density, c.Restitution, c.Data1, c.Data2, 1);
-            update_after_adding(obj);
-            Matter.World.add(main.scene.engine.world, obj);
+            const options ={
+                render:{
+                  fillStyle:c.Color
+                },
+                angle:c.Angle,
+                density:c.Density,
+                restitution:c.Restitution,
+                scale:1
+              }
+            let obj = createObjct(c.ObjectType, c.X, c.Y, c.Data1, c.Data2,options,c.isStatic);
+            obj.addToWorld(main);
         }
     })
 }

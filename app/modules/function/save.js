@@ -3,8 +3,8 @@
 import {checkRange} from "./checkRange"
 import {roundFloat} from "./roundFloat"
 
-export function save(main,objects) {
-    
+export function save(objects) {
+    console.log(objects)
     var hostURL = "http://localhost:8000";
     var sceneInfo = [], data = [], nextIdMap = [], nextIdCnt = 2;
     for (var i = 0; i < 4; i++) {
@@ -18,40 +18,40 @@ export function save(main,objects) {
         if (objects[i] === undefined) {
             continue;
         }
-        if (objects[i].label === "Constraint") {
+        if (objects[i].body.label === "Constraint") {
             var tmp = {
-                "type": objects[i].label,
-                "x": nextIdMap[objects[i].bodyA.id],
-                "y": nextIdMap[objects[i].bodyB.id],
+                "type": objects[i].body.label,
+                "x": nextIdMap[objects[i].body.bodyA.id],
+                "y": nextIdMap[objects[i].body.bodyB.id],
                 "color": "white",
                 "isStatic": true,
-                "angle": roundFloat(objects[i].pointA.x, 4),
-                "density": roundFloat(objects[i].pointA.y, 4),
-                "restitution": roundFloat(objects[i].pointB.x, 4),
-                "data1": roundFloat(objects[i].pointB.y, 4),
+                "angle": roundFloat(objects[i].body.pointA.x, 4),
+                "density": roundFloat(objects[i].body.pointA.y, 4),
+                "restitution": roundFloat(objects[i].body.pointB.x, 4),
+                "data1": roundFloat(objects[i].body.pointB.y, 4),
                 "data2": 0
             }
         }
         else {
             /*//範囲外なら保存しない
-            if (checkRange(main,objects[i])) //TODO 片方消えた時のconstraint
+            if (checkRange(main,objects[i].body)) //TODO 片方消えた時のconstraint
                 continue;
             */
-            var { data1, data2 } = obj2data(objects[i]);
+            var { data1, data2 } = obj2data(objects[i].body);
             if (data1 === -1) continue;
             var tmp = {
-                "type": objects[i].label,
-                "x": roundFloat(objects[i].position.x, 4),
-                "y": roundFloat(objects[i].position.y, 4),
-                "color": objects[i].render.fillStyle,
-                "isStatic": objects[i].isStatic,
-                "angle": roundFloat(objects[i].angle, 3),
-                "density": roundFloat(objects[i].density, 3),
-                "restitution": roundFloat(objects[i].restitution, 4),
+                "type": objects[i].body.label,
+                "x": roundFloat(objects[i].body.position.x, 4),
+                "y": roundFloat(objects[i].body.position.y, 4),
+                "color": objects[i].body.render.fillStyle,
+                "isStatic": objects[i].body.isStatic,
+                "angle": roundFloat(objects[i].body.angle, 3),
+                "density": roundFloat(objects[i].body.density, 3),
+                "restitution": roundFloat(objects[i].body.restitution, 4),
                 "data1": roundFloat(data1, 2),
                 "data2": roundFloat(data2, 2)
             }
-            nextIdMap[objects[i].id] = nextIdCnt;
+            nextIdMap[objects[i].body.id] = nextIdCnt;
         }
         data.push(tmp);
         nextIdCnt++;

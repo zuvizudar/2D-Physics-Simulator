@@ -153,4 +153,620 @@
 /******/ 	return checkDeferredModules();
 /******/ })
 /************************************************************************/
-/******/ ([]);
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "main", function() { return main; });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
+/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _modules_class_Main__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var _modules_function_controlScene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
+/* harmony import */ var _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(11);
+/* harmony import */ var _modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(15);
+/* harmony import */ var _modules_function_save__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(16);
+
+
+
+var global = Function('return this;')();
+global.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
+window.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
+ //import "bootstrap/dist/css/bootstrap.min.css"
+
+
+
+
+
+
+
+var main = new _modules_class_Main__WEBPACK_IMPORTED_MODULE_3__["Main"]();
+main.init();
+main.run();
+matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.mouse.mousedrag, "mousedown", function (e) {
+  //touchした座標をcontrolに反映
+  document.forms.controlForm.elements[1].value = Math.floor(e.mouse.position.x);
+  document.forms.controlForm.elements[2].value = Math.floor(e.mouse.position.y);
+
+  if (main.mouse.clicked_screenOnly) {
+    main.mouse.prev1.id = 0;
+  }
+
+  main.mouse.clicked_screenOnly = 1;
+});
+matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.mouse.mousedrag, "startdrag", function (e) {
+  // dragしたobjをcontrolに反映
+  var Elements = document.forms.controlForm.elements;
+  var prev1 = main.mouse.prev1;
+  var prev2 = main.mouse.prev2;
+  console.log(e.body);
+  Elements[0].value = e.body.label;
+  Elements[3].value = e.body.angle * 100;
+  Elements[4].value = e.body.scale * 100;
+  Elements[5].value = e.body.density * 10000; // 密度
+
+  Elements[6].value = e.body.restitution * 100; // 反発
+
+  Elements[7].value = e.body.render.fillStyle;
+  Elements[8].checked = e.body.isStatic;
+  prev2.id = prev1.id;
+  prev1.id = e.body.id;
+  prev2.offset.x = prev1.offset.x;
+  prev2.offset.y = prev1.offset.y;
+  prev1.offset.x = e.mouse.mousedownPosition.x - e.body.position.x;
+  prev1.offset.y = e.mouse.mousedownPosition.y - e.body.position.y;
+  main.mouse.clicked_screenOnly = 0;
+
+  if (e.body.label == "ne") {
+    console.log(e);
+  }
+});
+matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.scene.engine, 'collisionStart', function (event) {
+  var pairs = event.pairs;
+
+  for (var i in pairs) {
+    if (pairs[i].bodyA.isPlayer === "Player" || pairs[i].bodyB.isPlayer === "Player") {
+      main.player.canJump = true;
+    }
+  }
+});
+document.body.addEventListener("keydown", function (e) {
+  main.scene.keys[e.keyCode] = true; //main.scene.hasChanged = true;
+});
+document.body.addEventListener("keyup", function (e) {
+  main.scene.keys[e.keyCode] = false;
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeAngle', function () {
+  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeAngle"])(main.mouse.prev1.id);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeScale', function () {
+  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeScale"])(main.mouse.prev1.id);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeDensity', function () {
+  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeDensity"])(main.mouse.prev1.id);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeRestitution', function () {
+  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeRestitution"])(main.mouse.prev1.id);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeColor', function () {
+  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeColor"])(main.mouse.prev1.id);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeStatic', function () {
+  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeStatic"])(main.mouse.prev1.id);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addSquare', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addSquare"]);
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addCircle', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addCircle"]);
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addTri', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addTri"]);
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addBar', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addBar"]);
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addConstraint', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addConstraint"]);
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#Delete', function () {
+  main.objects[main.mouse.prev1.id].removeFrom(main);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#start', function () {
+  Object(_modules_function_controlScene__WEBPACK_IMPORTED_MODULE_4__["start"])(main);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#stop', function () {
+  Object(_modules_function_controlScene__WEBPACK_IMPORTED_MODULE_4__["stop"])(main);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#save', function () {
+  Object(_modules_function_save__WEBPACK_IMPORTED_MODULE_7__["save"])(main.objects);
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addPlayer', function () {
+  if (!main.player.exist) {
+    Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addPlayer"])();
+  }
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addLib', function () {
+  Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addLib"])(this.src.substr(26, 36));
+});
+
+/***/ }),
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCircle", function() { return addCircle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addSquare", function() { return addSquare; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addTri", function() { return addTri; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addBar", function() { return addBar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addPlayer", function() { return addPlayer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addConstraint", function() { return addConstraint; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addLib", function() { return addLib; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "control2obj", function() { return control2obj; });
+/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _app1__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+/* harmony import */ var _class_Constraint__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var _createObject__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
+/* harmony import */ var _addObjects__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(14);
+
+ //TODO 
+
+
+
+
+
+
+function addSquare() {
+  document.forms.controlForm.elements[0].value = "Square Body";
+  var obj = control2obj();
+  obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+}
+
+function addTri() {
+  document.forms.controlForm.elements[0].value = "Triangle Body";
+  var obj = control2obj();
+  obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+}
+
+;
+
+function addCircle() {
+  document.forms.controlForm.elements[0].value = "Circle Body";
+  var obj = control2obj();
+  obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+}
+
+;
+
+function addBar(x, y, color, length) {
+  /*document.forms.controlForm.elements[0].value = "Bar Body";
+  let obj = control2obj();
+  obj.addToWorld(main);
+  */
+  addCar();
+}
+
+function addPlayer() {
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.init(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height / 2);
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+}
+
+function addConstraint() {
+  var prev1 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1;
+  var prev2 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev2;
+
+  if (prev1.id > 0 && prev2.id > 0 && prev1.id != prev2.id) {
+    var constraint = new _class_Constraint__WEBPACK_IMPORTED_MODULE_2__["Constraint"](_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, prev1.id, prev2.id, prev1.offset.x, prev1.offset.y, prev2.offset.x, prev2.offset.y);
+    constraint.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+  }
+}
+
+;
+function control2obj() {
+  var Elements = document.forms[0];
+
+  var _Control_Size2data = Control_Size2data(Elements[0].value, Elements[4].value),
+      data1 = _Control_Size2data.data1,
+      data2 = _Control_Size2data.data2;
+
+  var options = {
+    render: {
+      fillStyle: Elements[7].value
+    },
+    angle: Elements[3].value / 100,
+    density: Elements[5].value / 10000,
+    restitution: Elements[6].value / 100,
+    scale: Elements[4].value / 100
+  };
+  var label = Elements[0].value,
+      x = Number(Elements[1].value),
+      y = Number(Elements[2].value);
+  var isStatic = Elements[8].checked;
+  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])(label, x, y, data1, data2, options, isStatic); //type,x,y,color,isStatic,angle,density,restitution,data1,data2,scale
+
+  return obj;
+}
+;
+
+function Control_Size2data(label, rangeValue) {
+  //[50,200] TODO: 調整
+  var data1, data2;
+
+  switch (label) {
+    case 'Circle Body':
+      data1 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardRad * rangeValue / 100;
+      break;
+
+    case 'Square Body':
+      data1 = data2 = rangeValue / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardSide;
+      break;
+
+    case 'Triangle Body':
+      data1 = rangeValue / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardRad;
+      break;
+
+    case 'Bar Body':
+      data1 = rangeValue / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardSide * 2;
+      break;
+  }
+
+  return {
+    data1: data1,
+    data2: data2
+  };
+}
+
+function addLib(sceneId) {
+  var hostURL = "http://localhost:8000";
+  var hostUrl = hostURL + "/addLibrary/" + sceneId;
+  $.ajax({
+    url: hostUrl,
+    type: "POST",
+    data: {
+      sceneId: sceneId
+    },
+    dataType: "json",
+    scriptCharset: "utf-8",
+    timeout: 3000
+  }).then(function (data) {
+    console.log(data.objects);
+    Object(_addObjects__WEBPACK_IMPORTED_MODULE_4__["addObjects"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"], data.objects);
+  }, function (XMLHttpRequest, textStatus, errorThrown) {
+    console.log("error");
+    console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+    console.log("textStatus     : " + textStatus);
+    console.log("errorThrown    : " + errorThrown.message);
+  });
+}
+/*
+function addIntervalObject() {
+  let total = 100;
+  setInterval(() => {
+    if (total-- > 0) {
+      control2obj();
+    }
+  }, 200)
+}*/
+
+
+function addCar() {
+  var xx = 50,
+      yy = 50,
+      wheelSize = 30;
+  var wheelBase = 20,
+      wheelAOffset = -120 * 0.5 + wheelBase,
+      wheelBOffset = 120 * 0.5 - wheelBase,
+      wheelYOffset = 0;
+  var rec_options = {
+    scale: 1
+  };
+  var cir_options = {
+    render: {
+      fillStyle: "red"
+    },
+    restitution: 0.1,
+    scale: 1,
+    friction: 0
+  };
+  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", xx, yy, 120, 30, rec_options, false);
+  var cir1 = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Circle Body", xx + wheelAOffset, yy + wheelYOffset, wheelSize, 30, cir_options, false);
+  var cir2 = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Circle Body", xx + wheelBOffset, yy + wheelYOffset, wheelSize, 30, cir_options, false);
+  rec.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+  cir1.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+  cir2.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+  var constraint1 = new _class_Constraint__WEBPACK_IMPORTED_MODULE_2__["Constraint"](_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, rec.body.id, cir1.body.id, wheelAOffset, wheelYOffset, 0, 0);
+  constraint1.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+  var constraint2 = new _class_Constraint__WEBPACK_IMPORTED_MODULE_2__["Constraint"](_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, rec.body.id, cir2.body.id, wheelBOffset, wheelYOffset, 0, 0);
+  constraint2.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+}
+
+function addFuriko() {
+  var options = {
+    scale: 1
+  };
+  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 150, 20, 20, options, true);
+  var cir = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Circle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 400, 50, 20, options, false);
+  var constraint = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Constraint.create({
+    bodyA: rec,
+    bodyB: cir,
+    stiffness: 1
+  });
+  rec.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+  cir.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.world, constraint);
+}
+
+function addfield() {
+  var tmp = [];
+  var width = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width;
+  var height = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height;
+  tmp[0] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", width / 2, height, '#2e2b44', true, 0, 0.005, 0, width, 60, 1);
+  tmp[1] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", 0, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1);
+  tmp[2] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", width, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1);
+
+  for (var i in tmp) {
+    update_after_adding(tmp[i]);
+    matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, tmp[i]);
+  }
+}
+
+function addBallPyramid() {
+  for (var i = 0; i < 9; i++) {
+    for (var j = 0; j <= i; j++) {
+      var x = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2 - i * 35 + j * 70;
+      var y = 50 + i * 50;
+      var tmp = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Circle Body", x, y, 'gray', true, 0, 0.001, 0, 10, 0, 1);
+      update_after_adding(tmp);
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, tmp);
+    }
+  }
+}
+/*
+function createStack(numX, numY) {
+    let stackA = Composites.stack(100, 100, numX, numY, 0, 0, function (x, y) {
+        return Matter.Bodies.rectangle(x, y, 15, 15);
+    });
+    World.add(engine.world, stackA);
+    console.log(stackA)
+    stackA.Matter.Bodies.map((c) => {
+        objects[c.id]=c;
+    })
+}*/
+
+/***/ }),
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeAngle", function() { return changeAngle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeScale", function() { return changeScale; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeDensity", function() { return changeDensity; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeRestitution", function() { return changeRestitution; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeColor", function() { return changeColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeStatic", function() { return changeStatic; });
+/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _app1__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+
+
+
+
+function changeAngle(id) {
+  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setAngle(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id].body, document.forms.controlForm.elements[3].value / 100);
+}
+
+function changeScale(id) {
+  var obj = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id].body;
+  var nextScale = document.forms.controlForm.elements[4].value / 100;
+  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.scale(obj, 1 / obj.scale, 1 / obj.scale); //一回scale=1に戻す
+
+  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.scale(obj, nextScale, nextScale);
+
+  switch (obj.label) {
+    case 'Circle Body':
+      //obj.circleRadius*=nextScale; //scaleでやってくれる
+      break;
+
+    case 'Square Body':
+    case 'Bar Body':
+      //obj.width*=nextScale;
+      //obj.height*=nextScale;
+      break;
+
+    case 'Triangle Body':
+      obj.rad *= nextScale;
+      break;
+  }
+
+  obj.scale = nextScale;
+}
+
+function changeDensity(id) {
+  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setDensity(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id].body, document.forms.controlForm.elements[5].value / 10000);
+}
+
+function changeRestitution(id) {
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id].body.restitution = document.forms.controlForm.elements[6].value / 100;
+}
+
+function changeColor(id) {
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id].body.render.fillStyle = document.forms.controlForm.elements[7].value;
+}
+
+function changeStatic(id) {
+  // Matter.Body.setStatic(main.objects[id].body, 
+  //               document.forms.controlForm.elements[8].checked);
+  console.log("A");
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id].body.isStatic = document.forms.controlForm.elements[8].checked;
+}
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "save", function() { return save; });
+/* harmony import */ var _checkRange__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(17);
+/* harmony import */ var _roundFloat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(18);
+//保存
+//var hostURL = "https://two-sim.herokuapp.com";
+
+
+function save(objects) {
+  console.log(objects);
+  var hostURL = "http://localhost:8000";
+  var sceneInfo = [],
+      data = [],
+      nextIdMap = [],
+      nextIdCnt = 2;
+
+  for (var i = 0; i < 4; i++) {
+    var c = document.forms.saveForm.elements[i];
+    if (i === 3) sceneInfo.push(c.checked);else sceneInfo.push(c.value);
+  }
+
+  for (var _i = 1; _i < objects.length; _i++) {
+    if (objects[_i] === undefined) {
+      continue;
+    }
+
+    if (objects[_i].body.label === "Constraint") {
+      var tmp = {
+        "type": objects[_i].body.label,
+        "x": nextIdMap[objects[_i].body.bodyA.id],
+        "y": nextIdMap[objects[_i].body.bodyB.id],
+        "color": "white",
+        "isStatic": true,
+        "angle": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].body.pointA.x, 4),
+        "density": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].body.pointA.y, 4),
+        "restitution": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].body.pointB.x, 4),
+        "data1": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].body.pointB.y, 4),
+        "data2": 0
+      };
+    } else {
+      /*//範囲外なら保存しない
+      if (checkRange(main,objects[i].body)) //TODO 片方消えた時のconstraint
+          continue;
+      */
+      var _obj2data = obj2data(objects[_i].body),
+          data1 = _obj2data.data1,
+          data2 = _obj2data.data2;
+
+      if (data1 === -1) continue;
+      var tmp = {
+        "type": objects[_i].body.label,
+        "x": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].body.position.x, 4),
+        "y": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].body.position.y, 4),
+        "color": objects[_i].body.render.fillStyle,
+        "isStatic": objects[_i].body.isStatic,
+        "angle": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].body.angle, 3),
+        "density": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].body.density, 3),
+        "restitution": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].body.restitution, 4),
+        "data1": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(data1, 2),
+        "data2": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(data2, 2)
+      };
+      nextIdMap[objects[_i].body.id] = nextIdCnt;
+    }
+
+    data.push(tmp);
+    nextIdCnt++;
+  }
+
+  var hostUrl = hostURL + "/making/save";
+  $.ajax({
+    url: hostUrl,
+    type: "POST",
+    data: {
+      "data": data,
+      "sceneInfo": sceneInfo
+    },
+    dataType: "text",
+    scriptCharset: "utf-8",
+    timeout: 3000
+  }).then(function (data) {
+    console.log("ok");
+    window.location.href = hostURL + "/scenes/" + data;
+  }, function (XMLHttpRequest, textStatus, errorThrown) {
+    console.log("error");
+    console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+    console.log("textStatus     : " + textStatus);
+    console.log("errorThrown    : " + errorThrown.message);
+  });
+}
+
+function obj2data(obj) {
+  //dataは(width,height) or (rad,null)とか
+  var data1, data2;
+
+  switch (obj.label) {
+    case 'Circle Body':
+      data1 = obj.circleRadius;
+      break;
+
+    case 'Rectangle Body':
+    case 'Square Body':
+    case 'Bar Body':
+      //data1 = obj.width;
+      //data2 = obj.height;
+      data1 = getDis(obj.vertices[0], obj.vertices[1]);
+      data2 = getDis(obj.vertices[0], obj.vertices[3]);
+      break;
+
+    case 'Triangle Body':
+      data1 = obj.rad;
+      break;
+
+    default:
+      data1 = -1;
+  }
+
+  return {
+    data1: data1,
+    data2: data2
+  };
+}
+
+function getDis(obj1, obj2) {
+  return Math.sqrt(Math.pow(obj2.x - obj1.x, 2) + Math.pow(obj2.y - obj1.y, 2));
+}
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkRange", function() { return checkRange; });
+function checkRange(main, obj) {
+  var x = obj.position.x,
+      y = obj.position.y;
+  if (x < 0 || x > main.scene.width || y < 0 || y > main.scene.height) return 1;else return 0;
+}
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "roundFloat", function() { return roundFloat; });
+function roundFloat(number, n) {
+  var _pow = Math.pow(10, n);
+
+  return Math.round(number * _pow) / _pow;
+}
+
+/***/ })
+/******/ ]);

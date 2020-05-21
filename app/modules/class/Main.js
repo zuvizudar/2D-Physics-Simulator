@@ -1,8 +1,7 @@
 import { Scene } from "./Scene"
 import { Mouse } from "./Mouse";
-import {Player} from "./Player";
+import {Player} from "./Object";
 import Matter from "matter-js";
-
 
 export  class Main{
     constructor(){
@@ -24,8 +23,8 @@ export  class Main{
         this.keyMove()  
         
         if(this.player.exist){
-            this.scene.cameraPos.x = this.player.obj.position.x;
-            this.scene.cameraPos.y = this.player.obj.position.y;  
+            this.scene.cameraPos.x = this.player.body.position.x;
+            this.scene.cameraPos.y = this.player.body.position.y;  
         }
         this.cameraUpdate();
         this.scene.update();

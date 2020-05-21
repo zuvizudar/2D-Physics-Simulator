@@ -3,11 +3,11 @@ import {main} from "../../app1"
 export { changeAngle, changeScale, changeDensity, changeRestitution, changeColor, changeStatic }
 
 function changeAngle(id) {
-    Matter.Body.setAngle(main.objects[id],
+    Matter.Body.setAngle(main.objects[id].body,
         document.forms.controlForm.elements[3].value / 100);
 }
 function changeScale(id) {
-    var obj = main.objects[id];
+    var obj = main.objects[id].body;
     var nextScale = document.forms.controlForm.elements[4].value / 100;
 
     Matter.Body.scale(obj, 1 / obj.scale, 1 / obj.scale); //一回scale=1に戻す
@@ -28,18 +28,18 @@ function changeScale(id) {
     obj.scale = nextScale;
 }
 function changeDensity(id) {
-    Matter.Body.setDensity(main.objects[id],
+    Matter.Body.setDensity(main.objects[id].body,
         document.forms.controlForm.elements[5].value / 10000);
 }
 function changeRestitution(id) {
-    main.objects[id].restitution = document.forms.controlForm.elements[6].value / 100
+    main.objects[id].body.restitution = document.forms.controlForm.elements[6].value / 100
 }
 function changeColor(id) {
-    main.objects[id].render.fillStyle = document.forms.controlForm.elements[7].value;
+    main.objects[id].body.render.fillStyle = document.forms.controlForm.elements[7].value;
 }
 function changeStatic(id) {
-    // Matter.Body.setStatic(main.objects[id], 
+    // Matter.Body.setStatic(main.objects[id].body, 
     //               document.forms.controlForm.elements[8].checked);
     console.log("A")
-    main.objects[id].isStatic = document.forms.controlForm.elements[8].checked;
+    main.objects[id].body.isStatic = document.forms.controlForm.elements[8].checked;
 }

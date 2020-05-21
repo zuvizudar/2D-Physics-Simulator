@@ -1,133 +1,5 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[1],[
-/* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "main", function() { return main; });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _modules_class_Main__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
-/* harmony import */ var _modules_function_controlScene__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
-/* harmony import */ var _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(12);
-/* harmony import */ var _modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(16);
-/* harmony import */ var _modules_function_save__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(17);
-
-
-
-var global = Function('return this;')();
-global.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
-window.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
- //import "bootstrap/dist/css/bootstrap.min.css"
-
-
-
-
-
-
-
-var main = new _modules_class_Main__WEBPACK_IMPORTED_MODULE_3__["Main"]();
-main.init();
-main.run();
-matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.mouse.mousedrag, "mousedown", function (e) {
-  //touchした座標をcontrolに反映
-  document.forms.controlForm.elements[1].value = Math.floor(e.mouse.position.x);
-  document.forms.controlForm.elements[2].value = Math.floor(e.mouse.position.y);
-
-  if (main.mouse.clicked_screenOnly) {
-    main.mouse.prev1.id = 0;
-  }
-
-  main.mouse.clicked_screenOnly = 1;
-});
-matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.mouse.mousedrag, "startdrag", function (e) {
-  // dragしたobjをcontrolに反映
-  var Elements = document.forms.controlForm.elements;
-  var prev1 = main.mouse.prev1;
-  var prev2 = main.mouse.prev2;
-  Elements[0].value = e.body.label;
-  Elements[3].value = e.body.angle * 100;
-  Elements[4].value = e.body.scale * 100;
-  Elements[5].value = e.body.density * 10000; // 密度
-
-  Elements[6].value = e.body.restitution * 100; // 反発
-
-  Elements[7].value = e.body.render.fillStyle;
-  Elements[8].checked = e.body.isStatic;
-  prev2.id = prev1.id;
-  prev1.id = e.body.id;
-  prev2.offset.x = prev1.offset.x;
-  prev2.offset.y = prev1.offset.y;
-  prev1.offset.x = e.mouse.mousedownPosition.x - e.body.position.x;
-  prev1.offset.y = e.mouse.mousedownPosition.y - e.body.position.y;
-  main.mouse.clicked_screenOnly = 0;
-
-  if (e.body.label == "ne") {
-    console.log(e);
-  }
-});
-matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.scene.engine, 'collisionStart', function (event) {
-  var pairs = event.pairs;
-
-  for (var i in pairs) {
-    if (pairs[i].bodyA.type == "Player" || pairs[i].bodyB.type == "Player") {
-      main.player.canJump = true;
-    }
-  }
-});
-document.body.addEventListener("keydown", function (e) {
-  main.scene.keys[e.keyCode] = true; //main.scene.hasChanged = true;
-});
-document.body.addEventListener("keyup", function (e) {
-  main.scene.keys[e.keyCode] = false;
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeAngle', function () {
-  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeAngle"])(main.mouse.prev1.id);
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeScale', function () {
-  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeScale"])(main.mouse.prev1.id);
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeDensity', function () {
-  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeDensity"])(main.mouse.prev1.id);
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeRestitution', function () {
-  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeRestitution"])(main.mouse.prev1.id);
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeColor', function () {
-  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeColor"])(main.mouse.prev1.id);
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '#changeStatic', function () {
-  Object(_modules_function_changeObject__WEBPACK_IMPORTED_MODULE_6__["changeStatic"])(main.mouse.prev1.id);
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addSquare', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addSquare"]);
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addCircle', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addCircle"]);
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addTri', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addTri"]);
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addBar', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addBar"]);
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addConstraint', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addConstraint"]);
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#Delete', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["deleteObj"]);
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#start', function () {
-  Object(_modules_function_controlScene__WEBPACK_IMPORTED_MODULE_4__["start"])(main);
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#stop', function () {
-  Object(_modules_function_controlScene__WEBPACK_IMPORTED_MODULE_4__["stop"])(main);
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#save', function () {
-  Object(_modules_function_save__WEBPACK_IMPORTED_MODULE_7__["save"])(main, main.objects);
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addPlayer', function () {
-  if (!main.player.exist) {
-    Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addPlayer"])();
-  }
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addLib', function () {
-  Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addLib"])(this.src.substr(26, 36));
-});
-
-/***/ }),
+/* 0 */,
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -28286,7 +28158,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Main", function() { return Main; });
 /* harmony import */ var _Scene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony import */ var _Mouse__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
-/* harmony import */ var _Player__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+/* harmony import */ var _Object__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_3__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28311,7 +28183,7 @@ var Main = /*#__PURE__*/function () {
     value: function init() {
       this.scene = new _Scene__WEBPACK_IMPORTED_MODULE_0__["Scene"]();
       this.mouse = new _Mouse__WEBPACK_IMPORTED_MODULE_1__["Mouse"](this.scene);
-      this.player = new _Player__WEBPACK_IMPORTED_MODULE_2__["Player"]();
+      this.player = new _Object__WEBPACK_IMPORTED_MODULE_2__["Player"]();
       matter_js__WEBPACK_IMPORTED_MODULE_3___default.a.World.add(this.scene.engine.world, this.mouse.mousedrag);
     }
   }, {
@@ -28326,8 +28198,8 @@ var Main = /*#__PURE__*/function () {
       this.keyMove();
 
       if (this.player.exist) {
-        this.scene.cameraPos.x = this.player.obj.position.x;
-        this.scene.cameraPos.y = this.player.obj.position.y;
+        this.scene.cameraPos.x = this.player.body.position.x;
+        this.scene.cameraPos.y = this.player.body.position.y;
       }
 
       this.cameraUpdate();
@@ -28531,8 +28403,32 @@ var Mouse = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Player", function() { return Player; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Object", function() { return _Object; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Circle", function() { return Circle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Rectangle", function() { return Rectangle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Square", function() { return Square; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Triangle", function() { return Triangle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Bar", function() { return Bar; });
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function () { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -28540,17 +28436,94 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
-var Player = /*#__PURE__*/function () {
+
+
+var _Object = /*#__PURE__*/function () {
+  function Object() {
+    _classCallCheck(this, Object);
+  }
+
+  _createClass(Object, [{
+    key: "setStatic",
+    value: function setStatic(isStatic) {
+      this.body.isStatic = isStatic;
+    }
+  }, {
+    key: "addToWorld",
+    value: function addToWorld(main) {
+      if (main.scene.engine.world.gravity.y === 0) {
+        //開始前、マウスのみ接触
+        this.attachFilter_Mouse();
+      } else {
+        this.attachFilter_All();
+        this.body.frictionAir = 0;
+      }
+
+      main.mouse.prev2.id = main.mouse.prev1.id;
+      main.mouse.prev1.id = this.body.id;
+      main.objects[this.body.id] = this;
+      main.scene.idCnt = this.body.id; //最後のidをメモ
+
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(main.scene.engine.world, this.body);
+    }
+  }, {
+    key: "removeFrom",
+    value: function removeFrom(main) {
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.remove(main.scene.engine.world, this.body);
+      main.objects[this.body.id] = undefined;
+    }
+  }, {
+    key: "attachFilter_Mouse",
+    value: function attachFilter_Mouse() {
+      //マウスのみ接触するフィルター
+      this.body.collisionFilter.category = 2;
+      this.body.collisionFilter.mask = 1;
+      this.body.frictionAir = 1; //動かないように
+    }
+  }, {
+    key: "attachFilter_All",
+    value: function attachFilter_All() {
+      this.body.collisionFilter.category = 4294967295;
+      this.body.collisionFilter.mask = 4294967295;
+    }
+  }]);
+
+  return Object;
+}();
+
+var Player = /*#__PURE__*/function (_Object2) {
+  _inherits(Player, _Object2);
+
+  var _super = _createSuper(Player);
+
   function Player() {
+    var _this;
+
     _classCallCheck(this, Player);
 
-    this.exist = false;
+    _this = _super.call(this);
+    _this.exist = false;
+    return _this;
   }
 
   _createClass(Player, [{
     key: "init",
-    value: function init() {
-      this.obj.type = "Player";
+    value: function init(x, y) {
+      var _options;
+
+      var rad = 35; //pngに合わせる
+
+      var options = (_options = {
+        density: 0.001
+      }, _defineProperty(_options, "density", 0.001), _defineProperty(_options, "restitution", 0.3), _defineProperty(_options, "render", {
+        sprite: {
+          //スプライトの設定
+          texture: '../img/rainboww.png' //テクスチャ画像を指定
+
+        }
+      }), _defineProperty(_options, "scale", 1), _options);
+      this.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.circle(x, y, rad, options);
+      this.body.isPlayer = "Player";
       this.canJump = true;
       this.speed = 7;
       this.exist = true;
@@ -28558,29 +28531,29 @@ var Player = /*#__PURE__*/function () {
   }, {
     key: "moveRight",
     value: function moveRight() {
-      //Matter.Body.applyForce(this.obj, this.obj.position, { x: 0.01, y: 0 })
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.obj, {
+      //Matter.Body.applyForce(this.body, this.body.position, { x: 0.01, y: 0 })
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.body, {
         x: this.speed * 2,
-        y: this.obj.velocity.y
+        y: this.body.velocity.y
       });
     }
   }, {
     key: "moveLeft",
     value: function moveLeft() {
-      //Matter.Body.applyForce(this.obj, this.obj.position, { x: -0.01, y: 0 })
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.obj, {
+      //Matter.Body.applyForce(this.body, this.body.position, { x: -0.01, y: 0 })
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.body, {
         x: -this.speed * 2,
-        y: this.obj.velocity.y
+        y: this.body.velocity.y
       });
     }
   }, {
     key: "moveUp",
     value: function moveUp() {
       if (this.canJump) {
-        matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.obj, {
-          x: this.obj.velocity.x,
+        matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.body, {
+          x: this.body.velocity.x,
           y: -this.speed
-        }); //Matter.Body.applyForce(this.obj,this.obj.position,{x: 0, y: -0.3})
+        }); //Matter.Body.applyForce(this.body,this.body.position,{x: 0, y: -0.3})
 
         this.canJump = false;
       }
@@ -28588,15 +28561,139 @@ var Player = /*#__PURE__*/function () {
   }, {
     key: "moveDown",
     value: function moveDown() {
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.obj, {
-        x: this.obj.velocity.x,
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.body, {
+        x: this.body.velocity.x,
         y: +this.speed
       });
+    }
+  }, {
+    key: "removeFrom",
+    value: function removeFrom(main) {
+      //override
+      this.exist = false;
+      this.body.type = "body";
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.remove(main.scene.engine.world, this.body);
+      main.objects[this.body.id] = undefined;
     }
   }]);
 
   return Player;
-}();
+}(_Object);
+
+var Circle = /*#__PURE__*/function (_Object3) {
+  _inherits(Circle, _Object3);
+
+  var _super2 = _createSuper(Circle);
+
+  function Circle(x, y, rad, options, isStatic) {
+    var _this2;
+
+    _classCallCheck(this, Circle);
+
+    _this2 = _super2.call(this);
+    _this2.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.circle(x, y, rad, options);
+    _this2.body.friction = 0;
+
+    _this2.setStatic(isStatic);
+
+    return _this2;
+  }
+
+  return Circle;
+}(_Object);
+
+var Rectangle = /*#__PURE__*/function (_Object4) {
+  _inherits(Rectangle, _Object4);
+
+  var _super3 = _createSuper(Rectangle);
+
+  function Rectangle(x, y, width, height, options, isStatic) {
+    var _this3;
+
+    _classCallCheck(this, Rectangle);
+
+    _this3 = _super3.call(this);
+    _this3.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.rectangle(x, y, width, height, options);
+
+    _this3.setStatic(isStatic);
+
+    return _this3;
+  }
+
+  return Rectangle;
+}(_Object);
+
+var Square = /*#__PURE__*/function (_Rectangle) {
+  _inherits(Square, _Rectangle);
+
+  var _super4 = _createSuper(Square);
+
+  function Square(x, y, length, options, isStatic) {
+    var _this4;
+
+    _classCallCheck(this, Square);
+
+    _this4 = _super4.call(this, x, y, length, length, options, isStatic);
+    _this4.body.label = "Square Body";
+    return _this4;
+  }
+
+  return Square;
+}(Rectangle);
+
+var Bar = /*#__PURE__*/function (_Rectangle2) {
+  _inherits(Bar, _Rectangle2);
+
+  var _super5 = _createSuper(Bar);
+
+  function Bar(x, y, length, options, isStatic) {
+    _classCallCheck(this, Bar);
+
+    return _super5.call(this, x, y, length, length, options, isStatic);
+  }
+
+  return Bar;
+}(Rectangle);
+
+var Polygon = /*#__PURE__*/function (_Object5) {
+  _inherits(Polygon, _Object5);
+
+  var _super6 = _createSuper(Polygon);
+
+  function Polygon(x, y, sides, rad, options, isStatic) {
+    var _this5;
+
+    _classCallCheck(this, Polygon);
+
+    _this5 = _super6.call(this);
+    _this5.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.polygon(x, y, sides, rad, options);
+
+    _this5.setStatic(isStatic);
+
+    _this5.body.rad = rad;
+    return _this5;
+  }
+
+  return Polygon;
+}(_Object);
+
+var Triangle = /*#__PURE__*/function (_Polygon) {
+  _inherits(Triangle, _Polygon);
+
+  var _super7 = _createSuper(Triangle);
+
+  function Triangle(x, y, rad, options, isStatic) {
+    var _this6;
+
+    _classCallCheck(this, Triangle);
+
+    _this6 = _super7.call(this, x, y, 3, rad, options, isStatic);
+    _this6.body.label = "Triangle Body";
+    return _this6;
+  }
+
+  return Triangle;
+}(Polygon);
 
 /***/ }),
 /* 10 */
@@ -28606,17 +28703,15 @@ var Player = /*#__PURE__*/function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "start", function() { return start; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stop", function() { return stop; });
-/* harmony import */ var _attachFilter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
-
 
 
 function start(main) {
   main.scene.isRunning = true;
 
   for (var i in main.objects) {
-    if (main.objects[i] === undefined || main.objects[i].label === "Constraint") continue;
-    Object(_attachFilter__WEBPACK_IMPORTED_MODULE_0__["attachFilter_All"])(main.objects[i]);
-    main.objects[i].frictionAir = 0;
+    if (main.objects[i] === undefined || main.objects[i].body.label === "Constraint") continue;
+    main.objects[i].attachFilter_All();
+    main.objects[i].body.frictionAir = 0;
   }
 
   main.scene.engine.world.gravity.y = 1;
@@ -28626,306 +28721,65 @@ function stop(main) {
   main.scene.isRunning = false;
 
   for (var i in main.objects) {
-    if (main.objects[i] === undefined || main.objects[i].label === "Constraint") continue;
-    Object(_attachFilter__WEBPACK_IMPORTED_MODULE_0__["attachFilter_Mouse"])(main.objects[i]);
+    if (main.objects[i] === undefined || main.objects[i].body.label === "Constraint") continue;
+    main.objects[i].attachFilter_Mouse();
   }
 
   main.scene.engine.world.gravity.y = 0;
 }
 
 /***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attachFilter_Mouse", function() { return attachFilter_Mouse; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attachFilter_All", function() { return attachFilter_All; });
-function attachFilter_Mouse(obj) {
-  //マウスのみ接触するフィルター
-  obj.collisionFilter.category = 2;
-  obj.collisionFilter.mask = 1;
-  obj.frictionAir = 1; //動かないように
-}
-function attachFilter_All(obj) {
-  obj.collisionFilter.category = 4294967295;
-  obj.collisionFilter.mask = 4294967295;
-}
-
-/***/ }),
+/* 11 */,
 /* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "update_after_adding", function() { return update_after_adding; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCircle", function() { return addCircle; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addSquare", function() { return addSquare; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addTri", function() { return addTri; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addBar", function() { return addBar; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addPlayer", function() { return addPlayer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteObj", function() { return deleteObj; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addConstraint", function() { return addConstraint; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addLib", function() { return addLib; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "control2obj", function() { return control2obj; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Constraint", function() { return Constraint; });
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _app1__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
-/* harmony import */ var _attachFilter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
-/* harmony import */ var _createConstraint__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
-/* harmony import */ var _createObject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(14);
-/* harmony import */ var _addObjects__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(15);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
- //TODO 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
+var Constraint = /*#__PURE__*/function () {
+  function Constraint(objects, id1, id2, x1, y1, x2, y2) {
+    _classCallCheck(this, Constraint);
 
-
-
-
-
-function deleteObj() {
-  if (_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[_app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1.id].type === "Player") {
-    _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.exist = false;
-    _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj.type = "body";
+    var options = {
+      bodyA: objects[id1].body,
+      pointA: {
+        x: x1,
+        y: y1
+      },
+      bodyB: objects[id2].body,
+      pointB: {
+        x: x2,
+        y: y2
+      },
+      stiffness: 1
+    };
+    this.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Constraint.create(options);
+    var group = Math.min(objects[id1].body.collisionFilter.group, objects[id2].body.collisionFilter.group);
+    if (group >= 0) group = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.nextGroup(true);
+    objects[id1].body.collisionFilter.group = group;
+    objects[id2].body.collisionFilter.group = group;
   }
 
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.remove(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[_app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1.id]);
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[_app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1.id] = undefined;
-}
-
-;
-
-function update_after_adding(obj) {
-  if (_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world.gravity.y == 0) {
-    //開始前、マウスのみ接触
-    Object(_attachFilter__WEBPACK_IMPORTED_MODULE_2__["attachFilter_Mouse"])(obj);
-  } else {
-    Object(_attachFilter__WEBPACK_IMPORTED_MODULE_2__["attachFilter_All"])(obj);
-    obj.frictionAir = 0;
-  }
-
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev2.id = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1.id;
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1.id = obj.id;
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[obj.id] = obj;
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.idCnt = obj.id; //最後のidをメモ
-}
-
-function addSquare() {
-  document.forms.controlForm.elements[0].value = "Square Body";
-  var obj = control2obj();
-  update_after_adding(obj);
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, obj);
-}
-
-function addTri() {
-  document.forms.controlForm.elements[0].value = "Triangle Body";
-  var obj = control2obj();
-  update_after_adding(obj);
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, obj);
-}
-
-;
-
-function addCircle() {
-  document.forms.controlForm.elements[0].value = "Circle Body";
-  var obj = control2obj();
-  update_after_adding(obj);
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, obj);
-}
-
-;
-
-function addBar(x, y, color, length) {
-  /*document.forms.controlForm.elements[0].value = "Bar Body";
-  let obj = control2obj();
-  update_after_adding(obj);
-  Matter.World.add(main.scene.engine.world, obj);*/
-  addCar();
-}
-
-function addPlayer() {
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.circle(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height / 2, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardRad, {
-    density: 0.001,
-    //friction:0,
-    //frictionAir:0,
-    restitution: 0.3,
-    render: {
-      sprite: {
-        //スプライトの設定
-        texture: '../img/rainboww.png' //テクスチャ画像を指定
-
-      }
+  _createClass(Constraint, [{
+    key: "addToWorld",
+    value: function addToWorld(main) {
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(main.scene.engine.world, this.body);
+      main.objects[this.body.id] = this;
+      main.scene.idCnt = this.body.id;
     }
-  });
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj.scale = 1;
-  update_after_adding(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj);
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj);
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.init();
-}
+  }]);
 
-function addConstraint() {
-  var prev1 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1;
-  var prev2 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev2;
-
-  if (prev1.id > 0 && prev2.id > 0 && prev1.id != prev2.id) {
-    var constraint = Object(_createConstraint__WEBPACK_IMPORTED_MODULE_3__["createConstraint"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, prev1.id, prev2.id, prev1.offset.x, prev1.offset.y, prev2.offset.x, prev2.offset.y);
-    matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, constraint);
-    _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[constraint.id] = constraint;
-    _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.idCnt = constraint.id;
-  }
-}
-
-;
-function control2obj() {
-  var Elements = document.forms[0];
-
-  var _Control_Size2data = Control_Size2data(Elements[0].value, Elements[4].value),
-      data1 = _Control_Size2data.data1,
-      data2 = _Control_Size2data.data2;
-
-  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])(Elements[0].value, Number(Elements[1].value), Number(Elements[2].value), Elements[7].value, Elements[8].checked, Elements[3].value / 100, Elements[5].value / 10000, Elements[6].value / 100, data1, data2, Elements[4].value / 100); //type,x,y,color,isStatic,angle,density,restitution,data1,data2,scale
-
-  return obj;
-}
-;
-
-function Control_Size2data(label, rangeValue) {
-  //[50,200] TODO: 調整
-  var data1, data2;
-
-  switch (label) {
-    case 'Circle Body':
-      data1 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardRad * rangeValue / 100;
-      break;
-
-    case 'Square Body':
-      data1 = data2 = rangeValue / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardSide;
-      break;
-
-    case 'Triangle Body':
-      data1 = rangeValue / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardRad;
-      break;
-
-    case 'Bar Body':
-      data1 = rangeValue / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardSide * 2;
-      break;
-  }
-
-  return {
-    data1: data1,
-    data2: data2
-  };
-}
-
-function addLib(sceneId) {
-  var hostURL = "http://localhost:8000";
-  var hostUrl = hostURL + "/addLibrary/" + sceneId;
-  $.ajax({
-    url: hostUrl,
-    type: "POST",
-    data: {
-      sceneId: sceneId
-    },
-    dataType: "json",
-    scriptCharset: "utf-8",
-    timeout: 3000
-  }).then(function (data) {
-    Object(_addObjects__WEBPACK_IMPORTED_MODULE_5__["addObjects"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"], data.objects);
-  }, function (XMLHttpRequest, textStatus, errorThrown) {
-    console.log("error");
-    console.log("XMLHttpRequest : " + XMLHttpRequest.status);
-    console.log("textStatus     : " + textStatus);
-    console.log("errorThrown    : " + errorThrown.message);
-  });
-}
-/*
-function addIntervalObject() {
-  let total = 100;
-  setInterval(() => {
-    if (total-- > 0) {
-      control2obj();
-    }
-  }, 200)
-}*/
-
-
-function addCar() {
-  var xx = 50,
-      yy = 50,
-      wheelSize = 30;
-  var wheelBase = 20,
-      wheelAOffset = -120 * 0.5 + wheelBase,
-      wheelBOffset = 120 * 0.5 - wheelBase,
-      wheelYOffset = 0;
-  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", xx, yy, null, false, 0, 0.0001, 0.1, 120, 30, 1);
-  var cir1 = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Circle Body", xx + wheelAOffset, yy + wheelYOffset, null, false, 0, 0.0001, 0.1, wheelSize, 30, 1);
-  var cir2 = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Circle Body", xx + wheelBOffset, yy + wheelYOffset, null, false, 0, 0.0001, 0.1, wheelSize, 30, 1);
-  update_after_adding(rec);
-  update_after_adding(cir1);
-  update_after_adding(cir2);
-  cir1.friction = 0;
-  cir2.friction = 0;
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, [rec, cir1, cir2]);
-  var constraint1 = Object(_createConstraint__WEBPACK_IMPORTED_MODULE_3__["createConstraint"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, rec.id, cir1.id, wheelAOffset, wheelYOffset, 0, 0);
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, constraint1);
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[constraint1.id] = constraint1;
-  var constraint2 = Object(_createConstraint__WEBPACK_IMPORTED_MODULE_3__["createConstraint"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, rec.id, cir2.id, wheelBOffset, wheelYOffset, 0, 0);
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, constraint2);
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[constraint2.id] = constraint2;
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.idCnt = constraint2.id;
-}
-
-function addFuriko() {
-  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 150, null, true, 0, 0.001, 0, 20, 20, 1);
-  var cir = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Circle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 400, null, false, 0, 0.001, 1, 50, 20, 1);
-  var constraint = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Constraint.create({
-    bodyA: rec,
-    bodyB: cir,
-    stiffness: 1
-  });
-  update_after_adding(rec);
-  update_after_adding(cir);
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, [rec, cir, constraint]);
-  objects[constraint.id] = constraint;
-}
-
-function addfield() {
-  var tmp = [];
-  var width = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width;
-  var height = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height;
-  tmp[0] = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", width / 2, height, '#2e2b44', true, 0, 0.005, 0, width, 60, 1);
-  tmp[1] = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", 0, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1);
-  tmp[2] = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", width, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1);
-
-  for (var i in tmp) {
-    update_after_adding(tmp[i]);
-    matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, tmp[i]);
-  }
-}
-
-function addBallPyramid() {
-  for (var i = 0; i < 9; i++) {
-    for (var j = 0; j <= i; j++) {
-      var x = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2 - i * 35 + j * 70;
-      var y = 50 + i * 50;
-      var tmp = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Circle Body", x, y, 'gray', true, 0, 0.001, 0, 10, 0, 1);
-      update_after_adding(tmp);
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, tmp);
-    }
-  }
-}
-/*
-function createStack(numX, numY) {
-    let stackA = Composites.stack(100, 100, numX, numY, 0, 0, function (x, y) {
-        return Matter.Bodies.rectangle(x, y, 15, 15);
-    });
-    World.add(engine.world, stackA);
-    console.log(stackA)
-    stackA.Matter.Bodies.map((c) => {
-        objects[c.id]=c;
-    })
-}*/
+  return Constraint;
+}();
 
 /***/ }),
 /* 13 */
@@ -28933,30 +28787,26 @@ function createStack(numX, numY) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createConstraint", function() { return createConstraint; });
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createObjct", function() { return createObjct; });
+/* harmony import */ var _class_Object__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
 
-function createConstraint(objects, id1, id2, x1, y1, x2, y2) {
-  var constraint = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Constraint.create({
-    bodyA: objects[id1],
-    pointA: {
-      x: x1,
-      y: y1
-    },
-    bodyB: objects[id2],
-    pointB: {
-      x: x2,
-      y: y2
-    },
-    stiffness: 1
-  }); // 同じobjへの結合を増やす時は、同じgroupにする
+function createObjct(label, x, y, data1, data2, options, isStatic) {
+  //scaleでの実装ならdata1,data2要らないかも、、
+  var obj;
 
-  var group = Math.min(objects[id1].collisionFilter.group, objects[id2].collisionFilter.group);
-  if (group >= 0) group = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.nextGroup(true);
-  objects[id1].collisionFilter.group = group;
-  objects[id2].collisionFilter.group = group;
-  return constraint;
+  if (label === "Circle Body") {
+    obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Circle"](x, y, data1, options, isStatic);
+  } else if (label === "Rectangle Body") {
+    obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Rectangle"](x, y, data1, data2, options, isStatic);
+  } else if (label === "Square Body") {
+    obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Square"](x, y, data1, options, isStatic);
+  } else if (label === "Triangle Body") {
+    obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Triangle"](x, y, data1, options, isStatic);
+  } else if (label === "Bar Body") {
+    obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Bar"](x, y, data1, options, isStatic);
+  }
+
+  return obj;
 }
 
 /***/ }),
@@ -28965,336 +28815,31 @@ function createConstraint(objects, id1, id2, x1, y1, x2, y2) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createObjct", function() { return createObjct; });
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
-
-function createObjct(label, x, y, color, isStatic, angle, density, restitution, data1, data2, scale) {
-  //scaleでの実装ならdata1,data2要らないかも、、
-  var obj;
-
-  if (label === "Circle Body") {
-    obj = createCircle(x, y, color, data1);
-  } else if (label === "Rectangle Body") {
-    obj = createRectangle(x, y, color, data1, data2);
-  } else if (label === "Square Body") {
-    obj = createSquare(x, y, color, data1);
-  } else if (label === "Triangle Body") {
-    obj = createTriangle(x, y, color, data1);
-  } else if (label === "Bar Body") {
-    obj = createBar(x, y, color, data1);
-  }
-
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setDensity(obj, density); //Matter.Body.setStatic(obj, isStatic);
-
-  obj.isStatic = isStatic;
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setAngle(obj, angle);
-  obj.restitution = restitution;
-  obj.scale = scale;
-  return obj;
-}
-
-function createCircle(x, y, color, rad) {
-  var ball = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.circle(x, y, rad, {
-    render: {
-      fillStyle: color
-    }
-  });
-  ball.friction = 0;
-  return ball;
-}
-
-function createRectangle(x, y, color, width, height) {
-  var rectangle = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.rectangle(x, y, width, height, {
-    render: {
-      fillStyle: color
-    }
-  });
-  return rectangle;
-}
-
-function createSquare(x, y, color, length) {
-  var square = createRectangle(x, y, color, length, length);
-  square.label = "Square Body";
-  return square;
-}
-
-function createBar(x, y, color, length) {
-  var bar = createRectangle(x, y, color, length, length / 20);
-  bar.label = "Bar Body";
-  return bar;
-}
-
-function createPolygon(x, y, color, sides, rad) {
-  var polygon = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.polygon(x, y, sides, rad, {
-    render: {
-      fillStyle: color
-    }
-  });
-  polygon.rad = rad;
-  return polygon;
-}
-
-function createTriangle(x, y, color, rad) {
-  var triangle = createPolygon(x, y, color, 3, rad);
-  triangle.label = "Triangle Body";
-  return triangle;
-}
-
-/***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addObjects", function() { return addObjects; });
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _createConstraint__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
-/* harmony import */ var _addObject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
-/* harmony import */ var _createObject__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
-
-
+/* harmony import */ var _class_Constraint__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
+/* harmony import */ var _createObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
 
 
 function addObjects(main, Objects) {
   var tmp = main.scene.idCnt - 1;
   Objects.map(function (c) {
     if (c.ObjectType === "Constraint") {
-      var constraint = Object(_createConstraint__WEBPACK_IMPORTED_MODULE_1__["createConstraint"])(main.objects, c.X + tmp, c.Y + tmp, c.Angle, c.Density, c.Restitution, c.Data1);
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(main.scene.engine.world, constraint);
-      main.objects[constraint.id] = constraint;
-      main.scene.idCnt = constraint.id;
+      var constraint = new _class_Constraint__WEBPACK_IMPORTED_MODULE_0__["Constraint"](main.objects, c.X + tmp, c.Y + tmp, c.Angle, c.Density, c.Restitution, c.Data1);
+      constraint.addToWorld(main);
     } else {
-      var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])(c.ObjectType, c.X, c.Y, c.Color, c.isStatic, c.Angle, c.Density, c.Restitution, c.Data1, c.Data2, 1);
-      Object(_addObject__WEBPACK_IMPORTED_MODULE_2__["update_after_adding"])(obj);
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(main.scene.engine.world, obj);
+      var options = {
+        render: {
+          fillStyle: c.Color
+        },
+        angle: c.Angle,
+        density: c.Density,
+        restitution: c.Restitution,
+        scale: 1
+      };
+      var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_1__["createObjct"])(c.ObjectType, c.X, c.Y, c.Data1, c.Data2, options, c.isStatic);
+      obj.addToWorld(main);
     }
   });
-}
-
-/***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeAngle", function() { return changeAngle; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeScale", function() { return changeScale; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeDensity", function() { return changeDensity; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeRestitution", function() { return changeRestitution; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeColor", function() { return changeColor; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeStatic", function() { return changeStatic; });
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
-/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _app1__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
-
-
-
-
-function changeAngle(id) {
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setAngle(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id], document.forms.controlForm.elements[3].value / 100);
-}
-
-function changeScale(id) {
-  var obj = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id];
-  var nextScale = document.forms.controlForm.elements[4].value / 100;
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.scale(obj, 1 / obj.scale, 1 / obj.scale); //一回scale=1に戻す
-
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.scale(obj, nextScale, nextScale);
-
-  switch (obj.label) {
-    case 'Circle Body':
-      //obj.circleRadius*=nextScale; //scaleでやってくれる
-      break;
-
-    case 'Square Body':
-    case 'Bar Body':
-      //obj.width*=nextScale;
-      //obj.height*=nextScale;
-      break;
-
-    case 'Triangle Body':
-      obj.rad *= nextScale;
-      break;
-  }
-
-  obj.scale = nextScale;
-}
-
-function changeDensity(id) {
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setDensity(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id], document.forms.controlForm.elements[5].value / 10000);
-}
-
-function changeRestitution(id) {
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id].restitution = document.forms.controlForm.elements[6].value / 100;
-}
-
-function changeColor(id) {
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id].render.fillStyle = document.forms.controlForm.elements[7].value;
-}
-
-function changeStatic(id) {
-  // Matter.Body.setStatic(main.objects[id], 
-  //               document.forms.controlForm.elements[8].checked);
-  console.log("A");
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[id].isStatic = document.forms.controlForm.elements[8].checked;
-}
-
-/***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "save", function() { return save; });
-/* harmony import */ var _checkRange__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
-/* harmony import */ var _roundFloat__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
-//保存
-//var hostURL = "https://two-sim.herokuapp.com";
-
-
-function save(main, objects) {
-  var hostURL = "http://localhost:8000";
-  var sceneInfo = [],
-      data = [],
-      nextIdMap = [],
-      nextIdCnt = 2;
-
-  for (var i = 0; i < 4; i++) {
-    var c = document.forms.saveForm.elements[i];
-    if (i === 3) sceneInfo.push(c.checked);else sceneInfo.push(c.value);
-  }
-
-  for (var _i = 1; _i < objects.length; _i++) {
-    if (objects[_i] === undefined) {
-      continue;
-    }
-
-    if (objects[_i].label === "Constraint") {
-      var tmp = {
-        "type": objects[_i].label,
-        "x": nextIdMap[objects[_i].bodyA.id],
-        "y": nextIdMap[objects[_i].bodyB.id],
-        "color": "white",
-        "isStatic": true,
-        "angle": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].pointA.x, 4),
-        "density": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].pointA.y, 4),
-        "restitution": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].pointB.x, 4),
-        "data1": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].pointB.y, 4),
-        "data2": 0
-      };
-    } else {
-      /*//範囲外なら保存しない
-      if (checkRange(main,objects[i])) //TODO 片方消えた時のconstraint
-          continue;
-      */
-      var _obj2data = obj2data(objects[_i]),
-          data1 = _obj2data.data1,
-          data2 = _obj2data.data2;
-
-      if (data1 === -1) continue;
-      var tmp = {
-        "type": objects[_i].label,
-        "x": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].position.x, 4),
-        "y": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].position.y, 4),
-        "color": objects[_i].render.fillStyle,
-        "isStatic": objects[_i].isStatic,
-        "angle": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].angle, 3),
-        "density": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].density, 3),
-        "restitution": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(objects[_i].restitution, 4),
-        "data1": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(data1, 2),
-        "data2": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(data2, 2)
-      };
-      nextIdMap[objects[_i].id] = nextIdCnt;
-    }
-
-    data.push(tmp);
-    nextIdCnt++;
-  }
-
-  var hostUrl = hostURL + "/making/save";
-  $.ajax({
-    url: hostUrl,
-    type: "POST",
-    data: {
-      "data": data,
-      "sceneInfo": sceneInfo
-    },
-    dataType: "text",
-    scriptCharset: "utf-8",
-    timeout: 3000
-  }).then(function (data) {
-    console.log("ok");
-    window.location.href = hostURL + "/scenes/" + data;
-  }, function (XMLHttpRequest, textStatus, errorThrown) {
-    console.log("error");
-    console.log("XMLHttpRequest : " + XMLHttpRequest.status);
-    console.log("textStatus     : " + textStatus);
-    console.log("errorThrown    : " + errorThrown.message);
-  });
-}
-
-function obj2data(obj) {
-  //dataは(width,height) or (rad,null)とか
-  var data1, data2;
-
-  switch (obj.label) {
-    case 'Circle Body':
-      data1 = obj.circleRadius;
-      break;
-
-    case 'Rectangle Body':
-    case 'Square Body':
-    case 'Bar Body':
-      //data1 = obj.width;
-      //data2 = obj.height;
-      data1 = getDis(obj.vertices[0], obj.vertices[1]);
-      data2 = getDis(obj.vertices[0], obj.vertices[3]);
-      break;
-
-    case 'Triangle Body':
-      data1 = obj.rad;
-      break;
-
-    default:
-      data1 = -1;
-  }
-
-  return {
-    data1: data1,
-    data2: data2
-  };
-}
-
-function getDis(obj1, obj2) {
-  return Math.sqrt(Math.pow(obj2.x - obj1.x, 2) + Math.pow(obj2.y - obj1.y, 2));
-}
-
-/***/ }),
-/* 18 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkRange", function() { return checkRange; });
-function checkRange(main, obj) {
-  var x = obj.position.x,
-      y = obj.position.y;
-  if (x < 0 || x > main.scene.width || y < 0 || y > main.scene.height) return 1;else return 0;
-}
-
-/***/ }),
-/* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "roundFloat", function() { return roundFloat; });
-function roundFloat(number, n) {
-  var _pow = Math.pow(10, n);
-
-  return Math.round(number * _pow) / _pow;
 }
 
 /***/ })

@@ -11,7 +11,7 @@ import Matter from "matter-js"
 import { Main } from './modules/class/Main';
 
 import { start, stop } from "./modules/function/controlScene";
-import { addSquare, addTri, addCircle,addBar, addConstraint, addPlayer, deleteObj, addLib } from "./modules/function/addObject";
+import { addSquare, addTri, addCircle,addBar, addConstraint, addPlayer, addLib } from "./modules/function/addObject";
 import { changeAngle, changeScale, changeDensity, changeRestitution, changeColor, changeStatic } from "./modules/function/changeObject"
 import { save } from "./modules/function/save";
 
@@ -33,7 +33,7 @@ Matter.Events.on(main.mouse.mousedrag, "startdrag", function (e) {   // dragã—ã
     let Elements = document.forms.controlForm.elements;
     let prev1 = main.mouse.prev1;
     let prev2 = main.mouse.prev2;
-
+    console.log(e.body)
     Elements[0].value = e.body.label;
     Elements[3].value = e.body.angle * 100;
     Elements[4].value = e.body.scale * 100;
@@ -57,7 +57,7 @@ Matter.Events.on(main.mouse.mousedrag, "startdrag", function (e) {   // dragã—ã
 Matter.Events.on(main.scene.engine, 'collisionStart', function (event) {
     var pairs = event.pairs;
     for (let i in pairs) {
-        if (pairs[i].bodyA.type == "Player" || pairs[i].bodyB.type == "Player") {
+        if (pairs[i].bodyA.isPlayer === "Player" || pairs[i].bodyB.isPlayer === "Player") {
             main.player.canJump = true;
         }
     }
@@ -95,7 +95,9 @@ $(document).on('click', '#addCircle', addCircle);
 $(document).on('click', '#addTri', addTri);
 $(document).on('click', '#addBar',addBar);
 $(document).on('click', '#addConstraint', addConstraint);
-$(document).on('click', '#Delete', deleteObj);
+$(document).on('click', '#Delete', function(){
+    main.objects[main.mouse.prev1.id].removeFrom(main)
+});
 
 $(document).on('click', '#start', function () {
     start(main)
@@ -105,7 +107,7 @@ $(document).on('click', '#stop', () => {
 });
 
 $(document).on('click', '#save', function () {
-    save(main, main.objects);
+    save(main.objects);
 });
 
 $(document).on('click', '#addPlayer', function () {
