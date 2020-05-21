@@ -50,7 +50,7 @@ export  class Main{
             }            
         }
         else{
-            let speed = 2;
+            let speed = 5;
             if(this.scene.keys[68]){
                 this.scene.cameraPos.x+=speed;    
             }

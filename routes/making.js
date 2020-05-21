@@ -9,8 +9,7 @@ const {check,validationResult} = require('express-validator');
 
 /* GET users listing. */
 router.get('/', (req, res, next)=> {
-    var test = 100;
-    res.render('making',{test});
+    res.render('making');
 });
 
 module.exports = router;

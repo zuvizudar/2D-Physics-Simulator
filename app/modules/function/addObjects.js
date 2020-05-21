@@ -5,6 +5,7 @@ import {update_after_adding} from "./addObject"
 import {createObjct} from "./createObject"
 
 export function addObjects(main,Objects) {
+    const tmp = main.scene.idCnt-1;
     Objects.map((c) => {
         if (c.ObjectType === "Constraint") {
             const constraint = createConstraint(main.objects,c.X + tmp, c.Y + tmp, c.Angle, c.Density, c.Restitution, c.Data1);
@@ -12,7 +13,7 @@ export function addObjects(main,Objects) {
             main.objects[constraint.id] = constraint;
             main.scene.idCnt = constraint.id;
         } else {
-            var obj = createObjct(c.ObjectType, c.X, c.Y, c.Color, c.isStatic, c.Angle, c.Density, c.Restitution, c.Data1, c.Data2, 1);
+            let obj = createObjct(c.ObjectType, c.X, c.Y, c.Color, c.isStatic, c.Angle, c.Density, c.Restitution, c.Data1, c.Data2, 1);
             update_after_adding(obj);
             Matter.World.add(main.scene.engine.world, obj);
         }

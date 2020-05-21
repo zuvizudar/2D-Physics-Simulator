@@ -124,8 +124,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addPlayer'
   }
 });
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addLib', function () {
-  console.log(this);
-  Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addLib"])("a81dbf97-676a-46bd-84f1-4566514100bd");
+  Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_5__["addLib"])(this.src.substr(26, 36));
 });
 
 /***/ }),
@@ -28360,7 +28359,7 @@ var Main = /*#__PURE__*/function () {
           this.player.moveDown();
         }
       } else {
-        var speed = 2;
+        var speed = 5;
 
         if (this.scene.keys[68]) {
           this.scene.cameraPos.x += speed;
@@ -28559,18 +28558,20 @@ var Player = /*#__PURE__*/function () {
   }, {
     key: "moveRight",
     value: function moveRight() {
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.applyForce(this.obj, this.obj.position, {
-        x: 0.01,
-        y: 0
-      }); //Matter.Body.setVelocity(this.obj, {x: this.speed, y: this.obj.velocity.y})
+      //Matter.Body.applyForce(this.obj, this.obj.position, { x: 0.01, y: 0 })
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.obj, {
+        x: this.speed * 2,
+        y: this.obj.velocity.y
+      });
     }
   }, {
     key: "moveLeft",
     value: function moveLeft() {
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.applyForce(this.obj, this.obj.position, {
-        x: -0.01,
-        y: 0
-      }); //Matter.Body.setVelocity(this.obj, {x: -this.speed, y: this.obj.velocity.y})
+      //Matter.Body.applyForce(this.obj, this.obj.position, { x: -0.01, y: 0 })
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.obj, {
+        x: -this.speed * 2,
+        y: this.obj.velocity.y
+      });
     }
   }, {
     key: "moveUp",
@@ -28684,6 +28685,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function deleteObj() {
+  if (_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[_app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1.id].type === "Player") {
+    _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.exist = false;
+    _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj.type = "body";
+  }
+
   matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.remove(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[_app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1.id]);
   _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[_app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1.id] = undefined;
 }
@@ -28708,7 +28714,6 @@ function update_after_adding(obj) {
 function addSquare() {
   document.forms.controlForm.elements[0].value = "Square Body";
   var obj = control2obj();
-  console.log(obj);
   update_after_adding(obj);
   matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, obj);
 }
@@ -28732,14 +28737,28 @@ function addCircle() {
 ;
 
 function addBar(x, y, color, length) {
-  document.forms.controlForm.elements[0].value = "Bar Body";
-  var obj = control2obj();
+  /*document.forms.controlForm.elements[0].value = "Bar Body";
+  let obj = control2obj();
   update_after_adding(obj);
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, obj);
+  Matter.World.add(main.scene.engine.world, obj);*/
+  addCar();
 }
 
 function addPlayer() {
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj = control2obj();
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.circle(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height / 2, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardRad, {
+    density: 0.001,
+    //friction:0,
+    //frictionAir:0,
+    restitution: 0.3,
+    render: {
+      sprite: {
+        //スプライトの設定
+        texture: '../img/rainboww.png' //テクスチャ画像を指定
+
+      }
+    }
+  });
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj.scale = 1;
   update_after_adding(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj);
   matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.obj);
   _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.init();
@@ -28812,7 +28831,6 @@ function addLib(sceneId) {
     scriptCharset: "utf-8",
     timeout: 3000
   }).then(function (data) {
-    var tmp = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.idCnt - 1;
     Object(_addObjects__WEBPACK_IMPORTED_MODULE_5__["addObjects"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"], data.objects);
   }, function (XMLHttpRequest, textStatus, errorThrown) {
     console.log("error");
@@ -28829,20 +28847,85 @@ function addIntervalObject() {
       control2obj();
     }
   }, 200)
-}
-function addCar(){
-  var xx = 50,yy = 50,wheelSize = 30;
+}*/
+
+
+function addCar() {
+  var xx = 50,
+      yy = 50,
+      wheelSize = 30;
   var wheelBase = 20,
-    wheelAOffset = -120 * 0.5 + wheelBase,
-    wheelBOffset = 120 * 0.5 - wheelBase,
-    wheelYOffset = 0;
-  var rec = createObjct("Rectangle Body", xx, yy, null, false, 0,0.0001, 0.1, 120, 30, 1) ;
-  var cir1 = createObjct("Circle Body", xx+wheelAOffset, yy+wheelYOffset, null, false, 0,0.0001, 0.1, wheelSize, 30, 1) ;
-  var cir2 =createObjct("Circle Body", xx+wheelBOffset, yy+wheelYOffset, null, false, 0,0.0001, 0.1, wheelSize, 30, 1) ;
-  addConstraint(rec.id,cir1.id,wheelAOffset, wheelYOffset,0,0)       
-  addConstraint(rec.id,cir2.id,wheelBOffset, wheelYOffset,0,0)                     
+      wheelAOffset = -120 * 0.5 + wheelBase,
+      wheelBOffset = 120 * 0.5 - wheelBase,
+      wheelYOffset = 0;
+  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", xx, yy, null, false, 0, 0.0001, 0.1, 120, 30, 1);
+  var cir1 = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Circle Body", xx + wheelAOffset, yy + wheelYOffset, null, false, 0, 0.0001, 0.1, wheelSize, 30, 1);
+  var cir2 = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Circle Body", xx + wheelBOffset, yy + wheelYOffset, null, false, 0, 0.0001, 0.1, wheelSize, 30, 1);
+  update_after_adding(rec);
+  update_after_adding(cir1);
+  update_after_adding(cir2);
+  cir1.friction = 0;
+  cir2.friction = 0;
+  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, [rec, cir1, cir2]);
+  var constraint1 = Object(_createConstraint__WEBPACK_IMPORTED_MODULE_3__["createConstraint"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, rec.id, cir1.id, wheelAOffset, wheelYOffset, 0, 0);
+  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, constraint1);
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[constraint1.id] = constraint1;
+  var constraint2 = Object(_createConstraint__WEBPACK_IMPORTED_MODULE_3__["createConstraint"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, rec.id, cir2.id, wheelBOffset, wheelYOffset, 0, 0);
+  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, constraint2);
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects[constraint2.id] = constraint2;
+  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.idCnt = constraint2.id;
 }
-*/
+
+function addFuriko() {
+  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 150, null, true, 0, 0.001, 0, 20, 20, 1);
+  var cir = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Circle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 400, null, false, 0, 0.001, 1, 50, 20, 1);
+  var constraint = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Constraint.create({
+    bodyA: rec,
+    bodyB: cir,
+    stiffness: 1
+  });
+  update_after_adding(rec);
+  update_after_adding(cir);
+  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, [rec, cir, constraint]);
+  objects[constraint.id] = constraint;
+}
+
+function addfield() {
+  var tmp = [];
+  var width = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width;
+  var height = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height;
+  tmp[0] = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", width / 2, height, '#2e2b44', true, 0, 0.005, 0, width, 60, 1);
+  tmp[1] = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", 0, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1);
+  tmp[2] = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Rectangle Body", width, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1);
+
+  for (var i in tmp) {
+    update_after_adding(tmp[i]);
+    matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, tmp[i]);
+  }
+}
+
+function addBallPyramid() {
+  for (var i = 0; i < 9; i++) {
+    for (var j = 0; j <= i; j++) {
+      var x = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2 - i * 35 + j * 70;
+      var y = 50 + i * 50;
+      var tmp = Object(_createObject__WEBPACK_IMPORTED_MODULE_4__["createObjct"])("Circle Body", x, y, 'gray', true, 0, 0.001, 0, 10, 0, 1);
+      update_after_adding(tmp);
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, tmp);
+    }
+  }
+}
+/*
+function createStack(numX, numY) {
+    let stackA = Composites.stack(100, 100, numX, numY, 0, 0, function (x, y) {
+        return Matter.Bodies.rectangle(x, y, 15, 15);
+    });
+    World.add(engine.world, stackA);
+    console.log(stackA)
+    stackA.Matter.Bodies.map((c) => {
+        objects[c.id]=c;
+    })
+}*/
 
 /***/ }),
 /* 13 */
@@ -28870,7 +28953,7 @@ function createConstraint(objects, id1, id2, x1, y1, x2, y2) {
   }); // 同じobjへの結合を増やす時は、同じgroupにする
 
   var group = Math.min(objects[id1].collisionFilter.group, objects[id2].collisionFilter.group);
-  if (group >= 0) var group = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.nextGroup(true);
+  if (group >= 0) group = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.nextGroup(true);
   objects[id1].collisionFilter.group = group;
   objects[id2].collisionFilter.group = group;
   return constraint;
@@ -28957,46 +29040,6 @@ function createTriangle(x, y, color, rad) {
   triangle.label = "Triangle Body";
   return triangle;
 }
-/*
-function createStack(numX, numY) {
-    var stackA = Composites.stack(100, 100, numX, numY, 0, 0, function (x, y) {
-        return Matter.Bodies.rectangle(x, y, 15, 15);
-    });
-    World.add(engine.world, stackA);
-    console.log(stackA)
-    stackA.Matter.Bodies.map((c) => {
-        objects[c.id]=c;
-    })
-}
-function addFuriko(){
-    var rec = createObjct("Rectangle Body",width/2,50,null,true,0,0.001,0,20,20,1);
-    var cir = createObjct("Circle Body",width/2,300,null,false,0,0.001,1,50,20,1);
-    var constraint = Matter.Constraint.create({
-      bodyA:rec,
-      bodyB:cir,
-      stiffness:1
-    })
-    World.add(engine.world,constraint);
-    objects[constraint.id] = constraint;
-}
-
-function fieldInit() {
-    objects[0] = createCircle(10,10,0,10);  //error対策で、実際描画しない.選択を外す時に使う
-  
-    createObjct("Rectangle Body",width / 2, height, '#2e2b44',true,0,0.005,0, width, 60,1)
-    createObjct("Rectangle Body",0, height/2, '#2e2b44',true,0,0.005,0, 60,height,1)
-    createObjct("Rectangle Body",width , height/2, '#2e2b44',true,0,0.005,0, 60,height,1)
-}
-
-function createBallPyramid(){
-    for(var i = 0 ; i < 9; i++){
-        for(var j = 0; j <= i; j++){
-          var x = (width/2 - i*35) + j*70;
-          var y = 50+i*50;
-          createObjct("Circle Body", x, y, 'gray', true, 0, 0.001, 0, 10, 0, 1);
-        }
-      }
-}*/
 
 /***/ }),
 /* 15 */
@@ -29015,6 +29058,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function addObjects(main, Objects) {
+  var tmp = main.scene.idCnt - 1;
   Objects.map(function (c) {
     if (c.ObjectType === "Constraint") {
       var constraint = Object(_createConstraint__WEBPACK_IMPORTED_MODULE_1__["createConstraint"])(main.objects, c.X + tmp, c.Y + tmp, c.Angle, c.Density, c.Restitution, c.Data1);

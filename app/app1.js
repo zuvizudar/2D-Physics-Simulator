@@ -115,6 +115,5 @@ $(document).on('click', '#addPlayer', function () {
 });
 
 $(document).on('click', '#addLib', function () {
-    console.log(this);
-    addLib("a81dbf97-676a-46bd-84f1-4566514100bd")
+    addLib(this.src.substr(26,36))
 });

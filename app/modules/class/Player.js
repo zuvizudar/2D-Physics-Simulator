@@ -10,12 +10,12 @@ export class Player {
         this.exist = true;
     }
     moveRight() {
-        Matter.Body.applyForce(this.obj, this.obj.position, { x: 0.01, y: 0 })
-        //Matter.Body.setVelocity(this.obj, {x: this.speed, y: this.obj.velocity.y})
+        //Matter.Body.applyForce(this.obj, this.obj.position, { x: 0.01, y: 0 })
+        Matter.Body.setVelocity(this.obj, {x: this.speed*2, y: this.obj.velocity.y})
     }
     moveLeft() {
-        Matter.Body.applyForce(this.obj, this.obj.position, { x: -0.01, y: 0 })
-        //Matter.Body.setVelocity(this.obj, {x: -this.speed, y: this.obj.velocity.y})
+        //Matter.Body.applyForce(this.obj, this.obj.position, { x: -0.01, y: 0 })
+        Matter.Body.setVelocity(this.obj, {x: -this.speed*2, y: this.obj.velocity.y})
     }
     moveUp() {
         if (this.canJump) {

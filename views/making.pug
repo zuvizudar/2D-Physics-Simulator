@@ -59,8 +59,8 @@ block content
         h3.mx-3.my-2 Add
         .row 
             .col-md-4
-                button.btn.btn-outline-primary(id="addSquare" accesskey="z") ■
                 button.btn.btn-outline-primary(id="addCircle" accesskey="x") ●
+                button.btn.btn-outline-primary(id="addSquare" accesskey="z") ■
                 button.btn.btn-outline-primary(id="addTri" accesskey="c") ▲
                 button.btn.btn-outline-primary(id="addBar" accesskey="v") ー
                 button.btn.btn-outline-dark(id="addConstraint" ) 結合
@@ -105,11 +105,14 @@ block content
         h3.my-4 Library
             .row
                 .col-md-2.col-sm-6.mb-4
-                    img.img-fluid(src='img/a81dbf97-676a-46bd-84f1-4566514100bd.png' id ="addLib")
-                .col-md-2.col-sm-6.mb-4
-                    img.img-fluid(src='img/17c33073-2e8d-47e2-9b2e-91a2e6d651ba.png' id ="addPlayer")
-                .col-md-2.col-sm-6.mb-4
-                    img.img-fluid(src='img/ea782472-7807-47f4-a02e-ca6a8b85ef90.png' id ="addLib")
+                    img.img-fluid(src='img/tes.png' id ="addPlayer")
+                -
+                    var list=["a81dbf97-676a-46bd-84f1-4566514100bd",
+                                "ea782472-7807-47f4-a02e-ca6a8b85ef90",
+                                "17c33073-2e8d-47e2-9b2e-91a2e6d651ba"]
+                each id in list 
+                    .col-md-2.col-sm-6.mb-4
+                        img.img-fluid(src=`img/${id}.png`, id ="addLib")
     script.
         $('.colorpicker').each( function() {
             $(this).minicolors({
