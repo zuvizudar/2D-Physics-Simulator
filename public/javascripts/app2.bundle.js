@@ -148,14 +148,14 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push([19,1]);
+/******/ 	deferredModules.push([18,1]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 19:
+/***/ 18:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -166,8 +166,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _modules_class_Main__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var _modules_function_controlScene__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(10);
-/* harmony import */ var _modules_function_addObjects__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(14);
+/* harmony import */ var _modules_function_addObjects__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
 
 
 
@@ -178,14 +177,13 @@ window.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 
 
-
 var main = new _modules_class_Main__WEBPACK_IMPORTED_MODULE_2__["Main"]();
 main.init();
 main.run();
 var sceneObjects = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#Info').data('objects');
-Object(_modules_function_addObjects__WEBPACK_IMPORTED_MODULE_4__["addObjects"])(main, sceneObjects);
+Object(_modules_function_addObjects__WEBPACK_IMPORTED_MODULE_3__["addObjects"])(main, sceneObjects);
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#start', function () {
-  Object(_modules_function_controlScene__WEBPACK_IMPORTED_MODULE_3__["start"])(main);
+  main.start();
 });
 
 /***/ })

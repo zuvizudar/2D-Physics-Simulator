@@ -6,7 +6,7 @@ import { Constraint } from "../class/Constraint"
 import { createObjct } from "./createObject"
 import { addObjects } from "./addObjects"
 
-export { addCircle, addSquare, addTri, addBar, addPlayer, addConstraint, addLib }
+export { addCircle, addSquare, addTri, addBar, addPlayer, addConstraint, addLib,addIntervalObject }
 
 function addSquare() {
   document.forms.controlForm.elements[0].value = "Square Body";
@@ -30,11 +30,13 @@ function addBar(x, y, color, length) {
   let obj = control2obj();
   obj.addToWorld(main);
   */
-  addCar();
+  //addCar();
+  addBumper();
 }
 
 function addPlayer() {
   main.player.init(main.scene.width/2,main.scene.height/2);
+  console.log(main.player)
   main.player.addToWorld(main);
 }
 function addConstraint() {
@@ -47,8 +49,7 @@ function addConstraint() {
     constraint.addToWorld(main);
   }
 };
-
-export function control2obj() {
+function copyControl(){
   const Elements = document.forms[0];
   const { data1, data2 } = Control_Size2data(Elements[0].value, Elements[4].value);
   const options ={
@@ -64,7 +65,13 @@ export function control2obj() {
         x = Number(Elements[1].value),
         y = Number(Elements[2].value);
   const isStatic = Elements[8].checked;
-  const obj = createObjct(label,x,y,data1,data2,options,isStatic);
+  return{
+    label,x,y,data1,data2,options,isStatic
+  }
+}
+export function control2obj() {
+  const arg = copyControl();
+  const obj = createObjct(arg.label,arg.x,arg.y,arg.data1,arg.data2,arg.options,arg.isStatic);
   //type,x,y,color,isStatic,angle,density,restitution,data1,data2,scale
   return obj;
 };
@@ -113,15 +120,26 @@ function addLib(sceneId) {
   )
 }
 
-/*
+
 function addIntervalObject() {
-  let total = 100;
+  const arg = copyControl();
+  const obj = createObjct(arg.label,arg.x,arg.y,arg.data1,arg.data2,arg.options,arg.isStatic);
+  obj.addToWorld(main);
   setInterval(() => {
-    if (total-- > 0) {
-      control2obj();
+    if(main.scene.isRunning){
+      const obj = createObjct(arg.label,arg.x,arg.y,arg.data1,arg.data2,arg.options,arg.isStatic);
+      obj.addToWorld(main);
     }
-  }, 200)
-}*/
+  },1000)
+}
+function addBumper() {
+  document.forms.controlForm.elements[0].value = "Circle Body";
+  let obj = control2obj();
+  obj.body.role = "Bumper"
+  obj.body.isStatic=true;
+  obj.addToWorld(main);
+}
+
 function addCar() {
   const xx = 50, yy = 50, wheelSize = 30;
   const wheelBase = 20,

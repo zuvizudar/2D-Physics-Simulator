@@ -10,8 +10,7 @@ import Matter from "matter-js"
 
 import { Main } from './modules/class/Main';
 
-import { start, stop } from "./modules/function/controlScene";
-import { addSquare, addTri, addCircle,addBar, addConstraint, addPlayer, addLib } from "./modules/function/addObject";
+import { addSquare, addTri, addCircle,addBar, addConstraint, addPlayer, addLib ,addIntervalObject} from "./modules/function/addObject";
 import { changeAngle, changeScale, changeDensity, changeRestitution, changeColor, changeStatic } from "./modules/function/changeObject"
 import { save } from "./modules/function/save";
 
@@ -33,7 +32,6 @@ Matter.Events.on(main.mouse.mousedrag, "startdrag", function (e) {   // dragã—ã
     let Elements = document.forms.controlForm.elements;
     let prev1 = main.mouse.prev1;
     let prev2 = main.mouse.prev2;
-    console.log(e.body)
     Elements[0].value = e.body.label;
     Elements[3].value = e.body.angle * 100;
     Elements[4].value = e.body.scale * 100;
@@ -41,7 +39,7 @@ Matter.Events.on(main.mouse.mousedrag, "startdrag", function (e) {   // dragã—ã
     Elements[6].value = e.body.restitution * 100; // åç™º
     Elements[7].value = e.body.render.fillStyle;
     Elements[8].checked = e.body.isStatic;
-
+    console.log(e.body)
     prev2.id = prev1.id;
     prev1.id = e.body.id;
     prev2.offset.x = prev1.offset.x;
@@ -57,12 +55,34 @@ Matter.Events.on(main.mouse.mousedrag, "startdrag", function (e) {   // dragã—ã
 Matter.Events.on(main.scene.engine, 'collisionStart', function (event) {
     var pairs = event.pairs;
     for (let i in pairs) {
-        if (pairs[i].bodyA.isPlayer === "Player" || pairs[i].bodyB.isPlayer === "Player") {
+        if (pairs[i].bodyA.role === "Player" || pairs[i].bodyB.role === "Player") {
             main.player.canJump = true;
+        }
+        if (pairs[i].bodyA.role === "Bumper") {
+            const rad = Math.atan2(pairs[i].bodyB.position.y-pairs[i].bodyA.position.y,
+                pairs[i].bodyB.position.x-pairs[i].bodyA.position.x);
+            main.actions.push(
+                ()=>{
+                    Matter.Body.applyForce(pairs[i].bodyB, pairs[i].bodyB.position, { x: 0.5*Math.cos(rad), y: 0.5*Math.sin(rad)})
+                }
+            )
+        }
+        else if (pairs[i].bodyB.role === "Bumper") {
+            const rad = Math.atan2(pairs[i].bodyA.position.y-pairs[i].bodyB.position.y,
+                pairs[i].bodyA.position.x-pairs[i].bodyB.position.x);
+            main.actions.push(
+                ()=>{
+                    Matter.Body.applyForce(pairs[i].bodyA, pairs[i].bodyA.position, { x: 0.5*Math.cos(rad), y: 0.5*Math.sin(rad)})
+                }
+            )            
         }
     }
 });
-
+Matter.Events.on(main.scene.engine, 'beforeUpdate', (e) => {
+    while(main.actions.length>0){
+        main.actions.pop()();
+    }
+});
 document.body.addEventListener("keydown", function (e) {
     main.scene.keys[e.keyCode] = true;
     //main.scene.hasChanged = true;
@@ -100,10 +120,16 @@ $(document).on('click', '#Delete', function(){
 });
 
 $(document).on('click', '#start', function () {
-    start(main)
+    main.start();
 });
 $(document).on('click', '#stop', () => {
-    stop(main)
+    main.stop()
+    
+   /*const heading = document.querySelector('.message');
+   heading.textContent = 'Clear';
+   heading.style.animation = 'showMessage 1.5s 2 alternate forwards';
+   console.log(heading)
+   */
 });
 
 $(document).on('click', '#save', function () {

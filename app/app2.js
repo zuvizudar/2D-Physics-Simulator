@@ -9,7 +9,6 @@ import bootstrap from 'bootstrap';
 
 import { Main } from './modules/class/Main';
 
-import {start,stop} from"./modules/function/controlScene";
 import {addObjects} from "./modules/function/addObjects"
 
 export var main = new Main();
@@ -22,5 +21,5 @@ const sceneObjects = $('#Info').data('objects');
 addObjects(main,sceneObjects)
 
 $(document).on('click', '#start', ()=>{
-    start(main);
+    main.start();
 });

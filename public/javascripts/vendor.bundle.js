@@ -28176,6 +28176,7 @@ var Main = /*#__PURE__*/function () {
     _classCallCheck(this, Main);
 
     this.objects = [];
+    this.actions = [];
   }
 
   _createClass(Main, [{
@@ -28257,6 +28258,31 @@ var Main = /*#__PURE__*/function () {
       if (this.scene.keys[51]) {
         this.scene.scale /= 1.01;
       }
+    }
+  }, {
+    key: "start",
+    value: function start() {
+      this.scene.isRunning = true;
+
+      for (var i in this.objects) {
+        if (this.objects[i] === undefined || this.objects[i].body.label === "Constraint") continue;
+        this.objects[i].attachFilter_All();
+        this.objects[i].body.frictionAir = 0;
+      }
+
+      this.scene.engine.world.gravity.y = 1;
+    }
+  }, {
+    key: "stop",
+    value: function stop() {
+      this.scene.isRunning = false;
+
+      for (var i in this.objects) {
+        if (this.objects[i] === undefined || this.objects[i].body.label === "Constraint") continue;
+        this.objects[i].attachFilter_Mouse();
+      }
+
+      this.scene.engine.world.gravity.y = 0;
     }
   }]);
 
@@ -28413,8 +28439,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
@@ -28509,21 +28533,24 @@ var Player = /*#__PURE__*/function (_Object2) {
   _createClass(Player, [{
     key: "init",
     value: function init(x, y) {
-      var _options;
-
       var rad = 35; //pngに合わせる
 
-      var options = (_options = {
-        density: 0.001
-      }, _defineProperty(_options, "density", 0.001), _defineProperty(_options, "restitution", 0.3), _defineProperty(_options, "render", {
-        sprite: {
-          //スプライトの設定
-          texture: '../img/rainboww.png' //テクスチャ画像を指定
+      var options = {
+        density: 0.005,
+        //friction:0,
+        //frictionAir:0,
+        restitution: 0.3,
+        render: {
+          sprite: {
+            //スプライトの設定
+            texture: '../img/rainboww.png' //テクスチャ画像を指定
 
-        }
-      }), _defineProperty(_options, "scale", 1), _options);
+          }
+        },
+        scale: 1
+      };
       this.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.circle(x, y, rad, options);
-      this.body.isPlayer = "Player";
+      this.body.role = "Player";
       this.canJump = true;
       this.speed = 7;
       this.exist = true;
@@ -28696,41 +28723,8 @@ var Triangle = /*#__PURE__*/function (_Polygon) {
 }(Polygon);
 
 /***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "start", function() { return start; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stop", function() { return stop; });
-
-
-function start(main) {
-  main.scene.isRunning = true;
-
-  for (var i in main.objects) {
-    if (main.objects[i] === undefined || main.objects[i].body.label === "Constraint") continue;
-    main.objects[i].attachFilter_All();
-    main.objects[i].body.frictionAir = 0;
-  }
-
-  main.scene.engine.world.gravity.y = 1;
-}
-
-function stop(main) {
-  main.scene.isRunning = false;
-
-  for (var i in main.objects) {
-    if (main.objects[i] === undefined || main.objects[i].body.label === "Constraint") continue;
-    main.objects[i].attachFilter_Mouse();
-  }
-
-  main.scene.engine.world.gravity.y = 0;
-}
-
-/***/ }),
-/* 11 */,
-/* 12 */
+/* 10 */,
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28782,7 +28776,7 @@ var Constraint = /*#__PURE__*/function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28810,14 +28804,14 @@ function createObjct(label, x, y, data1, data2, options, isStatic) {
 }
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addObjects", function() { return addObjects; });
-/* harmony import */ var _class_Constraint__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
-/* harmony import */ var _createObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony import */ var _class_Constraint__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
+/* harmony import */ var _createObject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
 
 
 function addObjects(main, Objects) {

@@ -6,6 +6,7 @@ import Matter from "matter-js";
 export  class Main{
     constructor(){
         this.objects = [];
+        this.actions=[];
     }
     init(){
         this.scene = new Scene();
@@ -70,4 +71,21 @@ export  class Main{
             this.scene.scale/=1.01;
         }
     }
+    start() {
+        this.scene.isRunning = true;
+        for (let i in this.objects) {
+          if (this.objects[i] === undefined || this.objects[i].body.label === "Constraint") continue;
+          this.objects[i].attachFilter_All();
+          this.objects[i].body.frictionAir = 0;
+        }
+        this.scene.engine.world.gravity.y = 1
+      }
+      stop() {
+        this.scene.isRunning = false;
+        for (let i in this.objects) {
+          if (this.objects[i] === undefined || this.objects[i].body.label === "Constraint") continue;
+          this.objects[i].attachFilter_Mouse();
+        }
+        this.scene.engine.world.gravity.y = 0;
+      }
 }

@@ -44,8 +44,7 @@ class Player extends Object{
     init(x,y) {
         const rad = 35; //pngに合わせる
         const options={
-            density:0.001,
-            density: 0.001,
+            density:0.005,
             //friction:0,
             //frictionAir:0,
             restitution: 0.3,
@@ -57,7 +56,7 @@ class Player extends Object{
             scale:1
         }
         this.body = Matter.Bodies.circle(x,y,rad,options);
-        this.body.isPlayer = "Player"
+        this.body.role = "Player"
         this.canJump = true;
         this.speed = 7;
         this.exist = true;

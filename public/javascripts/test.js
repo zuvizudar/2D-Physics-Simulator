@@ -367,4 +367,4 @@
       clearTimeout(scaleTimeout);
     }, 300);
   }
-  */
+  
