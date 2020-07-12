@@ -1,6 +1,6 @@
 import Matter from "matter-js"
 
-export { Player, Object, Circle, Rectangle, Square, Triangle, Bar };
+export { Player, Object, Circle, Rectangle, Square, Triangle, Bar,Bumper };
 
 class Object {
     setStatic(isStatic) {
@@ -105,12 +105,24 @@ class Player extends Object {
             main.objects[this.body.id] = undefined;
         }
     }
+
 class Circle extends Object {
     constructor(x, y, rad, options, isStatic) {
         super();
         this.body = Matter.Bodies.circle(x, y, rad, options);
         this.body.friction = 0;
         this.setStatic(isStatic);
+    }
+}
+class Bumper extends Circle{
+    constructor(x,y,rad,options,isStatic){
+        options.render = {
+            sprite: { //スプライトの設定
+                texture: '../img/bumper.png' //テクスチャ画像を指定
+            }
+        }
+        super(x,y,rad,options,isStatic);
+        this.body.role = "Bumper";
     }
 }
 class Rectangle extends Object {

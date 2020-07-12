@@ -441,7 +441,7 @@ function copyControl() {
 
 function control2obj() {
   var arg = copyControl();
-  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, arg.options, arg.isStatic); //type,x,y,color,isStatic,angle,density,restitution,data1,data2,scale
+  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, null, arg.options, arg.isStatic); //type,x,y,color,isStatic,angle,density,restitution,data1,data2,scale
 
   return obj;
 }
@@ -499,11 +499,11 @@ function addLib(sceneId) {
 
 function addIntervalObject() {
   var arg = copyControl();
-  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, arg.options, arg.isStatic);
+  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, null, arg.options, arg.isStatic);
   obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
   setInterval(function () {
     if (_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.isRunning) {
-      var _obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, arg.options, arg.isStatic);
+      var _obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, null, arg.options, arg.isStatic);
 
       _obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
     }
@@ -521,9 +521,8 @@ function addBumper() {
 
     }
   };
-  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, arg.options, arg.isStatic);
-  obj.body.role = "Bumper";
-  obj.body.isStatic = true;
+  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, 1, arg.options, arg.isStatic); //data3=1
+
   obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
 }
 
@@ -546,9 +545,9 @@ function addCar() {
     scale: 1,
     friction: 0
   };
-  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", xx, yy, 120, 30, rec_options, false);
-  var cir1 = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Circle Body", xx + wheelAOffset, yy + wheelYOffset, wheelSize, 30, cir_options, false);
-  var cir2 = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Circle Body", xx + wheelBOffset, yy + wheelYOffset, wheelSize, 30, cir_options, false);
+  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", xx, yy, 120, 30, null, rec_options, false);
+  var cir1 = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Circle Body", xx + wheelAOffset, yy + wheelYOffset, wheelSize, 30, null, cir_options, false);
+  var cir2 = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Circle Body", xx + wheelBOffset, yy + wheelYOffset, wheelSize, 30, null, cir_options, false);
   rec.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
   cir1.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
   cir2.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
@@ -562,8 +561,8 @@ function addFuriko() {
   var options = {
     scale: 1
   };
-  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 150, 20, 20, options, true);
-  var cir = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Circle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 400, 50, 20, options, false);
+  var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 150, 20, 20, null, options, true);
+  var cir = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Circle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 400, 50, 20, null, options, false);
   var constraint = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Constraint.create({
     bodyA: rec,
     bodyB: cir,
@@ -578,9 +577,18 @@ function addfield() {
   var tmp = [];
   var width = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width;
   var height = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height;
-  tmp[0] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", width / 2, height, '#2e2b44', true, 0, 0.005, 0, width, 60, 1);
-  tmp[1] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", 0, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1);
-  tmp[2] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Rectangle Body", width, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1);
+  var options = {
+    render: {
+      fillStyle: Elements[7].value
+    },
+    angle: Elements[3].value / 100,
+    density: Elements[5].value / 10000,
+    restitution: Elements[6].value / 100,
+    scale: Elements[4].value / 100
+  };
+  tmp[0] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width / 2, height, null, options, true);
+  tmp[1] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", 0, height / 2, null, options, true);
+  tmp[2] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width, height / 2, null, options, true);
 
   for (var i in tmp) {
     update_after_adding(tmp[i]);
@@ -589,11 +597,21 @@ function addfield() {
 }
 
 function addBallPyramid() {
+  var options = {
+    render: {
+      fillStyle: 'gray'
+    },
+    angle: 0,
+    density: 0.001,
+    restitution: 0,
+    scale: 1
+  };
+
   for (var i = 0; i < 9; i++) {
     for (var j = 0; j <= i; j++) {
       var x = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2 - i * 35 + j * 70;
       var y = 50 + i * 50;
-      var tmp = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])("Circle Body", x, y, 'gray', true, 0, 0.001, 0, 10, 0, 1);
+      var tmp = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Circle Body", x, y, 10, null, options, true);
       update_after_adding(tmp);
       matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, tmp);
     }
@@ -748,6 +766,13 @@ function save(objects) {
         "data1": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(data1, 2),
         "data2": Object(_roundFloat__WEBPACK_IMPORTED_MODULE_1__["roundFloat"])(data2, 2)
       };
+
+      if (objects[_i].body.role == "Player") {
+        tmp.data3 = 0; //player
+      } else if (objects[_i].body.role == "Bumper") {
+        tmp.data3 = 1; //bumper
+      }
+
       nextIdMap[objects[_i].body.id] = nextIdCnt;
     }
 

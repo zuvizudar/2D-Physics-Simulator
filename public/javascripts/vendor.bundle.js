@@ -28440,6 +28440,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Square", function() { return Square; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Triangle", function() { return Triangle; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Bar", function() { return Bar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Bumper", function() { return Bumper; });
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -28651,22 +28652,47 @@ var Circle = /*#__PURE__*/function (_Object3) {
   return Circle;
 }(_Object);
 
+var Bumper = /*#__PURE__*/function (_Circle) {
+  _inherits(Bumper, _Circle);
+
+  var _super3 = _createSuper(Bumper);
+
+  function Bumper(x, y, rad, options, isStatic) {
+    var _this3;
+
+    _classCallCheck(this, Bumper);
+
+    options.render = {
+      sprite: {
+        //スプライトの設定
+        texture: '../img/bumper.png' //テクスチャ画像を指定
+
+      }
+    };
+    _this3 = _super3.call(this, x, y, rad, options, isStatic);
+    _this3.body.role = "Bumper";
+    return _this3;
+  }
+
+  return Bumper;
+}(Circle);
+
 var Rectangle = /*#__PURE__*/function (_Object4) {
   _inherits(Rectangle, _Object4);
 
-  var _super3 = _createSuper(Rectangle);
+  var _super4 = _createSuper(Rectangle);
 
   function Rectangle(x, y, width, height, options, isStatic) {
-    var _this3;
+    var _this4;
 
     _classCallCheck(this, Rectangle);
 
-    _this3 = _super3.call(this);
-    _this3.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.rectangle(x, y, width, height, options);
+    _this4 = _super4.call(this);
+    _this4.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.rectangle(x, y, width, height, options);
 
-    _this3.setStatic(isStatic);
+    _this4.setStatic(isStatic);
 
-    return _this3;
+    return _this4;
   }
 
   return Rectangle;
@@ -28675,16 +28701,16 @@ var Rectangle = /*#__PURE__*/function (_Object4) {
 var Square = /*#__PURE__*/function (_Rectangle) {
   _inherits(Square, _Rectangle);
 
-  var _super4 = _createSuper(Square);
+  var _super5 = _createSuper(Square);
 
   function Square(x, y, length, options, isStatic) {
-    var _this4;
+    var _this5;
 
     _classCallCheck(this, Square);
 
-    _this4 = _super4.call(this, x, y, length, length, options, isStatic);
-    _this4.body.label = "Square Body";
-    return _this4;
+    _this5 = _super5.call(this, x, y, length, length, options, isStatic);
+    _this5.body.label = "Square Body";
+    return _this5;
   }
 
   return Square;
@@ -28693,16 +28719,16 @@ var Square = /*#__PURE__*/function (_Rectangle) {
 var Bar = /*#__PURE__*/function (_Rectangle2) {
   _inherits(Bar, _Rectangle2);
 
-  var _super5 = _createSuper(Bar);
+  var _super6 = _createSuper(Bar);
 
   function Bar(x, y, length, options, isStatic) {
-    var _this5;
+    var _this6;
 
     _classCallCheck(this, Bar);
 
-    _this5 = _super5.call(this, x, y, length, length / 20, options, isStatic);
-    _this5.body.label = "Bar Body";
-    return _this5;
+    _this6 = _super6.call(this, x, y, length, length / 20, options, isStatic);
+    _this6.body.label = "Bar Body";
+    return _this6;
   }
 
   return Bar;
@@ -28711,20 +28737,20 @@ var Bar = /*#__PURE__*/function (_Rectangle2) {
 var Polygon = /*#__PURE__*/function (_Object5) {
   _inherits(Polygon, _Object5);
 
-  var _super6 = _createSuper(Polygon);
+  var _super7 = _createSuper(Polygon);
 
   function Polygon(x, y, sides, rad, options, isStatic) {
-    var _this6;
+    var _this7;
 
     _classCallCheck(this, Polygon);
 
-    _this6 = _super6.call(this);
-    _this6.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.polygon(x, y, sides, rad, options);
+    _this7 = _super7.call(this);
+    _this7.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.polygon(x, y, sides, rad, options);
 
-    _this6.setStatic(isStatic);
+    _this7.setStatic(isStatic);
 
-    _this6.body.rad = rad;
-    return _this6;
+    _this7.body.rad = rad;
+    return _this7;
   }
 
   return Polygon;
@@ -28733,16 +28759,16 @@ var Polygon = /*#__PURE__*/function (_Object5) {
 var Triangle = /*#__PURE__*/function (_Polygon) {
   _inherits(Triangle, _Polygon);
 
-  var _super7 = _createSuper(Triangle);
+  var _super8 = _createSuper(Triangle);
 
   function Triangle(x, y, rad, options, isStatic) {
-    var _this7;
+    var _this8;
 
     _classCallCheck(this, Triangle);
 
-    _this7 = _super7.call(this, x, y, 3, rad, options, isStatic);
-    _this7.body.label = "Triangle Body";
-    return _this7;
+    _this8 = _super8.call(this, x, y, 3, rad, options, isStatic);
+    _this8.body.label = "Triangle Body";
+    return _this8;
   }
 
   return Triangle;
@@ -28807,14 +28833,18 @@ var Constraint = /*#__PURE__*/function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createObjct", function() { return createObjct; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createObject", function() { return createObject; });
 /* harmony import */ var _class_Object__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
 
-function createObjct(label, x, y, data1, data2, options, isStatic) {
+function createObject(label, x, y, data1, data2, data3, options, isStatic) {
   //scaleでの実装ならdata1,data2要らないかも、、
   var obj;
 
-  if (label === "Circle Body") {
+  if (data3 == 0) {//player
+  } else if (data3 == 1) {
+    //bumper
+    obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Bumper"](x, y, data1, options, isStatic);
+  } else if (label === "Circle Body") {
     obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Circle"](x, y, data1, options, isStatic);
   } else if (label === "Rectangle Body") {
     obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Rectangle"](x, y, data1, data2, options, isStatic);
@@ -28823,7 +28853,6 @@ function createObjct(label, x, y, data1, data2, options, isStatic) {
   } else if (label === "Triangle Body") {
     obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Triangle"](x, y, data1, options, isStatic);
   } else if (label === "Bar Body") {
-    console.log("AA");
     obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Bar"](x, y, data1, options, isStatic);
   }
 
@@ -28857,7 +28886,7 @@ function addObjects(main, Objects) {
         restitution: c.Restitution,
         scale: 1
       };
-      var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_1__["createObjct"])(c.ObjectType, c.X, c.Y, c.Data1, c.Data2, options, c.isStatic);
+      var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_1__["createObject"])(c.ObjectType, c.X, c.Y, c.Data1, c.Data2, c.Data3, options, c.isStatic);
       obj.addToWorld(main);
     }
   });

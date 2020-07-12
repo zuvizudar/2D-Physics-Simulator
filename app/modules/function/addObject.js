@@ -3,7 +3,7 @@ import Matter from "matter-js"
 import { main } from "../../app1" //TODO 
 
 import { Constraint } from "../class/Constraint"
-import { createObjct } from "./createObject"
+import { createObject } from "./createObject"
 import { addObjects } from "./addObjects"
 
 export { addCircle, addSquare, addTri, addBar, addPlayer, addConstraint, addLib,addIntervalObject,addBumper,addCar }
@@ -68,7 +68,7 @@ function copyControl(){
 }
 export function control2obj() {
   const arg = copyControl();
-  const obj = createObjct(arg.label,arg.x,arg.y,arg.data1,arg.data2,arg.options,arg.isStatic);
+  const obj = createObject(arg.label,arg.x,arg.y,arg.data1,arg.data2,null,arg.options,arg.isStatic);
   //type,x,y,color,isStatic,angle,density,restitution,data1,data2,scale
   return obj;
 };
@@ -120,11 +120,11 @@ function addLib(sceneId) {
 
 function addIntervalObject() {
   const arg = copyControl();
-  const obj = createObjct(arg.label,arg.x,arg.y,arg.data1,arg.data2,arg.options,arg.isStatic);
+  const obj = createObject(arg.label,arg.x,arg.y,arg.data1,arg.data2,null,arg.options,arg.isStatic);
   obj.addToWorld(main);
   setInterval(() => {
     if(main.scene.isRunning){
-      const obj = createObjct(arg.label,arg.x,arg.y,arg.data1,arg.data2,arg.options,arg.isStatic);
+      const obj = createObject(arg.label,arg.x,arg.y,arg.data1,arg.data2,null,arg.options,arg.isStatic);
       obj.addToWorld(main);
     }
   },1000)
@@ -138,9 +138,7 @@ function addBumper() {
         texture: '../img/bumper.png' //テクスチャ画像を指定
     }
   }
-  const obj = createObjct(arg.label,arg.x,arg.y,arg.data1,arg.data2,arg.options,arg.isStatic);
-  obj.body.role = "Bumper"
-  obj.body.isStatic=true;
+  const obj = createObject(arg.label,arg.x,arg.y,arg.data1,arg.data2,1,arg.options,arg.isStatic); //data3=1
   obj.addToWorld(main);
 }
 
@@ -161,9 +159,9 @@ function addCar() {
       scale:1,
       friction:0
     }
-  let rec = createObjct("Rectangle Body", xx, yy, 120, 30,rec_options,false);
-  let cir1 = createObjct("Circle Body", xx + wheelAOffset, yy + wheelYOffset,wheelSize, 30,cir_options,false);
-  let cir2 = createObjct("Circle Body", xx + wheelBOffset, yy + wheelYOffset, wheelSize, 30,cir_options,false);
+  let rec = createObject("Rectangle Body", xx, yy, 120, 30,null,rec_options,false);
+  let cir1 = createObject("Circle Body", xx + wheelAOffset, yy + wheelYOffset,wheelSize, 30,null,cir_options,false);
+  let cir2 = createObject("Circle Body", xx + wheelBOffset, yy + wheelYOffset, wheelSize, 30,null,cir_options,false);
   rec.addToWorld(main);
   cir1.addToWorld(main);
   cir2.addToWorld(main);
@@ -178,8 +176,8 @@ function addFuriko() {
   const options = {
     scale:1
   }
-  let rec = createObjct("Rectangle Body", main.scene.width / 2, 150, 20, 20,options,true);
-  let cir = createObjct("Circle Body", main.scene.width / 2, 400,  50, 20,options,false);
+  let rec = createObject("Rectangle Body", main.scene.width / 2, 150, 20, 20,null,options,true);
+  let cir = createObject("Circle Body", main.scene.width / 2, 400,  50, 20,null,options,false);
   let constraint = Matter.Constraint.create({
     bodyA: rec,
     bodyB: cir,
@@ -194,20 +192,39 @@ function addfield() {
   let tmp = []
   const width = main.scene.width;
   const height = main.scene.height;
-  tmp[0] = createObjct("Rectangle Body", width / 2, height, '#2e2b44', true, 0, 0.005, 0, width, 60, 1)
-  tmp[1] = createObjct("Rectangle Body", 0, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1)
-  tmp[2] = createObjct("Rectangle Body", width, height / 2, '#2e2b44', true, 0, 0.005, 0, 60, height, 1)
+  const options ={
+    render:{
+      fillStyle:Elements[7].value
+    },
+    angle:Elements[3].value/100,
+    density:Elements[5].value/10000,
+    restitution:Elements[6].value/100,
+    scale:Elements[4].value/100
+  }
+  tmp[0] = createObject("Rectangle Body", width / 2, height, null,options,true);
+  tmp[1] = createObject("Rectangle Body", 0, height / 2, null,options,true);
+  tmp[2] = createObject("Rectangle Body", width, height / 2, null,options,true);
   for (let i in tmp) {
     update_after_adding(tmp[i]);
     Matter.World.add(main.scene.engine.world, tmp[i]);
   }
 }
 function addBallPyramid() {
+  const options ={
+    render:{
+      fillStyle:'gray'
+    },
+    angle:0,
+    density:0.001,
+    restitution:0,
+    scale:1
+  }
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j <= i; j++) {
       const x = (main.scene.width / 2 - i * 35) + j * 70;
       const y = 50 + i * 50;
-      let tmp = createObjct("Circle Body", x, y, 'gray', true, 0, 0.001, 0, 10, 0, 1);
+
+      let tmp = createObject("Circle Body", x, y,10,null,options, true);
       update_after_adding(tmp);
       Matter.World.add(main.scene.engine.world, tmp);
     }

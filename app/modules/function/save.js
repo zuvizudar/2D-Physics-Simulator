@@ -51,6 +51,12 @@ export function save(objects) {
                 "data1": roundFloat(data1, 2),
                 "data2": roundFloat(data2, 2)
             }
+            if(objects[i].body.role == "Player"){
+                tmp.data3 = 0 ;//player
+            }
+            else if(objects[i].body.role == "Bumper"){
+                tmp.data3 = 1; //bumper
+            }
             nextIdMap[objects[i].body.id] = nextIdCnt;
         }
         data.push(tmp);

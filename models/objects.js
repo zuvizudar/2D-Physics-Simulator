@@ -48,12 +48,12 @@ const Object = loader.database.define('objects',{
         type: Sequelize.FLOAT,
         allowNull: true 
     },
-    Data2:{
+    Data2:{ 
         type:Sequelize.FLOAT,
         allowNull: true
     },
-    Data3:{
-        type:Sequelize.FLOAT,
+    Data3:{ //role
+        type:Sequelize.INTEGER,
         allowNull: true
     }
     }

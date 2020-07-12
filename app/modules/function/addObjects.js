@@ -1,5 +1,6 @@
 import {Constraint} from "../class/Constraint"
-import {createObjct} from "./createObject"
+import {createObject} from "./createObject"
+
 
 export function addObjects(main,Objects) {
     const tmp = main.scene.idCnt-1;
@@ -16,8 +17,8 @@ export function addObjects(main,Objects) {
                 density:c.Density,
                 restitution:c.Restitution,
                 scale:1
-              }
-            let obj = createObjct(c.ObjectType, c.X, c.Y, c.Data1, c.Data2,options,c.isStatic);
+            }
+            let obj = createObject(c.ObjectType, c.X, c.Y, c.Data1, c.Data2,c.Data3,options,c.isStatic);
             obj.addToWorld(main);
         }
     })
