@@ -26,9 +26,10 @@ function addCircle() {
   obj.addToWorld(main);
 };
 function addBar() {
-  document.forms.controlForm.elements[0].value = "Bar Body";
+  /*document.forms.controlForm.elements[0].value = "Bar Body";
   let obj = control2obj();
-  obj.addToWorld(main);
+  obj.addToWorld(main);*/
+  addfield();
 }
 
 function addPlayer() {
@@ -133,11 +134,6 @@ function addBumper() {
   document.forms.controlForm.elements[0].value = "Circle Body";
   //let obj = control2obj();
   const arg = copyControl();
-  arg.options.render = {
-    sprite: { //スプライトの設定
-        texture: '../img/bumper.png' //テクスチャ画像を指定
-    }
-  }
   const obj = createObject(arg.label,arg.x,arg.y,arg.data1,arg.data2,1,arg.options,arg.isStatic); //data3=1
   obj.addToWorld(main);
 }
@@ -194,19 +190,18 @@ function addfield() {
   const height = main.scene.height;
   const options ={
     render:{
-      fillStyle:Elements[7].value
+      fillStyle:'#2e2b44'
     },
-    angle:Elements[3].value/100,
-    density:Elements[5].value/10000,
-    restitution:Elements[6].value/100,
-    scale:Elements[4].value/100
+    angle:0,
+    density:0.005,
+    restitution:0,
+    scale:1
   }
-  tmp[0] = createObject("Rectangle Body", width / 2, height, null,options,true);
-  tmp[1] = createObject("Rectangle Body", 0, height / 2, null,options,true);
-  tmp[2] = createObject("Rectangle Body", width, height / 2, null,options,true);
+  tmp[0] = createObject("Rectangle Body", width / 2, height,width,60, null,options,true);
+  tmp[1] = createObject("Rectangle Body", 0, height / 2, 60,height,null,options,true);
+  tmp[2] = createObject("Rectangle Body", width, height / 2, 60,height,null,options,true);
   for (let i in tmp) {
-    update_after_adding(tmp[i]);
-    Matter.World.add(main.scene.engine.world, tmp[i]);
+    tmp[i].addToWorld(main);
   }
 }
 function addBallPyramid() {

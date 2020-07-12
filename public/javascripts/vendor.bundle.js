@@ -28871,6 +28871,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function addObjects(main, Objects) {
+  console.log(Objects);
   var tmp = main.scene.idCnt - 1;
   Objects.map(function (c) {
     if (c.ObjectType === "Constraint") {

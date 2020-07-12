@@ -165,8 +165,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _modules_class_Main__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var _modules_function_addObjects__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
+/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
+/* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _modules_class_Main__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6);
+/* harmony import */ var _modules_function_addObjects__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(13);
 
 
 
@@ -177,11 +179,49 @@ window.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 
 
-var main = new _modules_class_Main__WEBPACK_IMPORTED_MODULE_2__["Main"]();
+
+var main = new _modules_class_Main__WEBPACK_IMPORTED_MODULE_3__["Main"]();
 main.init();
 main.run();
 var sceneObjects = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#Info').data('objects');
-Object(_modules_function_addObjects__WEBPACK_IMPORTED_MODULE_3__["addObjects"])(main, sceneObjects);
+Object(_modules_function_addObjects__WEBPACK_IMPORTED_MODULE_4__["addObjects"])(main, sceneObjects);
+matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.scene.engine, 'collisionStart', function (event) {
+  var pairs = event.pairs;
+
+  var _loop = function _loop(i) {
+    if (pairs[i].bodyA.role === "Player" || pairs[i].bodyB.role === "Player") {
+      main.player.canJump = true;
+    }
+
+    if (pairs[i].bodyA.role === "Bumper") {
+      var rad = Math.atan2(pairs[i].bodyB.position.y - pairs[i].bodyA.position.y, pairs[i].bodyB.position.x - pairs[i].bodyA.position.x);
+      main.actions.push(function () {
+        matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Body.applyForce(pairs[i].bodyB, pairs[i].bodyB.position, {
+          x: 0.5 * Math.cos(rad),
+          y: 0.5 * Math.sin(rad)
+        });
+      });
+    } else if (pairs[i].bodyB.role === "Bumper") {
+      var _rad = Math.atan2(pairs[i].bodyA.position.y - pairs[i].bodyB.position.y, pairs[i].bodyA.position.x - pairs[i].bodyB.position.x);
+
+      main.actions.push(function () {
+        matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Body.applyForce(pairs[i].bodyA, pairs[i].bodyA.position, {
+          x: 0.5 * Math.cos(_rad),
+          y: 0.5 * Math.sin(_rad)
+        });
+      });
+    }
+  };
+
+  for (var i in pairs) {
+    _loop(i);
+  }
+});
+matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.scene.engine, 'beforeUpdate', function (e) {
+  while (main.actions.length > 0) {
+    main.actions.pop()();
+  }
+});
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#start', function () {
   main.start();
 });

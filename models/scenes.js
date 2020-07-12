@@ -19,7 +19,7 @@ const Scene = loader.database.define('scenes',{
         type: Sequelize.TEXT,
         allowNull: true
     },
-    data1:{
+    data1:{ //ライブラリ使用許可
         type:Sequelize.BOOLEAN,
         allowNull:false
     },

@@ -1,9 +1,9 @@
-import { Circle, Rectangle, Square, Triangle, Bar, Bumper } from "../class/Object"
+import { Circle, Rectangle, Square, Triangle, Bar, Bumper, Player } from "../class/Object"
 export function createObject(label, x, y, data1, data2, data3, options, isStatic) {
     //scaleでの実装ならdata1,data2要らないかも、、
     let obj;
     if (data3 == 0) {//player
-
+        obj = new Player()
     }
     else if (data3 == 1) {//bumper
         obj = new Bumper(x, y, data1, options, isStatic);

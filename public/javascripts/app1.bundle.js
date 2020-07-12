@@ -385,9 +385,10 @@ function addCircle() {
 ;
 
 function addBar() {
-  document.forms.controlForm.elements[0].value = "Bar Body";
-  var obj = control2obj();
-  obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+  /*document.forms.controlForm.elements[0].value = "Bar Body";
+  let obj = control2obj();
+  obj.addToWorld(main);*/
+  addfield();
 }
 
 function addPlayer() {
@@ -514,13 +515,6 @@ function addBumper() {
   document.forms.controlForm.elements[0].value = "Circle Body"; //let obj = control2obj();
 
   var arg = copyControl();
-  arg.options.render = {
-    sprite: {
-      //スプライトの設定
-      texture: '../img/bumper.png' //テクスチャ画像を指定
-
-    }
-  };
   var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, 1, arg.options, arg.isStatic); //data3=1
 
   obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
@@ -579,20 +573,19 @@ function addfield() {
   var height = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height;
   var options = {
     render: {
-      fillStyle: Elements[7].value
+      fillStyle: '#2e2b44'
     },
-    angle: Elements[3].value / 100,
-    density: Elements[5].value / 10000,
-    restitution: Elements[6].value / 100,
-    scale: Elements[4].value / 100
+    angle: 0,
+    density: 0.005,
+    restitution: 0,
+    scale: 1
   };
-  tmp[0] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width / 2, height, null, options, true);
-  tmp[1] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", 0, height / 2, null, options, true);
-  tmp[2] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width, height / 2, null, options, true);
+  tmp[0] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width / 2, height, width, 60, null, options, true);
+  tmp[1] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", 0, height / 2, 60, height, null, options, true);
+  tmp[2] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width, height / 2, 60, height, null, options, true);
 
   for (var i in tmp) {
-    update_after_adding(tmp[i]);
-    matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, tmp[i]);
+    tmp[i].addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
   }
 }
 

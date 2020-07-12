@@ -7,6 +7,7 @@ window.$ = window.jQuery = $;
 import bootstrap from 'bootstrap';
 //import "bootstrap/dist/css/bootstrap.min.css"
 
+import Matter from "matter-js"
 import { Main } from './modules/class/Main';
 
 import {addObjects} from "./modules/function/addObjects"
@@ -19,7 +20,37 @@ main.run();
 const sceneObjects = $('#Info').data('objects');
 
 addObjects(main,sceneObjects)
-
+Matter.Events.on(main.scene.engine, 'collisionStart', function (event) {
+    var pairs = event.pairs;
+    for (let i in pairs) {
+        if (pairs[i].bodyA.role === "Player" || pairs[i].bodyB.role === "Player") {
+            main.player.canJump = true;
+        }
+        if (pairs[i].bodyA.role === "Bumper") {
+            const rad = Math.atan2(pairs[i].bodyB.position.y-pairs[i].bodyA.position.y,
+                pairs[i].bodyB.position.x-pairs[i].bodyA.position.x);
+            main.actions.push(
+                ()=>{
+                    Matter.Body.applyForce(pairs[i].bodyB, pairs[i].bodyB.position, { x: 0.5*Math.cos(rad), y: 0.5*Math.sin(rad)})
+                }
+            )
+        }
+        else if (pairs[i].bodyB.role === "Bumper") {
+            const rad = Math.atan2(pairs[i].bodyA.position.y-pairs[i].bodyB.position.y,
+                pairs[i].bodyA.position.x-pairs[i].bodyB.position.x);
+            main.actions.push(
+                ()=>{
+                    Matter.Body.applyForce(pairs[i].bodyA, pairs[i].bodyA.position, { x: 0.5*Math.cos(rad), y: 0.5*Math.sin(rad)})
+                }
+            )            
+        }
+    }
+});
+Matter.Events.on(main.scene.engine, 'beforeUpdate', (e) => {
+    while(main.actions.length>0){
+        main.actions.pop()();
+    }
+});
 $(document).on('click', '#start', ()=>{
     main.start();
 });
