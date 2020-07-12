@@ -28177,6 +28177,9 @@ var Main = /*#__PURE__*/function () {
 
     this.objects = [];
     this.actions = [];
+    this.player_exists = false;
+    this.playerId = 0;
+    this.isRunning = false;
   }
 
   _createClass(Main, [{
@@ -28184,7 +28187,6 @@ var Main = /*#__PURE__*/function () {
     value: function init() {
       this.scene = new _Scene__WEBPACK_IMPORTED_MODULE_0__["Scene"]();
       this.mouse = new _Mouse__WEBPACK_IMPORTED_MODULE_1__["Mouse"](this.scene);
-      this.player = new _Object__WEBPACK_IMPORTED_MODULE_2__["Player"]();
       matter_js__WEBPACK_IMPORTED_MODULE_3___default.a.World.add(this.scene.engine.world, this.mouse.mousedrag);
     }
   }, {
@@ -28198,9 +28200,9 @@ var Main = /*#__PURE__*/function () {
 
       this.keyMove();
 
-      if (this.player.exist) {
-        this.scene.cameraPos.x = this.player.body.position.x;
-        this.scene.cameraPos.y = this.player.body.position.y;
+      if (this.player_exists && this.isRunning) {
+        this.scene.cameraPos.x = this.objects[this.playerId].body.position.x;
+        this.scene.cameraPos.y = this.objects[this.playerId].body.position.y;
       }
 
       this.cameraUpdate();
@@ -28215,21 +28217,21 @@ var Main = /*#__PURE__*/function () {
   }, {
     key: "keyMove",
     value: function keyMove() {
-      if (this.player.exist) {
+      if (this.player_exists && this.isRunning) {
         if (this.scene.keys[68]) {
-          this.player.moveRight();
+          this.objects[this.playerId].moveRight();
         }
 
         if (this.scene.keys[65]) {
-          this.player.moveLeft();
+          this.objects[this.playerId].moveLeft();
         }
 
         if (this.scene.keys[87]) {
-          this.player.moveUp();
+          this.objects[this.playerId].moveUp();
         }
 
         if (this.scene.keys[83]) {
-          this.player.moveDown();
+          this.objects[this.playerId].moveDown();
         }
       } else {
         var speed = 5;
@@ -28267,7 +28269,7 @@ var Main = /*#__PURE__*/function () {
   }, {
     key: "start",
     value: function start() {
-      this.scene.isRunning = true;
+      this.isRunning = true;
 
       for (var i in this.objects) {
         if (this.objects[i] === undefined || this.objects[i].body.label === "Constraint") continue;
@@ -28280,7 +28282,7 @@ var Main = /*#__PURE__*/function () {
   }, {
     key: "stop",
     value: function stop() {
-      this.scene.isRunning = false;
+      this.isRunning = false;
 
       for (var i in this.objects) {
         if (this.objects[i] === undefined || this.objects[i].body.label === "Constraint") continue;
@@ -28330,7 +28332,6 @@ var Scene = /*#__PURE__*/function () {
     matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Render.run(this.render);
     this.engine.world.gravity.y = 0;
     this.fps = 30;
-    this.isRunning = false;
     this.standardRad = this.width / 20, this.standardSide = this.width / 10;
     this.idCnt = 1;
     this.keys = [];
@@ -28445,6 +28446,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
@@ -28500,6 +28505,7 @@ var _Object = /*#__PURE__*/function () {
     key: "removeFrom",
     value: function removeFrom(main) {
       matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.remove(main.scene.engine.world, this.body);
+      console.log("AAFJA");
       main.objects[this.body.id] = undefined;
     }
   }, {
@@ -28526,40 +28532,49 @@ var Player = /*#__PURE__*/function (_Object2) {
 
   var _super = _createSuper(Player);
 
-  function Player() {
+  function Player(x, y) {
     var _this;
 
     _classCallCheck(this, Player);
 
     _this = _super.call(this);
-    _this.exist = false;
+    var rad = 35; //pngに合わせる
+
+    var options = {
+      density: 0.005,
+      //friction:0,
+      //frictionAir:0,
+      restitution: 0.3,
+      render: {
+        sprite: {
+          //スプライトの設定
+          texture: '../img/rainboww.png' //テクスチャ画像を指定
+
+        }
+      },
+      scale: 1
+    };
+    _this.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.circle(x, y, rad, options);
+    _this.body.role = "Player";
+    _this.canJump = true;
+    _this.maxSpeed = 14;
     return _this;
   }
 
   _createClass(Player, [{
-    key: "init",
-    value: function init(x, y) {
-      var rad = 35; //pngに合わせる
+    key: "addToWorld",
+    value: function addToWorld(main) {
+      _get(_getPrototypeOf(Player.prototype), "addToWorld", this).call(this, main);
 
-      var options = {
-        density: 0.005,
-        //friction:0,
-        //frictionAir:0,
-        restitution: 0.3,
-        render: {
-          sprite: {
-            //スプライトの設定
-            texture: '../img/rainboww.png' //テクスチャ画像を指定
+      main.player_exists = true;
+      main.playerId = this.body.id;
+    }
+  }, {
+    key: "removeFrom",
+    value: function removeFrom(main) {
+      main.player_exists = false;
 
-          }
-        },
-        scale: 1
-      };
-      this.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.circle(x, y, rad, options);
-      this.body.role = "Player";
-      this.canJump = true;
-      this.maxSpeed = 14;
-      this.exist = true;
+      _get(_getPrototypeOf(Player.prototype), "removeFrom", this).call(this, main);
     }
   }, {
     key: "moveRight",
@@ -28616,15 +28631,6 @@ var Player = /*#__PURE__*/function (_Object2) {
         y: 0
       });
     }
-  }, {
-    key: "removeFrom",
-    value: function removeFrom(main) {
-      //override
-      this.exist = false;
-      this.body.type = "body";
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.remove(main.scene.engine.world, this.body);
-      main.objects[this.body.id] = undefined;
-    }
   }]);
 
   return Player;
@@ -28657,10 +28663,12 @@ var Bumper = /*#__PURE__*/function (_Circle) {
 
   var _super3 = _createSuper(Bumper);
 
-  function Bumper(x, y, rad, options, isStatic) {
+  function Bumper(x, y, options, isStatic) {
     var _this3;
 
     _classCallCheck(this, Bumper);
+
+    var rad = 35; //pngに合わせる
 
     options.render = {
       sprite: {
@@ -28840,10 +28848,12 @@ function createObject(label, x, y, data1, data2, data3, options, isStatic) {
   //scaleでの実装ならdata1,data2要らないかも、、
   var obj;
 
-  if (data3 == 0) {//player
+  if (data3 == 0) {
+    //player
+    obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Player"](x, y);
   } else if (data3 == 1) {
     //bumper
-    obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Bumper"](x, y, data1, options, isStatic);
+    obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Bumper"](x, y, options, isStatic);
   } else if (label === "Circle Body") {
     obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Circle"](x, y, data1, options, isStatic);
   } else if (label === "Rectangle Body") {

@@ -24,7 +24,7 @@ Matter.Events.on(main.scene.engine, 'collisionStart', function (event) {
     var pairs = event.pairs;
     for (let i in pairs) {
         if (pairs[i].bodyA.role === "Player" || pairs[i].bodyB.role === "Player") {
-            main.player.canJump = true;
+            main.objects[main.playerId].canJump = true;
         }
         if (pairs[i].bodyA.role === "Bumper") {
             const rad = Math.atan2(pairs[i].bodyB.position.y-pairs[i].bodyA.position.y,
@@ -51,6 +51,13 @@ Matter.Events.on(main.scene.engine, 'beforeUpdate', (e) => {
         main.actions.pop()();
     }
 });
+document.body.addEventListener("keydown", function (e) {
+    main.scene.keys[e.keyCode] = true;
+    //main.scene.hasChanged = true;
+})
+document.body.addEventListener("keyup", function (e) {
+    main.scene.keys[e.keyCode] = false;
+})
 $(document).on('click', '#start', ()=>{
     main.start();
 });

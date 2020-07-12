@@ -19,7 +19,6 @@ export class Scene {
       
       this.engine.world.gravity.y = 0;
       this.fps = 30;
-      this.isRunning=false;   
 
       this.standardRad = this.width/20,
       this.standardSide = this.width/10;

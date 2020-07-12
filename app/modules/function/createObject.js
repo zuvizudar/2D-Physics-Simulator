@@ -3,10 +3,10 @@ export function createObject(label, x, y, data1, data2, data3, options, isStatic
     //scaleでの実装ならdata1,data2要らないかも、、
     let obj;
     if (data3 == 0) {//player
-        obj = new Player()
+        obj = new Player(x,y);
     }
     else if (data3 == 1) {//bumper
-        obj = new Bumper(x, y, data1, options, isStatic);
+        obj = new Bumper(x, y,  options, isStatic);
     }
     else if (label === "Circle Body") {
         obj = new Circle(x, y, data1, options, isStatic);

@@ -211,7 +211,7 @@ matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.mouse.mousedrag,
 
   Elements[7].value = e.body.render.fillStyle;
   Elements[8].checked = e.body.isStatic;
-  console.log(e.body);
+  console.log(main.objects);
   prev2.id = prev1.id;
   prev1.id = e.body.id;
   prev2.offset.x = prev1.offset.x;
@@ -229,7 +229,7 @@ matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.scene.engine, 'c
 
   var _loop = function _loop(i) {
     if (pairs[i].bodyA.role === "Player" || pairs[i].bodyB.role === "Player") {
-      main.player.canJump = true;
+      main.objects[main.playerId].canJump = true;
     }
 
     if (pairs[i].bodyA.role === "Bumper") {
@@ -291,6 +291,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addTri', _
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addBar', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addBar"]);
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addConstraint', _modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addConstraint"]);
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#Delete', function () {
+  console.log(main.objects[main.mouse.prev1.id]);
   main.objects[main.mouse.prev1.id].removeFrom(main);
 });
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#start', function () {
@@ -308,7 +309,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#save', fun
   Object(_modules_function_save__WEBPACK_IMPORTED_MODULE_6__["save"])(main.objects);
 });
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addPlayer', function () {
-  if (!main.player.exist) {
+  if (!main.player_exists) {
     Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addPlayer"])();
   }
 });
@@ -354,8 +355,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _class_Constraint__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
 /* harmony import */ var _createObject__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
 /* harmony import */ var _addObjects__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(13);
+/* harmony import */ var _class_Object__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9);
 
  //TODO 
+
 
 
 
@@ -390,24 +393,6 @@ function addBar() {
   obj.addToWorld(main);*/
   addfield();
 }
-
-function addPlayer() {
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.init(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height / 2);
-  console.log(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].player);
-  _app1__WEBPACK_IMPORTED_MODULE_1__["main"].player.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
-}
-
-function addConstraint() {
-  var prev1 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1;
-  var prev2 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev2;
-
-  if (prev1.id > 0 && prev2.id > 0 && prev1.id != prev2.id) {
-    var constraint = new _class_Constraint__WEBPACK_IMPORTED_MODULE_2__["Constraint"](_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, prev1.id, prev2.id, prev1.offset.x, prev1.offset.y, prev2.offset.x, prev2.offset.y);
-    constraint.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
-  }
-}
-
-;
 
 function copyControl() {
   var Elements = document.forms[0];
@@ -510,6 +495,27 @@ function addIntervalObject() {
     }
   }, 1000);
 }
+
+function addPlayer() {
+  document.forms.controlForm.elements[0].value = "Circle Body"; //let obj = control2obj();
+
+  var arg = copyControl();
+  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, 0, arg.options, arg.isStatic); //data3=0
+
+  obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+}
+
+function addConstraint() {
+  var prev1 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev1;
+  var prev2 = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].mouse.prev2;
+
+  if (prev1.id > 0 && prev2.id > 0 && prev1.id != prev2.id) {
+    var constraint = new _class_Constraint__WEBPACK_IMPORTED_MODULE_2__["Constraint"](_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, prev1.id, prev2.id, prev1.offset.x, prev1.offset.y, prev2.offset.x, prev2.offset.y);
+    constraint.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
+  }
+}
+
+;
 
 function addBumper() {
   document.forms.controlForm.elements[0].value = "Circle Body"; //let obj = control2obj();

@@ -39,7 +39,7 @@ Matter.Events.on(main.mouse.mousedrag, "startdrag", function (e) {   // dragし�
     Elements[6].value = e.body.restitution * 100; // 反発
     Elements[7].value = e.body.render.fillStyle;
     Elements[8].checked = e.body.isStatic;
-    console.log(e.body)
+    console.log(main.objects);
     prev2.id = prev1.id;
     prev1.id = e.body.id;
     prev2.offset.x = prev1.offset.x;
@@ -56,7 +56,7 @@ Matter.Events.on(main.scene.engine, 'collisionStart', function (event) {
     var pairs = event.pairs;
     for (let i in pairs) {
         if (pairs[i].bodyA.role === "Player" || pairs[i].bodyB.role === "Player") {
-            main.player.canJump = true;
+            main.objects[main.playerId].canJump = true;
         }
         if (pairs[i].bodyA.role === "Bumper") {
             const rad = Math.atan2(pairs[i].bodyB.position.y-pairs[i].bodyA.position.y,
@@ -116,7 +116,8 @@ $(document).on('click', '#addTri', addTri);
 $(document).on('click', '#addBar',addBar);
 $(document).on('click', '#addConstraint', addConstraint);
 $(document).on('click', '#Delete', function(){
-    main.objects[main.mouse.prev1.id].removeFrom(main)
+    console.log(main.objects[main.mouse.prev1.id])
+    main.objects[main.mouse.prev1.id].removeFrom(main);
 });
 
 $(document).on('click', '#start', function () {
@@ -137,7 +138,7 @@ $(document).on('click', '#save', function () {
 });
 
 $(document).on('click', '#addPlayer', function () {
-    if (!main.player.exist) {
+    if (!main.player_exists) {
         addPlayer();
     }
 });

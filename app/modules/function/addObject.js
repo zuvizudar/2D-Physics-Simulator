@@ -5,6 +5,7 @@ import { main } from "../../app1" //TODO
 import { Constraint } from "../class/Constraint"
 import { createObject } from "./createObject"
 import { addObjects } from "./addObjects"
+import { Player } from "../class/Object"
 
 export { addCircle, addSquare, addTri, addBar, addPlayer, addConstraint, addLib,addIntervalObject,addBumper,addCar }
 
@@ -32,21 +33,6 @@ function addBar() {
   addfield();
 }
 
-function addPlayer() {
-  main.player.init(main.scene.width/2,main.scene.height/2);
-  console.log(main.player)
-  main.player.addToWorld(main);
-}
-function addConstraint() {
-  const prev1 = main.mouse.prev1;
-  const prev2 = main.mouse.prev2;
-  if (prev1.id > 0 && prev2.id > 0 && prev1.id != prev2.id) {
-    let constraint = new Constraint(main.objects, prev1.id, prev2.id,
-      prev1.offset.x, prev1.offset.y, prev2.offset.x, prev2.offset.y);
-
-    constraint.addToWorld(main);
-  }
-};
 function copyControl(){
   const Elements = document.forms[0];
   const { data1, data2 } = Control_Size2data(Elements[0].value, Elements[4].value);
@@ -130,6 +116,25 @@ function addIntervalObject() {
     }
   },1000)
 }
+
+
+function addPlayer() {
+  document.forms.controlForm.elements[0].value = "Circle Body";
+  //let obj = control2obj();
+  const arg = copyControl();
+  const obj = createObject(arg.label,arg.x,arg.y,arg.data1,arg.data2,0,arg.options,arg.isStatic); //data3=0
+  obj.addToWorld(main);
+}
+function addConstraint() {
+  const prev1 = main.mouse.prev1;
+  const prev2 = main.mouse.prev2;
+  if (prev1.id > 0 && prev2.id > 0 && prev1.id != prev2.id) {
+    let constraint = new Constraint(main.objects, prev1.id, prev2.id,
+      prev1.offset.x, prev1.offset.y, prev2.offset.x, prev2.offset.y);
+
+    constraint.addToWorld(main);
+  }
+};
 function addBumper() {
   document.forms.controlForm.elements[0].value = "Circle Body";
   //let obj = control2obj();

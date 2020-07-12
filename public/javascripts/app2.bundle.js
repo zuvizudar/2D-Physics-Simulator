@@ -190,7 +190,7 @@ matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.scene.engine, 'c
 
   var _loop = function _loop(i) {
     if (pairs[i].bodyA.role === "Player" || pairs[i].bodyB.role === "Player") {
-      main.player.canJump = true;
+      main.objects[main.playerId].canJump = true;
     }
 
     if (pairs[i].bodyA.role === "Bumper") {
@@ -221,6 +221,12 @@ matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.scene.engine, 'b
   while (main.actions.length > 0) {
     main.actions.pop()();
   }
+});
+document.body.addEventListener("keydown", function (e) {
+  main.scene.keys[e.keyCode] = true; //main.scene.hasChanged = true;
+});
+document.body.addEventListener("keyup", function (e) {
+  main.scene.keys[e.keyCode] = false;
 });
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#start', function () {
   main.start();

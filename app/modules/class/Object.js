@@ -23,6 +23,7 @@ class Object {
     }
     removeFrom(main) {
         Matter.World.remove(main.scene.engine.world, this.body);
+        console.log("AAFJA")
         main.objects[this.body.id] = undefined;
     }
     attachFilter_Mouse() { //マウスのみ接触するフィルター
@@ -37,11 +38,8 @@ class Object {
     }
 }
 class Player extends Object {
-    constructor() {
+    constructor(x,y) {
         super();
-        this.exist = false;
-    }
-    init(x, y) {
         const rad = 35; //pngに合わせる
         const options = {
             density: 0.005,
@@ -59,7 +57,15 @@ class Player extends Object {
         this.body.role = "Player"
         this.canJump = true;
         this.maxSpeed = 14;
-        this.exist = true;
+    }
+    addToWorld(main){
+        super.addToWorld(main);
+        main.player_exists = true;
+        main.playerId = this.body.id;
+    }
+    removeFrom(main){
+        main.player_exists = false;
+        super.removeFrom(main);
     }
     moveRight() {
         if (this.body.velocity.x < this.maxSpeed) {
@@ -98,12 +104,6 @@ class Player extends Object {
             //Matter.Body.setVelocity(this.body, { x: this.body.velocity.x, y: this.maxSpeed/4 })
             Matter.Body.applyForce(this.body, this.body.position, { x: -0.03, y: 0 })
         }
-        removeFrom(main) { //override
-            this.exist = false;
-            this.body.type = "body";
-            Matter.World.remove(main.scene.engine.world, this.body);
-            main.objects[this.body.id] = undefined;
-        }
     }
 
 class Circle extends Object {
@@ -115,7 +115,8 @@ class Circle extends Object {
     }
 }
 class Bumper extends Circle{
-    constructor(x,y,rad,options,isStatic){
+    constructor(x,y,options,isStatic){
+        const rad = 35; //pngに合わせる
         options.render = {
             sprite: { //スプライトの設定
                 texture: '../img/bumper.png' //テクスチャ画像を指定
