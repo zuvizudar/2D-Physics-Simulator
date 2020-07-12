@@ -1,6 +1,6 @@
 import Matter from "matter-js"
 
-export {Player ,Object,Circle,Rectangle, Square, Triangle,Bar};
+export { Player, Object, Circle, Rectangle, Square, Triangle, Bar };
 
 class Object {
     setStatic(isStatic) {
@@ -26,66 +26,85 @@ class Object {
         main.objects[this.body.id] = undefined;
     }
     attachFilter_Mouse() { //マウスのみ接触するフィルター
-        this.body.collisionFilter.category=2;
-        this.body.collisionFilter.mask=1;
-    
+        this.body.collisionFilter.category = 2;
+        this.body.collisionFilter.mask = 1;
+
         this.body.frictionAir = 1; //動かないように
     }
-    attachFilter_All(){
-        this.body.collisionFilter.category=4294967295;
-        this.body.collisionFilter.mask=4294967295;
+    attachFilter_All() {
+        this.body.collisionFilter.category = 4294967295;
+        this.body.collisionFilter.mask = 4294967295;
     }
 }
-class Player extends Object{
+class Player extends Object {
     constructor() {
         super();
         this.exist = false;
     }
-    init(x,y) {
+    init(x, y) {
         const rad = 35; //pngに合わせる
-        const options={
-            density:0.005,
+        const options = {
+            density: 0.005,
             //friction:0,
             //frictionAir:0,
             restitution: 0.3,
             render: {
-              sprite: { //スプライトの設定
-                texture: '../img/rainboww.png' //テクスチャ画像を指定
-              }
+                sprite: { //スプライトの設定
+                    texture: '../img/rainboww.png' //テクスチャ画像を指定
+                }
             },
-            scale:1
+            scale: 1
         }
-        this.body = Matter.Bodies.circle(x,y,rad,options);
+        this.body = Matter.Bodies.circle(x, y, rad, options);
         this.body.role = "Player"
         this.canJump = true;
-        this.speed = 7;
+        this.maxSpeed = 14;
         this.exist = true;
     }
     moveRight() {
-        //Matter.Body.applyForce(this.body, this.body.position, { x: 0.01, y: 0 })
-        Matter.Body.setVelocity(this.body, {x: this.speed*2, y: this.body.velocity.y})
-    }
-    moveLeft() {
-        //Matter.Body.applyForce(this.body, this.body.position, { x: -0.01, y: 0 })
-        Matter.Body.setVelocity(this.body, {x: -this.speed*2, y: this.body.velocity.y})
-    }
-    moveUp() {
-        if (this.canJump) {
-            Matter.Body.setVelocity(this.body, { x: this.body.velocity.x, y: -this.speed })
-            //Matter.Body.applyForce(this.body,this.body.position,{x: 0, y: -0.3})
-            this.canJump = false;
+        if (this.body.velocity.x < this.maxSpeed) {
+            if (this.canJump) {
+
+                Matter.Body.applyForce(this.body, this.body.position, { x: 0.1, y: 0 })
+                //Matter.Body.setVelocity(this.body, { x: this.maxSpeed * 2, y: this.body.velocity.y })
+            }
+            else {
+                Matter.Body.applyForce(this.body, this.body.position, { x: 0.03, y: 0 })
+                //Matter.Body.setVelocity(this.body, {x: this.maxSpeed*2/5, y: this.body.velocity.y})
+            }
         }
     }
-    moveDown() {
-        Matter.Body.setVelocity(this.body, { x: this.body.velocity.x, y: +this.speed })
+    moveLeft() {
+        if (this.body.velocity.x > -this.maxSpeed) {
+            if (this.canJump) {
+                Matter.Body.applyForce(this.body, this.body.position, { x: -0.1, y: 0 })
+                //Matter.Body.setVelocity(this.body, { x: -this.maxSpeed * 2, y: this.body.velocity.y })
+            }
+            else {
+                Matter.Body.applyForce(this.body, this.body.position, { x: -0.03, y: 0 })
+                //Matter.Body.setVelocity(this.body, {x: -this.maxSpeed*2/5, y: this.body.velocity.y})
+            }
+
+        }
     }
-    removeFrom(main) { //override
-        this.exist=false;
-        this.body.type = "body";
-        Matter.World.remove(main.scene.engine.world, this.body);
-        main.objects[this.body.id] = undefined;
+        moveUp() {
+            if (this.canJump) {
+                Matter.Body.setVelocity(this.body, { x: this.body.velocity.x, y: -this.maxSpeed / 2 })
+                //Matter.Body.applyForce(this.body,this.body.position,{x: 0, y: -0.3})
+                this.canJump = false;
+            }
+        }
+        moveDown() {
+            //Matter.Body.setVelocity(this.body, { x: this.body.velocity.x, y: this.maxSpeed/4 })
+            Matter.Body.applyForce(this.body, this.body.position, { x: -0.03, y: 0 })
+        }
+        removeFrom(main) { //override
+            this.exist = false;
+            this.body.type = "body";
+            Matter.World.remove(main.scene.engine.world, this.body);
+            main.objects[this.body.id] = undefined;
+        }
     }
-}
 class Circle extends Object {
     constructor(x, y, rad, options, isStatic) {
         super();
@@ -109,7 +128,8 @@ class Square extends Rectangle {
 }
 class Bar extends Rectangle {
     constructor(x, y, length, options, isStatic) {
-        super(x, y, length, length, options, isStatic);
+        super(x, y, length, length/20, options, isStatic);
+        this.body.label = "Bar Body";
     }
 }
 

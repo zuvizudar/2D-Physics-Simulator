@@ -15,6 +15,7 @@ export function createObjct(label, x, y,data1, data2,options,isStatic) {
         obj = new Triangle(x, y, data1,options,isStatic);
     }
     else if (label === "Bar Body") {
+        console.log("AA")
         obj = new Bar(x, y, data1,options,isStatic);
     }
     return obj;

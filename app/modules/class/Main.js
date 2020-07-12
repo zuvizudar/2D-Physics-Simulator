@@ -63,6 +63,10 @@ export  class Main{
             if(this.scene.keys[83]){
                 this.scene.cameraPos.y+=speed;
             }            
+            if(this.scene.keys[32]){   
+                console.log("A");
+                return false;//スクロール防止
+            }            
         }
         if(this.scene.keys[50]){
             this.scene.scale*=1.01;
@@ -80,7 +84,7 @@ export  class Main{
         }
         this.scene.engine.world.gravity.y = 1
       }
-      stop() {
+    stop() {
         this.scene.isRunning = false;
         for (let i in this.objects) {
           if (this.objects[i] === undefined || this.objects[i].body.label === "Constraint") continue;

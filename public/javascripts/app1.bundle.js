@@ -312,6 +312,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addPlayer'
     Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addPlayer"])();
   }
 });
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addBumper', function () {
+  Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addBumper"])();
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addCar', function () {
+  Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addCar"])();
+});
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addLib', function () {
   Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addLib"])(this.src.substr(26, 36));
 });
@@ -339,6 +345,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addConstraint", function() { return addConstraint; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addLib", function() { return addLib; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addIntervalObject", function() { return addIntervalObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addBumper", function() { return addBumper; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCar", function() { return addCar; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "control2obj", function() { return control2obj; });
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
@@ -376,13 +384,10 @@ function addCircle() {
 
 ;
 
-function addBar(x, y, color, length) {
-  /*document.forms.controlForm.elements[0].value = "Bar Body";
-  let obj = control2obj();
-  obj.addToWorld(main);
-  */
-  //addCar();
-  addBumper();
+function addBar() {
+  document.forms.controlForm.elements[0].value = "Bar Body";
+  var obj = control2obj();
+  obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
 }
 
 function addPlayer() {
@@ -506,8 +511,17 @@ function addIntervalObject() {
 }
 
 function addBumper() {
-  document.forms.controlForm.elements[0].value = "Circle Body";
-  var obj = control2obj();
+  document.forms.controlForm.elements[0].value = "Circle Body"; //let obj = control2obj();
+
+  var arg = copyControl();
+  arg.options.render = {
+    sprite: {
+      //スプライトの設定
+      texture: '../img/bumper.png' //テクスチャ画像を指定
+
+    }
+  };
+  var obj = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObjct"])(arg.label, arg.x, arg.y, arg.data1, arg.data2, arg.options, arg.isStatic);
   obj.body.role = "Bumper";
   obj.body.isStatic = true;
   obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);

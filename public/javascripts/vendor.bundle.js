@@ -28249,6 +28249,11 @@ var Main = /*#__PURE__*/function () {
         if (this.scene.keys[83]) {
           this.scene.cameraPos.y += speed;
         }
+
+        if (this.scene.keys[32]) {
+          console.log("A");
+          return false; //スクロール防止
+        }
       }
 
       if (this.scene.keys[50]) {
@@ -28552,26 +28557,42 @@ var Player = /*#__PURE__*/function (_Object2) {
       this.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.circle(x, y, rad, options);
       this.body.role = "Player";
       this.canJump = true;
-      this.speed = 7;
+      this.maxSpeed = 14;
       this.exist = true;
     }
   }, {
     key: "moveRight",
     value: function moveRight() {
-      //Matter.Body.applyForce(this.body, this.body.position, { x: 0.01, y: 0 })
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.body, {
-        x: this.speed * 2,
-        y: this.body.velocity.y
-      });
+      if (this.body.velocity.x < this.maxSpeed) {
+        if (this.canJump) {
+          matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.applyForce(this.body, this.body.position, {
+            x: 0.1,
+            y: 0
+          }); //Matter.Body.setVelocity(this.body, { x: this.maxSpeed * 2, y: this.body.velocity.y })
+        } else {
+          matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.applyForce(this.body, this.body.position, {
+            x: 0.03,
+            y: 0
+          }); //Matter.Body.setVelocity(this.body, {x: this.maxSpeed*2/5, y: this.body.velocity.y})
+        }
+      }
     }
   }, {
     key: "moveLeft",
     value: function moveLeft() {
-      //Matter.Body.applyForce(this.body, this.body.position, { x: -0.01, y: 0 })
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.body, {
-        x: -this.speed * 2,
-        y: this.body.velocity.y
-      });
+      if (this.body.velocity.x > -this.maxSpeed) {
+        if (this.canJump) {
+          matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.applyForce(this.body, this.body.position, {
+            x: -0.1,
+            y: 0
+          }); //Matter.Body.setVelocity(this.body, { x: -this.maxSpeed * 2, y: this.body.velocity.y })
+        } else {
+          matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.applyForce(this.body, this.body.position, {
+            x: -0.03,
+            y: 0
+          }); //Matter.Body.setVelocity(this.body, {x: -this.maxSpeed*2/5, y: this.body.velocity.y})
+        }
+      }
     }
   }, {
     key: "moveUp",
@@ -28579,7 +28600,7 @@ var Player = /*#__PURE__*/function (_Object2) {
       if (this.canJump) {
         matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.body, {
           x: this.body.velocity.x,
-          y: -this.speed
+          y: -this.maxSpeed / 2
         }); //Matter.Body.applyForce(this.body,this.body.position,{x: 0, y: -0.3})
 
         this.canJump = false;
@@ -28588,9 +28609,10 @@ var Player = /*#__PURE__*/function (_Object2) {
   }, {
     key: "moveDown",
     value: function moveDown() {
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.setVelocity(this.body, {
-        x: this.body.velocity.x,
-        y: +this.speed
+      //Matter.Body.setVelocity(this.body, { x: this.body.velocity.x, y: this.maxSpeed/4 })
+      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Body.applyForce(this.body, this.body.position, {
+        x: -0.03,
+        y: 0
       });
     }
   }, {
@@ -28674,9 +28696,13 @@ var Bar = /*#__PURE__*/function (_Rectangle2) {
   var _super5 = _createSuper(Bar);
 
   function Bar(x, y, length, options, isStatic) {
+    var _this5;
+
     _classCallCheck(this, Bar);
 
-    return _super5.call(this, x, y, length, length, options, isStatic);
+    _this5 = _super5.call(this, x, y, length, length / 20, options, isStatic);
+    _this5.body.label = "Bar Body";
+    return _this5;
   }
 
   return Bar;
@@ -28688,17 +28714,17 @@ var Polygon = /*#__PURE__*/function (_Object5) {
   var _super6 = _createSuper(Polygon);
 
   function Polygon(x, y, sides, rad, options, isStatic) {
-    var _this5;
+    var _this6;
 
     _classCallCheck(this, Polygon);
 
-    _this5 = _super6.call(this);
-    _this5.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.polygon(x, y, sides, rad, options);
+    _this6 = _super6.call(this);
+    _this6.body = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Bodies.polygon(x, y, sides, rad, options);
 
-    _this5.setStatic(isStatic);
+    _this6.setStatic(isStatic);
 
-    _this5.body.rad = rad;
-    return _this5;
+    _this6.body.rad = rad;
+    return _this6;
   }
 
   return Polygon;
@@ -28710,13 +28736,13 @@ var Triangle = /*#__PURE__*/function (_Polygon) {
   var _super7 = _createSuper(Triangle);
 
   function Triangle(x, y, rad, options, isStatic) {
-    var _this6;
+    var _this7;
 
     _classCallCheck(this, Triangle);
 
-    _this6 = _super7.call(this, x, y, 3, rad, options, isStatic);
-    _this6.body.label = "Triangle Body";
-    return _this6;
+    _this7 = _super7.call(this, x, y, 3, rad, options, isStatic);
+    _this7.body.label = "Triangle Body";
+    return _this7;
   }
 
   return Triangle;
@@ -28797,6 +28823,7 @@ function createObjct(label, x, y, data1, data2, options, isStatic) {
   } else if (label === "Triangle Body") {
     obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Triangle"](x, y, data1, options, isStatic);
   } else if (label === "Bar Body") {
+    console.log("AA");
     obj = new _class_Object__WEBPACK_IMPORTED_MODULE_0__["Bar"](x, y, data1, options, isStatic);
   }
 

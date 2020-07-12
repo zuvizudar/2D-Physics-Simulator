@@ -6,7 +6,7 @@ import { Constraint } from "../class/Constraint"
 import { createObjct } from "./createObject"
 import { addObjects } from "./addObjects"
 
-export { addCircle, addSquare, addTri, addBar, addPlayer, addConstraint, addLib,addIntervalObject }
+export { addCircle, addSquare, addTri, addBar, addPlayer, addConstraint, addLib,addIntervalObject,addBumper,addCar }
 
 function addSquare() {
   document.forms.controlForm.elements[0].value = "Square Body";
@@ -25,13 +25,10 @@ function addCircle() {
   let obj = control2obj();
   obj.addToWorld(main);
 };
-function addBar(x, y, color, length) {
-  /*document.forms.controlForm.elements[0].value = "Bar Body";
+function addBar() {
+  document.forms.controlForm.elements[0].value = "Bar Body";
   let obj = control2obj();
   obj.addToWorld(main);
-  */
-  //addCar();
-  addBumper();
 }
 
 function addPlayer() {
@@ -134,7 +131,14 @@ function addIntervalObject() {
 }
 function addBumper() {
   document.forms.controlForm.elements[0].value = "Circle Body";
-  let obj = control2obj();
+  //let obj = control2obj();
+  const arg = copyControl();
+  arg.options.render = {
+    sprite: { //スプライトの設定
+        texture: '../img/bumper.png' //テクスチャ画像を指定
+    }
+  }
+  const obj = createObjct(arg.label,arg.x,arg.y,arg.data1,arg.data2,arg.options,arg.isStatic);
   obj.body.role = "Bumper"
   obj.body.isStatic=true;
   obj.addToWorld(main);

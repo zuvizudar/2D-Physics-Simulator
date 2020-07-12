@@ -10,7 +10,7 @@ import Matter from "matter-js"
 
 import { Main } from './modules/class/Main';
 
-import { addSquare, addTri, addCircle,addBar, addConstraint, addPlayer, addLib ,addIntervalObject} from "./modules/function/addObject";
+import { addSquare, addTri, addCircle,addBar, addConstraint, addPlayer, addLib ,addIntervalObject,addBumper,addCar} from "./modules/function/addObject";
 import { changeAngle, changeScale, changeDensity, changeRestitution, changeColor, changeStatic } from "./modules/function/changeObject"
 import { save } from "./modules/function/save";
 
@@ -141,7 +141,12 @@ $(document).on('click', '#addPlayer', function () {
         addPlayer();
     }
 });
-
+$(document).on('click', '#addBumper', function () {
+    addBumper();
+});
+$(document).on('click', '#addCar', function () {
+    addCar();
+});
 $(document).on('click', '#addLib', function () {
     addLib(this.src.substr(26,36))
 });
