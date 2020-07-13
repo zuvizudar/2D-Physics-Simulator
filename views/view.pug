@@ -12,12 +12,14 @@ block content
 
     .container.mb-5.pb-5
         .row
-            .col-md-8 
+            .col-md-3 
                 h1.my-4
                     if(scene.sceneName)
                         |#{scene.sceneName} 
                     else 
                         |NAMELESS 
+
+            h5.mt-5| ID : #{scene.sceneId}
         .row
             .col-md-8
                 canvas(id="scene")
@@ -47,7 +49,7 @@ block content
             .col-md-8 
             .col-md-4 
                 .social
-                    a.link.twitter(href=`https://twitter.com/share?url=http://localhost:8000/scenes/${scene.sceneId}&text=hey %23aaa%0abbbb %0a` target="_blank")
+                    a.link.twitter(href=`https://twitter.com/share?url=http://localhost:8000/scenes/${scene.sceneId}&text=(スクショを貼って共有しよう) %0a%23simMaker %0a` target="_blank")
                         span.fa.fa-twitter
                     a.link.facebook(href='https://www.facebook.com/share.php?u=http://localhost:8000' rel="nofollow" target='_blank')
                         span.fa.fa-facebook-square

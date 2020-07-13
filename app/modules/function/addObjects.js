@@ -3,7 +3,6 @@ import {createObject} from "./createObject"
 
 
 export function addObjects(main,Objects) {
-    console.log(Objects)
     const tmp = main.scene.idCnt-1;
     Objects.map((c) => {
         if (c.ObjectType === "Constraint") {

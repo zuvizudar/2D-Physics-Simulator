@@ -192,6 +192,7 @@ matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.mouse.mousedrag,
   document.forms.controlForm.elements[2].value = Math.floor(e.mouse.position.y);
 
   if (main.mouse.clicked_screenOnly) {
+    //選択を外す時に使う,error出る
     main.mouse.prev1.id = 0;
   }
 
@@ -211,7 +212,6 @@ matter_js__WEBPACK_IMPORTED_MODULE_2___default.a.Events.on(main.mouse.mousedrag,
 
   Elements[7].value = e.body.render.fillStyle;
   Elements[8].checked = e.body.isStatic;
-  console.log(main.objects);
   prev2.id = prev1.id;
   prev1.id = e.body.id;
   prev2.offset.x = prev1.offset.x;
@@ -308,6 +308,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#stop', fun
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#save', function () {
   Object(_modules_function_save__WEBPACK_IMPORTED_MODULE_6__["save"])(main.objects);
 });
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#search', function () {
+  if (!Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addLib"])(document.forms.searchForm.elements[0].value)) {}
+
+  return false; //リロードさせない
+});
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addPlayer', function () {
   if (!main.player_exists) {
     Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addPlayer"])();
@@ -318,6 +323,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addBumper'
 });
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addCar', function () {
   Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addCar"])();
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addField', function () {
+  Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addField"])();
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addBallPyramid', function () {
+  Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addBallPyramid"])();
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addFuriko', function () {
+  Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addFuriko"])();
 });
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '#addLib', function () {
   Object(_modules_function_addObject__WEBPACK_IMPORTED_MODULE_4__["addLib"])(this.src.substr(26, 36));
@@ -348,6 +362,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addIntervalObject", function() { return addIntervalObject; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addBumper", function() { return addBumper; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCar", function() { return addCar; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addField", function() { return addField; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addBallPyramid", function() { return addBallPyramid; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addFuriko", function() { return addFuriko; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "control2obj", function() { return control2obj; });
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var matter_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(matter_js__WEBPACK_IMPORTED_MODULE_0__);
@@ -388,10 +405,9 @@ function addCircle() {
 ;
 
 function addBar() {
-  /*document.forms.controlForm.elements[0].value = "Bar Body";
-  let obj = control2obj();
-  obj.addToWorld(main);*/
-  addfield();
+  document.forms.controlForm.elements[0].value = "Bar Body";
+  var obj = control2obj();
+  obj.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
 }
 
 function copyControl() {
@@ -451,7 +467,7 @@ function Control_Size2data(label, rangeValue) {
       break;
 
     case 'Bar Body':
-      data1 = rangeValue / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardSide * 2;
+      data1 = rangeValue / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardSide * 5;
       break;
   }
 
@@ -474,12 +490,18 @@ function addLib(sceneId) {
     scriptCharset: "utf-8",
     timeout: 3000
   }).then(function (data) {
-    Object(_addObjects__WEBPACK_IMPORTED_MODULE_4__["addObjects"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"], data.objects);
+    if (data.status == "OK") Object(_addObjects__WEBPACK_IMPORTED_MODULE_4__["addObjects"])(_app1__WEBPACK_IMPORTED_MODULE_1__["main"], data.objects);else {
+      console.log(data.message);
+      document.querySelector('#errorMessage').innerHTML = data.message;
+    }
+    return true;
   }, function (XMLHttpRequest, textStatus, errorThrown) {
+    //todo :空欄で追加すると404
     console.log("error");
     console.log("XMLHttpRequest : " + XMLHttpRequest.status);
     console.log("textStatus     : " + textStatus);
     console.log("errorThrown    : " + errorThrown.message);
+    return false;
   });
 }
 
@@ -559,36 +581,36 @@ function addCar() {
 
 function addFuriko() {
   var options = {
+    restitution: 0.8,
     scale: 1
-  };
+  }; //const len = 50/100 *main.scene.standardSide ;
+
   var rec = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 150, 20, 20, null, options, true);
-  var cir = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Circle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 400, 50, 20, null, options, false);
-  var constraint = matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.Constraint.create({
-    bodyA: rec,
-    bodyB: cir,
-    stiffness: 1
-  });
+  var cir = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Circle Body", _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2, 400, 50, null, null, options, false);
   rec.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
   cir.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
-  matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.world, constraint);
+  var constraint = new _class_Constraint__WEBPACK_IMPORTED_MODULE_2__["Constraint"](_app1__WEBPACK_IMPORTED_MODULE_1__["main"].objects, rec.body.id, cir.body.id, 0, 0, 0, 0);
+  constraint.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
 }
 
-function addfield() {
+function addField() {
   var tmp = [];
   var width = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width;
   var height = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.height;
   var options = {
     render: {
-      fillStyle: '#2e2b44'
+      fillStyle: '#4d4d4d'
     },
     angle: 0,
     density: 0.005,
     restitution: 0,
     scale: 1
   };
-  tmp[0] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width / 2, height, width, 60, null, options, true);
-  tmp[1] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", 0, height / 2, 60, height, null, options, true);
-  tmp[2] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width, height / 2, 60, height, null, options, true);
+  var length1 = 200 / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardSide * 5;
+  var length2 = 150 / 100 * _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.standardSide * 5;
+  tmp[0] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width / 2, height, length1, length1 / 20, null, options, true);
+  tmp[1] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", 0, height / 2, length2 / 20, length2, null, options, true);
+  tmp[2] = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Rectangle Body", width, height / 2, length2 / 20, length2, null, options, true);
 
   for (var i in tmp) {
     tmp[i].addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
@@ -596,9 +618,15 @@ function addfield() {
 }
 
 function addBallPyramid() {
+  var arg = copyControl();
+  /*if(arg.options.render == null){
+    arg.options.render = {fillStyle:'white'}
+  }*/
+
   var options = {
     render: {
-      fillStyle: 'gray'
+      //fillStyle:arg.options.render
+      fillStyle: 'white'
     },
     angle: 0,
     density: 0.001,
@@ -610,9 +638,8 @@ function addBallPyramid() {
     for (var j = 0; j <= i; j++) {
       var x = _app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.width / 2 - i * 35 + j * 70;
       var y = 50 + i * 50;
-      var tmp = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Circle Body", x, y, 10, null, options, true);
-      update_after_adding(tmp);
-      matter_js__WEBPACK_IMPORTED_MODULE_0___default.a.World.add(_app1__WEBPACK_IMPORTED_MODULE_1__["main"].scene.engine.world, tmp);
+      var tmp = Object(_createObject__WEBPACK_IMPORTED_MODULE_3__["createObject"])("Circle Body", x, y, 10, null, null, options, true);
+      tmp.addToWorld(_app1__WEBPACK_IMPORTED_MODULE_1__["main"]);
     }
   }
 }

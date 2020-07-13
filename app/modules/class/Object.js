@@ -48,7 +48,7 @@ class Player extends Object {
             restitution: 0.3,
             render: {
                 sprite: { //スプライトの設定
-                    texture: '../img/rainboww.png' //テクスチャ画像を指定
+                    texture: '../img/player.png' //テクスチャ画像を指定
                 }
             },
             scale: 1

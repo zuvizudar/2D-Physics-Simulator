@@ -10,7 +10,7 @@ import Matter from "matter-js"
 
 import { Main } from './modules/class/Main';
 
-import { addSquare, addTri, addCircle,addBar, addConstraint, addPlayer, addLib ,addIntervalObject,addBumper,addCar} from "./modules/function/addObject";
+import { addSquare, addTri, addCircle,addBar, addConstraint, addPlayer, addLib ,addIntervalObject,addBumper,addCar,addField,addBallPyramid,addFuriko} from "./modules/function/addObject";
 import { changeAngle, changeScale, changeDensity, changeRestitution, changeColor, changeStatic } from "./modules/function/changeObject"
 import { save } from "./modules/function/save";
 
@@ -22,7 +22,7 @@ main.run();
 Matter.Events.on(main.mouse.mousedrag, "mousedown", function (e) { //touchした座標をcontrolに反映
     document.forms.controlForm.elements[1].value = Math.floor(e.mouse.position.x);
     document.forms.controlForm.elements[2].value = Math.floor(e.mouse.position.y);
-    if (main.mouse.clicked_screenOnly) {
+    if (main.mouse.clicked_screenOnly) { //選択を外す時に使う,error出る
         main.mouse.prev1.id = 0;
     }
     main.mouse.clicked_screenOnly = 1;
@@ -39,7 +39,6 @@ Matter.Events.on(main.mouse.mousedrag, "startdrag", function (e) {   // dragし�
     Elements[6].value = e.body.restitution * 100; // 反発
     Elements[7].value = e.body.render.fillStyle;
     Elements[8].checked = e.body.isStatic;
-    console.log(main.objects);
     prev2.id = prev1.id;
     prev1.id = e.body.id;
     prev2.offset.x = prev1.offset.x;
@@ -136,7 +135,12 @@ $(document).on('click', '#stop', () => {
 $(document).on('click', '#save', function () {
     save(main.objects);
 });
-
+$(document).on('click', '#search', function () {
+    if(!addLib(document.forms.searchForm.elements[0].value)){
+        
+    }
+    return false; //リロードさせない
+});
 $(document).on('click', '#addPlayer', function () {
     if (!main.player_exists) {
         addPlayer();
@@ -147,6 +151,15 @@ $(document).on('click', '#addBumper', function () {
 });
 $(document).on('click', '#addCar', function () {
     addCar();
+});
+$(document).on('click', '#addField', function () {
+    addField();
+});
+$(document).on('click', '#addBallPyramid', function () {
+    addBallPyramid();
+});
+$(document).on('click', '#addFuriko', function () {
+    addFuriko();
 });
 $(document).on('click', '#addLib', function () {
     addLib(this.src.substr(26,36))

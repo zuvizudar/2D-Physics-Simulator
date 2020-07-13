@@ -7,7 +7,7 @@ import { createObject } from "./createObject"
 import { addObjects } from "./addObjects"
 import { Player } from "../class/Object"
 
-export { addCircle, addSquare, addTri, addBar, addPlayer, addConstraint, addLib,addIntervalObject,addBumper,addCar }
+export { addCircle, addSquare, addTri, addBar, addPlayer, addConstraint, addLib,addIntervalObject,addBumper,addCar,addField,addBallPyramid, addFuriko }
 
 function addSquare() {
   document.forms.controlForm.elements[0].value = "Square Body";
@@ -27,10 +27,9 @@ function addCircle() {
   obj.addToWorld(main);
 };
 function addBar() {
-  /*document.forms.controlForm.elements[0].value = "Bar Body";
+  document.forms.controlForm.elements[0].value = "Bar Body";
   let obj = control2obj();
-  obj.addToWorld(main);*/
-  addfield();
+  obj.addToWorld(main);
 }
 
 function copyControl(){
@@ -73,7 +72,7 @@ function Control_Size2data(label, rangeValue) { //[50,200] TODO: 調整
       data1 = rangeValue / 100 * main.scene.standardRad;
       break;
     case 'Bar Body':
-      data1 = rangeValue / 100 * main.scene.standardSide * 2;
+      data1 = rangeValue / 100 * main.scene.standardSide * 5;
       break;
   }
   return { data1, data2 };
@@ -93,17 +92,24 @@ function addLib(sceneId) {
   }
   ).then(
     (data) => {
-      addObjects(main, data.objects);
+      if(data.status=="OK")
+        addObjects(main, data.objects);
+      else{
+        console.log(data.message);
+        document.querySelector('#errorMessage').innerHTML = data.message;
+      }
+      return true;
     },
-    (XMLHttpRequest, textStatus, errorThrown) => {
+    (XMLHttpRequest, textStatus, errorThrown) => { 
+      //todo :空欄で追加すると404
       console.log("error");
       console.log("XMLHttpRequest : " + XMLHttpRequest.status);
       console.log("textStatus     : " + textStatus);
       console.log("errorThrown    : " + errorThrown.message);
+      return false;
     }
   )
 }
-
 
 function addIntervalObject() {
   const arg = copyControl();
@@ -175,44 +181,51 @@ function addCar() {
 
 function addFuriko() {
   const options = {
+    restitution:0.8,
     scale:1
   }
+  //const len = 50/100 *main.scene.standardSide ;
   let rec = createObject("Rectangle Body", main.scene.width / 2, 150, 20, 20,null,options,true);
-  let cir = createObject("Circle Body", main.scene.width / 2, 400,  50, 20,null,options,false);
-  let constraint = Matter.Constraint.create({
-    bodyA: rec,
-    bodyB: cir,
-    stiffness: 1
-  })
+  let cir = createObject("Circle Body", main.scene.width / 2, 400,  50, null,null,options,false);
   rec.addToWorld(main);
   cir.addToWorld(main);
-  Matter.World.add(main.scene.world,constraint);
+
+  let constraint = new Constraint(main.objects,rec.body.id,cir.body.id,0,0,0,0);
+  constraint.addToWorld(main);
 }
 
-function addfield() {
+function addField() {
   let tmp = []
   const width = main.scene.width;
   const height = main.scene.height;
   const options ={
     render:{
-      fillStyle:'#2e2b44'
+      fillStyle:'#4d4d4d'
     },
     angle:0,
     density:0.005,
     restitution:0,
     scale:1
-  }
-  tmp[0] = createObject("Rectangle Body", width / 2, height,width,60, null,options,true);
-  tmp[1] = createObject("Rectangle Body", 0, height / 2, 60,height,null,options,true);
-  tmp[2] = createObject("Rectangle Body", width, height / 2, 60,height,null,options,true);
+  } 
+  const length1 = 200/100 * main.scene.standardSide * 5;
+  const length2 = 150/100 * main.scene.standardSide * 5;
+  tmp[0] = createObject("Rectangle Body", width / 2, height,length1,length1/20, null,options,true);
+  tmp[1] = createObject("Rectangle Body", 0, height / 2, length2/20,length2,null,options,true);
+  tmp[2] = createObject("Rectangle Body", width, height / 2, length2/20,length2,null,options,true);
   for (let i in tmp) {
     tmp[i].addToWorld(main);
   }
 }
 function addBallPyramid() {
+
+  const arg = copyControl();
+  /*if(arg.options.render == null){
+    arg.options.render = {fillStyle:'white'}
+  }*/
   const options ={
     render:{
-      fillStyle:'gray'
+      //fillStyle:arg.options.render
+      fillStyle:'white'
     },
     angle:0,
     density:0.001,
@@ -224,9 +237,8 @@ function addBallPyramid() {
       const x = (main.scene.width / 2 - i * 35) + j * 70;
       const y = 50 + i * 50;
 
-      let tmp = createObject("Circle Body", x, y,10,null,options, true);
-      update_after_adding(tmp);
-      Matter.World.add(main.scene.engine.world, tmp);
+      let tmp = createObject("Circle Body", x, y,10,null,null,options, true);
+      tmp.addToWorld(main);
     }
   }
 }

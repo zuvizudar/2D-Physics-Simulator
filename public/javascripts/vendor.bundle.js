@@ -28548,7 +28548,7 @@ var Player = /*#__PURE__*/function (_Object2) {
       render: {
         sprite: {
           //スプライトの設定
-          texture: '../img/rainboww.png' //テクスチャ画像を指定
+          texture: '../img/player.png' //テクスチャ画像を指定
 
         }
       },
@@ -28881,7 +28881,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function addObjects(main, Objects) {
-  console.log(Objects);
   var tmp = main.scene.idCnt - 1;
   Objects.map(function (c) {
     if (c.ObjectType === "Constraint") {

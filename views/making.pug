@@ -17,7 +17,7 @@ block content
                 canvas(id="scene")
                 p.message 
                 script(src="/javascripts/app1.bundle.js")    
-                script(src='/dist/js/bootstrap-colorpicker.js')
+                script(src='/javascripts/bootstrap-colorpicker.min.js')
                 script(src='/javascripts/jquery.minicolors.js')
                 script(src="/javascripts/bootstrap-maxlength.js")
                 link(rel='stylesheet' href='/css/jquery-minicolors.css')
@@ -57,9 +57,9 @@ block content
                             .form-check
                                 input#changeStatic.form-check-input(type='checkbox' accesskey="q")
                                 label Static 
-        h3.mx-3.my-2 Add
+        h3.my-2 Add
         .row 
-            .col-md-4
+            .col-md-4.ml-2
                 button.btn.btn-outline-primary(id="addCircle" accesskey="z") ●
                 button.btn.btn-outline-primary(id="addSquare" accesskey="x") ■
                 button.btn.btn-outline-primary(id="addTri" accesskey="c") ▲
@@ -72,7 +72,7 @@ block content
                 button.btn.btn-outline-warning(id="stop") 停止
                 button.btn.btn-outline-danger(onclick="window.location.reload()")
                     |リセット                        
-            .col-md-2         
+            .col-md-1         
                 button.btn.btn-primary(type='button', data-toggle='modal', data-target="#Modal")
                      | 保存
                 #Modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ModalLabel')
@@ -134,20 +134,32 @@ block content
                                 button.btn.btn-secondary(type='button', data-dismiss='modal') 閉じる
 
         h3.my-4 Library
-            .row
+            .row.ml-2
                 .col-md-2.col-sm-6.mb-4
                     img.img-fluid(src='img/heroLib.png' id ="addPlayer")
                 .col-md-2.col-sm-6.mb-4
                     img.img-fluid(src='img/bumperLib.png' id ="addBumper")                    
                 .col-md-2.col-sm-6.mb-4
                     img.img-fluid(src='img/carLib.png' id ="addCar")
+                .col-md-2.col-sm-6.mb-4
+                    img.img-fluid(src='img/fieldLib.png' id ="addField")
+                .col-md-2.col-sm-6.mb-4
+                    img.img-fluid(src='img/ballPyramidLib.png' id ="addBallPyramid")
+                .col-md-2.col-sm-6.mb-4
+                    img.img-fluid(src='img/furikoLib.png' id ="addFuriko")
+            .row
                 -
-                    var list=["f56ee722-77bf-4ab6-8f79-471cc4c200d9",
-                                "ea782472-7807-47f4-a02e-ca6a8b85ef90",
-                                "17c33073-2e8d-47e2-9b2e-91a2e6d651ba"]
+                    var list=[]
                 each id in list 
                     .col-md-2.col-sm-6.mb-4
                         img.img-fluid(src=`img/${id}.png`, id ="addLib")
+                form(name="searchForm").ml-3
+                    .form-group
+                        |Library-ID(uuid)検索
+                        .ml-3.form-inline
+                            input#inputPassword2.form-control(placeholder="idを入力")
+                            button.btn.btn-info(type="submit",id = "search") 追加
+                        .ml-3#errorMessage.text-danger.h6
     script.
         $('.colorpicker').each( function() {
             $(this).minicolors({
