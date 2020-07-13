@@ -5,7 +5,10 @@ import {roundFloat} from "./roundFloat"
 
 export function save(objects) {
     console.log(objects)
-    var hostURL = "http://localhost:8000";
+    //var hostURL = "http://localhost:8000";
+    const hostURL = "https://sim-maker.herokuapp.com";
+    const apiURL = hostURL + "/making/save";
+
     var sceneInfo = [], data = [], nextIdMap = [], nextIdCnt = 2;
     for (var i = 0; i < 4; i++) {
         var c = document.forms.saveForm.elements[i];
@@ -62,10 +65,9 @@ export function save(objects) {
         data.push(tmp);
         nextIdCnt++;
     }
-    var hostUrl = hostURL + "/making/save";
 
     $.ajax({
-        url: hostUrl,
+        url: apiURL,
         type: "POST",
         data: { "data": data, "sceneInfo": sceneInfo },
         dataType: "text",

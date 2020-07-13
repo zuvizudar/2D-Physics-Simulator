@@ -79,11 +79,12 @@ function Control_Size2data(label, rangeValue) { //[50,200] TODO: 調整
 }
 
 function addLib(sceneId) {
-  const hostURL = "http://localhost:8000";
-  const hostUrl = hostURL + "/addLibrary/" + sceneId;
+  //const hostURL = "http://localhost:8000";
+  const hostURL = "https://sim-maker.herokuapp.com";
+  const apiURL = hostURL + "/addLibrary/" + sceneId;
 
   $.ajax({
-    url: hostUrl,
+    url: apiURL,
     type: "POST",
     data: { sceneId: sceneId },
     dataType: "json",

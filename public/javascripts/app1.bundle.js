@@ -478,10 +478,11 @@ function Control_Size2data(label, rangeValue) {
 }
 
 function addLib(sceneId) {
-  var hostURL = "http://localhost:8000";
-  var hostUrl = hostURL + "/addLibrary/" + sceneId;
+  //const hostURL = "http://localhost:8000";
+  var hostURL = "https://sim-maker.herokuapp.com";
+  var apiURL = hostURL + "/addLibrary/" + sceneId;
   $.ajax({
-    url: hostUrl,
+    url: apiURL,
     type: "POST",
     data: {
       sceneId: sceneId
@@ -740,8 +741,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function save(objects) {
-  console.log(objects);
-  var hostURL = "http://localhost:8000";
+  console.log(objects); //var hostURL = "http://localhost:8000";
+
+  var hostURL = "https://sim-maker.herokuapp.com";
+  var apiURL = hostURL + "/making/save";
   var sceneInfo = [],
       data = [],
       nextIdMap = [],
@@ -806,9 +809,8 @@ function save(objects) {
     nextIdCnt++;
   }
 
-  var hostUrl = hostURL + "/making/save";
   $.ajax({
-    url: hostUrl,
+    url: apiURL,
     type: "POST",
     data: {
       "data": data,
