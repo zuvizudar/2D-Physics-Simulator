@@ -5,6 +5,7 @@ export { Player, Object, Circle, Rectangle, Square, Triangle, Bar,Bumper };
 function showCnt(cnt){
     const max = 50;
     let tmp;
+    if(document.getElementById("save")==null||document.querySelectorAll('.objCnt')==null)return; //TODO
     if(cnt>50){
         tmp = "Total :"+ "<span style='color: red;'>"+cnt+"</span>" +"/"+max;
         //document.getElementById("save").setAttribute("disabled",true);
