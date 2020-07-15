@@ -4,7 +4,7 @@ import {checkRange} from "./checkRange"
 import {roundFloat} from "./roundFloat"
 
 export function save(objects) {
-    //var hostURL = "http://localhost:8000";
+    //const hostURL = "http://localhost:8000";
     const hostURL = "https://sim-maker.herokuapp.com";
     const apiURL = hostURL + "/making/save";
 
@@ -76,7 +76,7 @@ export function save(objects) {
     ).then(
         (data) => {
             if(data.status=="OK")
-                window.location.href = hostURL + "/scenes/" + data;
+                window.location.href = hostURL + "/scenes/" + data.sceneId;
             else{
                 console.log(data);
             }

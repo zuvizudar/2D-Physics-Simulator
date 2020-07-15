@@ -17,7 +17,7 @@ module.exports = router;
 router.post('/save',(req, res, next) =>{
     const sceneId = uuid.v4();
     var updatedAt = new Date();
-    if(req.bosy.data.length>50){
+    if(req.body.data.length>50){
       res.json({status:"error",message:"オブジェクトが多すぎます"});
       return;
     }
