@@ -23,9 +23,9 @@ export class Scene {
       this.standardRad = this.width/20,
       this.standardSide = this.width/10;
       this.idCnt = 1;
+      this.objCnt = 0;
 
       this.keys = [];
-      this.hasChanged = true;
 
       this.cameraPos={x:this.width/2,y:this.height/2};
       this.scale = 1.5;

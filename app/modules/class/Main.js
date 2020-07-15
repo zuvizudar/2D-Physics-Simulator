@@ -18,11 +18,6 @@ export class Main {
     }
     run() {
         window.requestAnimationFrame(this.run.bind(this));
-
-        /*if(this.scene.hasChanged){
-              this.scene.hasChanged = false; 
-        }
-        */
         this.keyMove()
 
         if (this.player_exists && this.isRunning) {

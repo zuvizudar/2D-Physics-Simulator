@@ -17,6 +17,10 @@ module.exports = router;
 router.post('/save',(req, res, next) =>{
     const sceneId = uuid.v4();
     var updatedAt = new Date();
+    if(req.bosy.data.length>50){
+      res.json({status:"error",message:"オブジェクトが多すぎます"});
+      return;
+    }
     Scene.create({
       sceneId: sceneId,
       sceneName: req.body.sceneInfo[0],
@@ -48,9 +52,8 @@ router.post('/save',(req, res, next) =>{
       }
      }
    );
-   //console.log(obj_bulk)
    Object.bulkCreate(obj_bulk).then(()=>{
-     res.send(sceneId)
+     res.json({status:"OK",sceneId:sceneId});
    })
    .catch(function(err){
      console.log(err);

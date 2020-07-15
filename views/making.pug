@@ -57,6 +57,7 @@ block content
                             .form-check
                                 input#changeStatic.form-check-input(type='checkbox' accesskey="q")
                                 label Static 
+                            .objCnt.mt-1
         h3.my-2 Add
         .row 
             .col-md-4.ml-2
@@ -73,13 +74,13 @@ block content
                 button.btn.btn-outline-danger(onclick="window.location.reload()")
                     |リセット                        
             .col-md-1         
-                button.btn.btn-primary(type='button', data-toggle='modal', data-target="#Modal")
+                button.btn.btn-primary(type='button', data-toggle='modal', data-target="#saveModal")
                      | 保存
-                #Modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ModalLabel')
+                #saveModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='saveModalLabel')
                     .modal-dialog.modal-dialog-centered(role='document')
                         .modal-content
                             .modal-header
-                                h5#ModalLabel.modal-title シーンの情報を記入して下さい
+                                h5#saveModalLabel.modal-title シーンの情報を記入して下さい
                                 button.close(type='button', data-dismiss='modal', aria-label='閉じる')
                                     span(aria-hidden='true') &times;
                             .modal-body
@@ -96,20 +97,19 @@ block content
                                     .form-check 
                                         input.form-check-input(type='checkbox')
                                         label ライブラリとしての利用を認める 
-                                        
-                                script. 
+                                    .objCnt
 
                             .modal-footer
                                 button.btn.btn-secondary(type='button', data-dismiss='modal') 閉じる
                                 button.btn.btn-primary(type='submit' id="save") 保存
             .col-md-2         
-                button.btn.btn-info(type='button', data-toggle='modal', data-target="#Modal1")
+                button.btn.btn-info(type='button', data-toggle='modal', data-target="#explainModal")
                      | 操作説明
-                #Modal1.modal.fade(tabindex='-1', role='dialog', aria-labelledby='ModalLabel')
+                #explainModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='explainModalLabel')
                     .modal-dialog.modal-dialog-centered(role='document')
                         .modal-content
                             .modal-header
-                                h5#ModalLabel1.modal-title 操作説明
+                                h5#explainModalLabel1.modal-title 操作説明
                                 button.close(type='button', data-dismiss='modal', aria-label='閉じる')
                                     span(aria-hidden='true') &times;
                             .modal-body

@@ -1,3 +1,5 @@
+const Obfuscator = require('webpack-obfuscator')
+
 module.exports = {
   context: __dirname + '/app',
   mode: 'none',
@@ -28,5 +30,8 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new Obfuscator({rotateUnicodeArray: true}, [])
+  ],
 };

@@ -2,6 +2,22 @@ import Matter from "matter-js"
 
 export { Player, Object, Circle, Rectangle, Square, Triangle, Bar,Bumper };
 
+function showCnt(cnt){
+    const max = 50;
+    let tmp;
+    if(cnt>50){
+        tmp = "Total :"+ "<span style='color: red;'>"+cnt+"</span>" +"/"+max;
+        //document.getElementById("save").setAttribute("disabled",true);
+        document.getElementById("save").setAttribute("disabled",true);
+    }else{
+        tmp = "Total :" + cnt + "/"+max;
+        document.getElementById("save").removeAttribute("disabled");
+    }
+    const selectors = document.querySelectorAll('.objCnt');
+    [].forEach.call(selectors,function(selector){
+        selector.innerHTML = tmp;
+    })
+}
 class Object {
     setStatic(isStatic) {
         this.body.isStatic = isStatic;
@@ -19,12 +35,15 @@ class Object {
 
         main.objects[this.body.id] = this;
         main.scene.idCnt = this.body.id; //最後のidをメモ
+        main.scene.objCnt++;
+        showCnt(main.scene.objCnt);
         Matter.World.add(main.scene.engine.world, this.body);
     }
     removeFrom(main) {
         Matter.World.remove(main.scene.engine.world, this.body);
-        console.log("AAFJA")
         main.objects[this.body.id] = undefined;
+        main.scene.objCnt--;
+        showCnt(main.scene.objCnt);
     }
     attachFilter_Mouse() { //マウスのみ接触するフィルター
         this.body.collisionFilter.category = 2;

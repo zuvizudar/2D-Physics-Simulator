@@ -84,7 +84,6 @@ Matter.Events.on(main.scene.engine, 'beforeUpdate', (e) => {
 });
 document.body.addEventListener("keydown", function (e) {
     main.scene.keys[e.keyCode] = true;
-    //main.scene.hasChanged = true;
 })
 document.body.addEventListener("keyup", function (e) {
     main.scene.keys[e.keyCode] = false;
